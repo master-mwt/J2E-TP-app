@@ -1,0 +1,26 @@
+server:
+  servlet:
+    context-path: /j2etpapp
+spring:
+  application:
+    name: J2ETPApp
+  profiles:
+    active: dev
+  # JPA
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB53Dialect
+        #current_session_context_class: thread
+        hbm2ddl.auto: validate
+        #format_sql: false
+        #show_sql: true
+  # MONGO
+  #data:
+  #  mongodb:
+  #    authentication-database: admin
+  #    username: root
+  #    password: inserire_password
+  #    database: j2etpapp
+  #    port: 27017
+  #    host: localhost
