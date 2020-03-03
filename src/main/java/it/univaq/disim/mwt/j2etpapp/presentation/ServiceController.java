@@ -21,7 +21,7 @@ public class ServiceController {
     @Autowired
     private ServiceBO serviceBO;
 
-    @GetMapping()
+    @GetMapping("")
     public String index(Model model){
         List<Service> services = serviceBO.findAllServices();
         model.addAttribute("services", services);
