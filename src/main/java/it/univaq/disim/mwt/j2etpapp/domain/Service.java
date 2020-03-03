@@ -2,10 +2,7 @@ package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Data
@@ -14,10 +11,11 @@ import java.util.Set;
 public class Service {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "services")
     private Set<Group> groups;
 
 }

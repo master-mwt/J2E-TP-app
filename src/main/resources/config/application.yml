@@ -1,6 +1,9 @@
+# TODO: Activate MongoDB and check flags, modify project name
 server:
   servlet:
     context-path: /j2etpapp
+  port: 8080
+
 spring:
   application:
     name: J2ETPApp
@@ -10,17 +13,20 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDB53Dialect
+        #dialect: org.hibernate.dialect.MariaDB53Dialect
+        dialect: org.hibernate.dialect.MariaDB103Dialect
         #current_session_context_class: thread
-        hbm2ddl.auto: validate
+        #hbm2ddl.auto: validate
+        #hbm2ddl.auto: create-drop
+        hbm2ddl.auto: update
         #format_sql: false
-        #show_sql: true
+        show_sql: true
   # MONGO
-  #data:
-  #  mongodb:
-  #    authentication-database: admin
-  #    username: root
-  #    password: inserire_password
-  #    database: j2etpapp
-  #    port: 27017
-  #    host: localhost
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: inserire_password
+      database: j2etpapp
+      port: 27017
+      host: localhost
