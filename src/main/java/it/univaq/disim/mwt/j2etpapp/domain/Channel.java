@@ -8,19 +8,22 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "groups")
-public class Group implements Serializable {
+@Table(name = "channels")
+public class Channel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
-    
-    @OneToMany(mappedBy = "group")
+    private String title;
+    private String description;
+
+    @ManyToMany(mappedBy = "channels")
     private Set<User> users;
 
-    @ManyToMany
-    private Set<Service> services;
+    // This is on MongoDB
+    //@OneToMany(mappedBy = "channel")
+    //private Set<Post> posts;
 
 }

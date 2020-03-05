@@ -8,19 +8,18 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "groups")
-public class Group implements Serializable {
+@Table(name = "roles")
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
-    
-    @OneToMany(mappedBy = "group")
-    private Set<User> users;
+
+    @OneToMany(mappedBy = "role")
+    private Set<UserRole> userRole;
 
     @ManyToMany
     private Set<Service> services;
-
 }
