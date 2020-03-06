@@ -14,11 +14,12 @@ public class Group implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String name;
     
-    @OneToMany(mappedBy = "group")
-    private Set<User> users;
+    //@OneToMany(mappedBy = "group")
+    //private Set<User> users;
 
     @ManyToMany
     private Set<Service> services;

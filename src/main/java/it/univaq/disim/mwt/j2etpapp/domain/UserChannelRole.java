@@ -9,11 +9,15 @@ import java.io.Serializable;
 // TODO: JoinColumn is redundant ?
 @Data
 @Entity
-@Table(name = "users_roles")
-public class UserRole implements Serializable {
+@Table(name = "users_channels_roles")
+public class UserChannelRole implements Serializable {
 
-    @EmbeddedId
-    private UserRolePK userRolePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
+
+    @Embedded
+    private UserChannelRoleFKs userChannelRoleFKs;
 
     @ManyToOne
     @MapsId("user_id")
@@ -22,10 +26,15 @@ public class UserRole implements Serializable {
 
     @ManyToOne
     @MapsId("role_id")
-    //@JoinColumn(name = "role_id")
+    //@JoinColumn("role_id")
     private Role role;
 
     @ManyToOne
+    @MapsId("channel_id")
+    //@JoinColumn("channel_id")
     private Channel channel;
+
+    //@ManyToOne
+    //private Channel channel;
 
 }

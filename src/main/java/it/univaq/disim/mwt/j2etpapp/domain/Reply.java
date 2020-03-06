@@ -1,3 +1,4 @@
+/*
 package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Data;
@@ -28,3 +29,4 @@ public class Reply implements Serializable {
     private Long replyId;
 
 }
+*/

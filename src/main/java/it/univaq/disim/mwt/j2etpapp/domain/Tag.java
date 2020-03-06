@@ -1,3 +1,4 @@
+/*
 package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Data;
@@ -20,3 +21,4 @@ public class Tag implements Serializable {
     private Long version;
     
 }
+*/

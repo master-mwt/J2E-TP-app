@@ -17,16 +17,16 @@ spring:
         dialect: org.hibernate.dialect.MariaDB103Dialect
         #current_session_context_class: thread
         #hbm2ddl.auto: validate
-        hbm2ddl.auto: create-drop
-        #hbm2ddl.auto: update
+        #hbm2ddl.auto: create-drop
+        hbm2ddl.auto: update
         #format_sql: false
         show_sql: true
   # MONGO
-  data:
-    mongodb:
-      authentication-database: admin
-      username: j2etp
-      password: j2etp
-      database: j2etpapp
-      port: 27017
-      host: localhost
+#  data:
+#    mongodb:
+#      authentication-database: admin
+#      username: j2etp
+#      password: j2etp
+#      database: j2etpapp
+#      port: 27017
+#      host: localhost

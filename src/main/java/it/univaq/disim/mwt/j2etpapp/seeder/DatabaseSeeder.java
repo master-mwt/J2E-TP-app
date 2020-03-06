@@ -1,3 +1,4 @@
+/*
 package it.univaq.disim.mwt.j2etpapp.seeder;
 
 import com.github.javafaker.Faker;
@@ -32,11 +33,13 @@ public class DatabaseSeeder {
 
     @EventListener
     public void seed(ContextRefreshedEvent event){
-        /*System.out.println("Seedeing...");
+        */
+/*System.out.println("Seedeing...");
         seedUser(10L);
         seedChannel(10L);
         seedPost(15L);
-        System.out.println("End seeding.");*/
+        System.out.println("End seeding.");*//*
+
     }
 
     // seeders
@@ -80,3 +83,4 @@ public class DatabaseSeeder {
         return ((List<T>) list).get(random.nextInt(((List<T>) list).size()));
     }
 }
+*/

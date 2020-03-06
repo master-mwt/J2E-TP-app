@@ -8,10 +8,14 @@ import java.io.Serializable;
 
 @Data
 @Embeddable
-public class UserRolePK implements Serializable {
+public class UserChannelRoleFKs implements Serializable {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @Column(name = "channel_id")
+    private Long channelId;
+
     @Column(name = "role_id")
     private Long roleId;
 

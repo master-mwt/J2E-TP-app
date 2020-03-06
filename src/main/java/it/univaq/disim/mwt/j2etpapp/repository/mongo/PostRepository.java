@@ -1,3 +1,4 @@
+/*
 package it.univaq.disim.mwt.j2etpapp.repository.mongo;
 
 
@@ -8,3 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends CrudRepository<Post, String> {
 }
+*/

@@ -14,12 +14,13 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "role")
-    private Set<UserRole> userRole;
-
     @ManyToMany
     private Set<Service> services;
+
+    @OneToMany(mappedBy = "role")
+    private Set<UserChannelRole> userChannelRole;
 }
