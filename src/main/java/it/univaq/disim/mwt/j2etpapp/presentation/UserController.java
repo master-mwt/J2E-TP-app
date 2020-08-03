@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
-import it.univaq.disim.mwt.j2etpapp.domain.User;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,49 +21,49 @@ public class UserController {
     // index
     @GetMapping("")
     public String index(Model model){
-        List<User> users = userBO.findAllUsers();
-        model.addAttribute("users", users);
+        List<UserClass> userClasses = userBO.findAllUsers();
+        model.addAttribute("users", userClasses);
         return "/user/index";
     }
 
     // save
     @GetMapping("create")
     public String create(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserClass());
         return "/user/form";
     }
 
     @PostMapping("")
-    public String store(@Valid @ModelAttribute("user") User user, Errors errors){
+    public String store(@Valid @ModelAttribute("user") UserClass userClass, Errors errors){
         if(errors.hasErrors()){
             return "/user/form";
         }
-        userBO.save(user);
+        userBO.save(userClass);
         return "redirect:/user";
     }
 
     // show
     @GetMapping("{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        User user = userBO.findUserByID(id);
-        model.addAttribute("user", user);
+        UserClass userClass = userBO.findUserByID(id);
+        model.addAttribute("user", userClass);
         return "/user/show";
     }
 
     // update
     @GetMapping("{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model){
-        User user = userBO.findUserByID(id);
-        model.addAttribute("user", user);
+        UserClass userClass = userBO.findUserByID(id);
+        model.addAttribute("user", userClass);
         return "/user/form";
     }
 
     @PutMapping("{id}")
-    public String update(@Valid @ModelAttribute("user") User user, Errors errors){
+    public String update(@Valid @ModelAttribute("user") UserClass userClass, Errors errors){
         if(errors.hasErrors()){
             return "/user/form";
         }
-        userBO.save(user);
+        userBO.save(userClass);
         return "redirect:/user";
     }
 

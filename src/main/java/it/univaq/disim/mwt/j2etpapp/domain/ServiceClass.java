@@ -9,7 +9,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "services")
-public class Service implements Serializable {
+public class ServiceClass implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,9 @@ public class Service implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "services")
-    private Set<Group> groups;
+    private Set<GroupClass> groupClasses;
 
     @ManyToMany(mappedBy = "services")
-    private Set<Role> roles;
+    private Set<RoleClass> roleClasses;
 
 }

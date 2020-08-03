@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
-import it.univaq.disim.mwt.j2etpapp.domain.User;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +18,18 @@ public class UserBOImpl implements UserBO {
     private UserRepository userRepository;
 
     @Override
-    public List<User> findAllUsers() {
-        return (List<User>) userRepository.findAll();
+    public List<UserClass> findAllUsers() {
+        return (List<UserClass>) userRepository.findAll();
     }
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public void save(UserClass userClass) {
+        userRepository.save(userClass);
     }
 
     @Override
-    public User findUserByID(Long id) {
-        Optional<User> result = userRepository.findById(id);
+    public UserClass findUserByID(Long id) {
+        Optional<UserClass> result = userRepository.findById(id);
 
         return result.orElse(null);
     }

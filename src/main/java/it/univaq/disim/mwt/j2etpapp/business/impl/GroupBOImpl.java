@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.GroupBO;
-import it.univaq.disim.mwt.j2etpapp.domain.Group;
+import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +17,12 @@ public class GroupBOImpl implements GroupBO {
     private GroupRepository groupRepository;
 
     @Override
-    public List<Group> findAllGroups() {
-        return (List<Group>) groupRepository.findAll();
+    public List<GroupClass> findAllGroups() {
+        return (List<GroupClass>) groupRepository.findAll();
     }
 
     @Override
-    public void save(Group group) {
-        groupRepository.save(group);
+    public void save(GroupClass groupClass) {
+        groupRepository.save(groupClass);
     }
 }

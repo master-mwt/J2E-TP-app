@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.ServiceBO;
-import it.univaq.disim.mwt.j2etpapp.domain.Service;
+import it.univaq.disim.mwt.j2etpapp.domain.ServiceClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +23,19 @@ public class ServiceController {
 
     @GetMapping("")
     public String index(Model model){
-        List<Service> services = serviceBO.findAllServices();
+        List<ServiceClass> services = serviceBO.findAllServices();
         model.addAttribute("services", services);
         return "/service/index";
     }
 
     @GetMapping("create")
     public String create(Model model){
-        model.addAttribute("service", new Service());
+        model.addAttribute("service", new ServiceClass());
         return "/service/form";
     }
 
     @PostMapping("")
-    public String store(@Valid @ModelAttribute("service") Service service, Errors errors){
+    public String store(@Valid @ModelAttribute("service") ServiceClass service, Errors errors){
         if(errors.hasErrors()){
             return "/service/form";
         }

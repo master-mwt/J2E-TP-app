@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.GroupBO;
-import it.univaq.disim.mwt.j2etpapp.domain.Group;
+import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,24 +23,24 @@ public class GroupController {
 
     @GetMapping("")
     public String index(Model model){
-        List<Group> groups = groupBO.findAllGroups();
-        model.addAttribute("groups", groups);
+        List<GroupClass> groupClasses = groupBO.findAllGroups();
+        model.addAttribute("groups", groupClasses);
         return "/group/index";
     }
 
     @GetMapping("create")
     public String create(Model model){
-        model.addAttribute("group", new Group());
+        model.addAttribute("group", new GroupClass());
         return "/group/form";
     }
 
     @PostMapping("")
-    public String store(@Valid @ModelAttribute("group") Group group, Errors errors){
+    public String store(@Valid @ModelAttribute("group") GroupClass groupClass, Errors errors){
         if(errors.hasErrors()){
             return "/group/form";
         }
 
-        groupBO.save(group);
+        groupBO.save(groupClass);
         return "redirect:/group";
     }
 

@@ -1,14 +1,15 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.ServiceBO;
-import it.univaq.disim.mwt.j2etpapp.domain.Service;
+import it.univaq.disim.mwt.j2etpapp.domain.ServiceClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@org.springframework.stereotype.Service
+@Service
 @Transactional
 public class ServiceBOImpl implements ServiceBO {
 
@@ -16,12 +17,12 @@ public class ServiceBOImpl implements ServiceBO {
     private ServiceRepository serviceRepository;
 
     @Override
-    public List<Service> findAllServices() {
-        return (List<Service>) serviceRepository.findAll();
+    public List<ServiceClass> findAllServices() {
+        return (List<ServiceClass>) serviceRepository.findAll();
     }
 
     @Override
-    public void save(Service service) {
+    public void save(ServiceClass service) {
         serviceRepository.save(service);
     }
 }

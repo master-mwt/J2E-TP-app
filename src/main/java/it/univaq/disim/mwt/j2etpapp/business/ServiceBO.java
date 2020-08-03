@@ -1,12 +1,12 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
-import it.univaq.disim.mwt.j2etpapp.domain.Service;
+import it.univaq.disim.mwt.j2etpapp.domain.ServiceClass;
 
 import java.util.List;
 
 public interface ServiceBO {
 
-    List<Service> findAllServices();
-    void save(Service service);
+    List<ServiceClass> findAllServices();
+    void save(ServiceClass service);
 
 }
