@@ -22,15 +22,15 @@ public class UserChannelRole implements Serializable {
     @ManyToOne
     @MapsId("user_id")
     //@JoinColumn("user_id")
-    private UserClass userClass;
+    private UserClass user;
 
     @ManyToOne
     @MapsId("role_id")
     //@JoinColumn("role_id")
-    private RoleClass roleClass;
+    private RoleClass role;
 
     @ManyToOne
     @MapsId("channel_id")
     //@JoinColumn("channel_id")
-    private ChannelClass channelClass;
+    private ChannelClass channel;
 }

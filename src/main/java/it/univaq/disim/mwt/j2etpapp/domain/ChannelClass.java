@@ -18,11 +18,14 @@ public class ChannelClass implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = true, columnDefinition = "text")
     private String description;
+
+    @Column(nullable = true, columnDefinition = "text")
+    private String rules;
 
     //@ManyToMany(mappedBy = "channels")
     //private Set<User> users;
@@ -31,7 +34,7 @@ public class ChannelClass implements Serializable {
     //@OneToMany(mappedBy = "channel")
     //private Set<Post> posts;
 
-    @OneToMany(mappedBy = "channelClass")
+    @OneToMany(mappedBy = "channel")
     private Set<UserChannelRole> userChannelRole;
 
 }

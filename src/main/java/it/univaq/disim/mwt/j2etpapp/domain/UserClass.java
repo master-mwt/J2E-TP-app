@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +24,16 @@ public class UserClass implements Serializable {
     private String name;
 
     @Column(nullable = false)
+    private String surname;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int hard_ban;
 
     //@ManyToOne
     //private Group group;
@@ -35,7 +45,7 @@ public class UserClass implements Serializable {
     //@ManyToMany
     //private Set<Channel> channels;
 
-    @OneToMany(mappedBy = "userClass")
+    @OneToMany(mappedBy = "user")
     private Set<UserChannelRole> userChannelRole;
 
 }

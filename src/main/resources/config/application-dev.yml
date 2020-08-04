@@ -3,5 +3,5 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/j2etpapp?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: inserire_password
+    password: r
     driver-class-name: com.mysql.cj.jdbc.Driver

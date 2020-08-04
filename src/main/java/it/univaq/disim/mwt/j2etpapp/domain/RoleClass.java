@@ -18,9 +18,12 @@ public class RoleClass implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @Column(nullable = true, columnDefinition = "text")
+    private String description;
+
     @ManyToMany
     private Set<ServiceClass> services;
 
-    @OneToMany(mappedBy = "roleClass")
+    @OneToMany(mappedBy = "role")
     private Set<UserChannelRole> userChannelRole;
 }
