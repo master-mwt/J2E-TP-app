@@ -18,5 +18,4 @@ public class UserChannelRoleFKs implements Serializable {
 
     @Column(name = "role_id")
     private Long roleId;
-
 }

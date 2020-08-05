@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 // TODO: Check if this relation is correct (User-Role-Channel)
-// TODO: JoinColumn is redundant ?
 @Data
 @Entity
 @Table(name = "users_channels_roles")
@@ -19,18 +18,15 @@ public class UserChannelRole implements Serializable {
     @Embedded
     private UserChannelRoleFKs userChannelRoleFKs;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @MapsId("user_id")
-    //@JoinColumn("user_id")
     private UserClass user;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @MapsId("role_id")
-    //@JoinColumn("role_id")
     private RoleClass role;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @MapsId("channel_id")
-    //@JoinColumn("channel_id")
     private ChannelClass channel;
 }

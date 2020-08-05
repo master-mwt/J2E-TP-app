@@ -21,19 +21,19 @@ public class ChannelClass implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = true)
+    @Column()
     private String title;
 
-    @Column(nullable = true, columnDefinition = "text")
+    @Column(columnDefinition = "text")
     private String description;
 
-    @Column(nullable = true, columnDefinition = "text")
+    @Column(columnDefinition = "text")
     private String rules;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.REMOVE)
     private ImageClass image;
 
-    @OneToOne()
+    @OneToOne(optional = false)
     private UserClass creator;
 
     @CreationTimestamp
@@ -46,7 +46,12 @@ public class ChannelClass implements Serializable {
     //@Column(name = "updated_at", nullable = false, columnDefinition = "timestamp")
     //private Date updatedAt = new Date();
 
-    @OneToMany(mappedBy = "channel")
-    private Set<UserChannelRole> userChannelRole;
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
+    private Set<UserChannelRole> userChannelRoles;
 
+    @ManyToMany
+    private Set<UserClass> softBannedUsers;
+
+    @ManyToMany
+    private Set<UserClass> reportedUsers;
 }

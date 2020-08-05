@@ -1,4 +1,3 @@
-# TODO: Activate MongoDB and check flags, modify project name
 server:
   servlet:
     context-path: /j2etpapp
@@ -22,11 +21,11 @@ spring:
         #format_sql: false
         show_sql: true
   # MONGO
-#  data:
-#    mongodb:
-#      authentication-database: admin
-#      username: j2etp
-#      password: j2etp
-#      database: j2etpapp
-#      port: 27017
-#      host: localhost
+  data:
+    mongodb:
+      authentication-database: admin
+      username: j2etp
+      password: j2etp
+      database: j2etpapp
+      port: 27017
+      host: localhost

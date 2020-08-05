@@ -1,10 +1,11 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 // TODO: Validation in all domain classes
@@ -35,17 +36,17 @@ public class UserClass implements Serializable {
     @Column(nullable = false, columnDefinition = "int default 0")
     private int hard_ban;
 
-    //@ManyToOne
-    //private Group group;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "timestamp default current_timestamp")
+    private Date createdAt;
 
-    // This is on MongoDB
-    //@OneToMany(mappedBy = "user")
-    //private Set<Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Set<UserChannelRole> userChannelRoles;
 
-    //@ManyToMany
-    //private Set<Channel> channels;
+    @ManyToMany(mappedBy = "softBannedUsers")
+    private Set<ChannelClass> softBannedIn;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserChannelRole> userChannelRole;
-
+    @ManyToMany(mappedBy = "reportedUsers")
+    private Set<ChannelClass> reportedIn;
 }

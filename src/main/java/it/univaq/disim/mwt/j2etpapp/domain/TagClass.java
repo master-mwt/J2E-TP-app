@@ -1,4 +1,3 @@
-/*
 package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Data;
@@ -8,10 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 import java.io.Serializable;
 
-// TODO: Tag is a mongoDB entity !
 @Data
 @Document(collection = "tags")
-public class Tag implements Serializable {
+public class TagClass implements Serializable {
 
     @Id
     private String id;
@@ -19,6 +17,4 @@ public class Tag implements Serializable {
 
     @Version
     private Long version;
-    
 }
-*/

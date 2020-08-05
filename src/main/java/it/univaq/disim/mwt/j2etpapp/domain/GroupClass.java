@@ -18,13 +18,9 @@ public class GroupClass implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = true, columnDefinition = "text")
+    @Column(columnDefinition = "text")
     private String description;
-    
-    //@OneToMany(mappedBy = "group")
-    //private Set<User> users;
 
     @ManyToMany
     private Set<ServiceClass> services;
-
 }

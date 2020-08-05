@@ -18,13 +18,12 @@ public class ServiceClass implements Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = true, columnDefinition = "text")
+    @Column(columnDefinition = "text")
     private String description;
 
     @ManyToMany(mappedBy = "services")
-    private Set<GroupClass> groupClasses;
+    private Set<GroupClass> groups;
 
     @ManyToMany(mappedBy = "services")
-    private Set<RoleClass> roleClasses;
-
+    private Set<RoleClass> roles;
 }
