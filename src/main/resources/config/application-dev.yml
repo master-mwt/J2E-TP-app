@@ -1,7 +1,6 @@
-# TODO: mysql user and password (in application-dev and application-prod)
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/j2etpapp?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: inserire_password
+    username: j2etp
+    password: j2etp
     driver-class-name: com.mysql.cj.jdbc.Driver
