@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ServiceRepository extends CrudRepository<ServiceClass, Long> {
+    ServiceClass findByName(String name);
 }

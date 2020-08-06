@@ -49,4 +49,7 @@ public class UserClass implements Serializable {
 
     @ManyToMany(mappedBy = "reportedUsers")
     private Set<ChannelClass> reportedIn;
+
+    @ManyToOne(optional = false)
+    private GroupClass group;
 }
