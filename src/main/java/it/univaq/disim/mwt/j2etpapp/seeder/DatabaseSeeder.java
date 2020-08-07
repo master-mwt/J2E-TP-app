@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 // TODO: Replace println with log
-// TODO: UserChannelRole seeding and other tables
+// TODO: UserChannelRole non-creators seeding and other tables
 @Component
 @Transactional
 public class DatabaseSeeder {
@@ -33,6 +33,8 @@ public class DatabaseSeeder {
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
+    private UserChannelRoleRepository userChannelRoleRepository;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private PostRepository postRepository;
@@ -41,8 +43,10 @@ public class DatabaseSeeder {
     @Autowired
     private TagRepository tagRepository;
 
+
     @EventListener
     public void seeder(ContextRefreshedEvent event){
+        // TODO: control only on service table (maybe is better doing it for all tables in OR ?)
         if(!serviceRepository.findAll().iterator().hasNext()){
             System.out.println("Empty database detected");
             seed();
@@ -50,6 +54,7 @@ public class DatabaseSeeder {
             System.out.println("Database already seeded, skipping...");
         }
     }
+
 
     private void seed(){
         System.out.println("Seeding...");
@@ -59,6 +64,9 @@ public class DatabaseSeeder {
 
         seedUser(15L);
         seedChannel(15L);
+
+        // TODO: non-creators seeding
+        seedUserChannelRole();
 
         seedTag(10L);
         seedPost(8L);
@@ -173,19 +181,27 @@ public class DatabaseSeeder {
             UserClass creator = randomElement(userRepository.findAll());
             channel.setCreator(creator);
 
-            /* TRIGGERS EXCEPTION !! Maybe solution is seeding in separate function
-
-            Set<UserChannelRole> userChannelRoles = new HashSet<>();
-            UserChannelRole userChannelRole = new UserChannelRole();
-
-            userChannelRole.setChannel(channel);
-            userChannelRole.setRole(roleRepository.findByName("creator"));
-            userChannelRole.setUser(creator);
-
-            userChannelRoles.add(userChannelRole);
-            channel.setUserChannelRoles(userChannelRoles);*/
-
             channelRepository.save(channel);
+        }
+    }
+
+    private void seedUserChannelRole(){
+        RoleClass creator = roleRepository.findByName("creator");
+        for(ChannelClass channel : channelRepository.findAll()){
+
+            UserChannelRole userChannelRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+
+            userChannelRoleFKs.setChannelId(channel.getId());
+            userChannelRoleFKs.setRoleId(creator.getId());
+            userChannelRoleFKs.setUserId(channel.getCreator().getId());
+
+            userChannelRole.setUserChannelRoleFKs(userChannelRoleFKs);
+            userChannelRole.setChannel(channel);
+            userChannelRole.setRole(creator);
+            userChannelRole.setUser(channel.getCreator());
+
+            userChannelRoleRepository.save(userChannelRole);
         }
     }
 
