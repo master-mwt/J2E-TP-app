@@ -33,7 +33,7 @@ public class ChannelClass implements Serializable {
     @OneToOne(cascade = CascadeType.REMOVE)
     private ImageClass image;
 
-    @OneToOne(optional = false)
+    @OneToOne
     private UserClass creator;
 
     @CreationTimestamp

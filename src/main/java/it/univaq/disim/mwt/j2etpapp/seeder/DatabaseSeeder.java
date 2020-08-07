@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 // TODO: Replace println with log
-// TODO: !!Debugging (ERROR: LazyInitializationException - could not initialize proxy - no Session), uncomment EventListener annotation for triggering
+// TODO: UserChannelRole seeding and other tables
 @Component
+@Transactional
 public class DatabaseSeeder {
 
     // Faker
@@ -39,9 +41,17 @@ public class DatabaseSeeder {
     @Autowired
     private TagRepository tagRepository;
 
+    @EventListener
+    public void seeder(ContextRefreshedEvent event){
+        if(!serviceRepository.findAll().iterator().hasNext()){
+            System.out.println("Empty database detected");
+            seed();
+        } else {
+            System.out.println("Database already seeded, skipping...");
+        }
+    }
 
-    //@EventListener
-    public void seed(ContextRefreshedEvent event){
+    private void seed(){
         System.out.println("Seeding...");
         seedService();
         seedGroup();
@@ -163,6 +173,8 @@ public class DatabaseSeeder {
             UserClass creator = randomElement(userRepository.findAll());
             channel.setCreator(creator);
 
+            /* TRIGGERS EXCEPTION !! Maybe solution is seeding in separate function
+
             Set<UserChannelRole> userChannelRoles = new HashSet<>();
             UserChannelRole userChannelRole = new UserChannelRole();
 
@@ -171,7 +183,7 @@ public class DatabaseSeeder {
             userChannelRole.setUser(creator);
 
             userChannelRoles.add(userChannelRole);
-            channel.setUserChannelRoles(userChannelRoles);
+            channel.setUserChannelRoles(userChannelRoles);*/
 
             channelRepository.save(channel);
         }
@@ -251,11 +263,17 @@ public class DatabaseSeeder {
 
             PostClass post = randomElement(postRepository.findAll());
             Set<ReplyClass> replies = post.getReplies();
+
+            if(replies == null || replies.isEmpty()){
+                replies = new HashSet<>();
+            }
+
             replies.add(reply);
+            post.setReplies(replies);
             reply.setPost(post);
-            postRepository.save(post);
 
             replyRepository.save(reply);
+            postRepository.save(post);
         }
     }
 
