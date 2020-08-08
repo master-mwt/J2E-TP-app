@@ -7,15 +7,22 @@ import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 
-// TODO: Replace println with log
-// TODO: UserChannelRole non-creators seeding and other tables
+// TODO: Replace println and printStackTrace with log
+// TODO: Roles, Services, Groups rules
 @Component
 @Transactional
 public class DatabaseSeeder {
@@ -28,6 +35,8 @@ public class DatabaseSeeder {
     private ChannelRepository channelRepository;
     @Autowired
     private GroupRepository groupRepository;
+    @Autowired
+    private ImageRepository imageRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -43,39 +52,59 @@ public class DatabaseSeeder {
     @Autowired
     private TagRepository tagRepository;
 
+    @Qualifier("webApplicationContext")
+    @Autowired
+    private ResourceLoader resourceLoader;
+
 
     @EventListener
-    public void seeder(ContextRefreshedEvent event){
-        // TODO: control only on service table (maybe is better doing it for all tables in OR ?)
-        if(!serviceRepository.findAll().iterator().hasNext()){
+    public void seed(ContextRefreshedEvent event){
+        if( !channelRepository.findAll().iterator().hasNext() &&
+            !groupRepository.findAll().iterator().hasNext() &&
+            !imageRepository.findAll().iterator().hasNext() &&
+            !roleRepository.findAll().iterator().hasNext() &&
+            !serviceRepository.findAll().iterator().hasNext() &&
+            !userChannelRoleRepository.findAll().iterator().hasNext() &&
+            !userRepository.findAll().iterator().hasNext() &&
+            !postRepository.findAll().iterator().hasNext() &&
+            !replyRepository.findAll().iterator().hasNext() &&
+            !tagRepository.findAll().iterator().hasNext()
+        ){
             System.out.println("Empty database detected");
-            seed();
+            doSeed();
         } else {
             System.out.println("Database already seeded, skipping...");
         }
     }
 
 
-    private void seed(){
+    private void doSeed(){
         System.out.println("Seeding...");
-        seedService();
-        seedGroup();
-        seedRole();
+        // static tables
+        seedServices();
+        seedGroups();
+        seedRoles();
+        seedImages();
 
-        seedUser(15L);
-        seedChannel(15L);
+        // dynamic tables
+        seedUsers(15L);
+        seedChannels(15L);
 
-        // TODO: non-creators seeding
-        seedUserChannelRole();
+        // relations
+        seedUserChannelRoleCreators();
+        seedUserChannelRoleNonCreators(5L);
+        seedReportedUsers(2L);
+        seedSoftBannedUsers(2L);
 
-        seedTag(10L);
-        seedPost(8L);
-        seedReply(5L);
+        // mongodb collections
+        seedTags(10L);
+        seedPosts(8L);
+        seedReplies(5L);
         System.out.println("End seeding.");
     }
 
     // seeders
-    private void seedService() {
+    private void seedServices() {
         ArrayList<ServiceClass> list = new ArrayList<>();
 
         ServiceClass create_post = new ServiceClass();
@@ -88,7 +117,7 @@ public class DatabaseSeeder {
         serviceRepository.saveAll(list);
     }
 
-    private void seedGroup() {
+    private void seedGroups() {
         ArrayList<GroupClass> list = new ArrayList<>();
 
         GroupClass administrator = new GroupClass();
@@ -112,7 +141,7 @@ public class DatabaseSeeder {
         groupRepository.saveAll(list);
     }
 
-    private void seedRole() {
+    private void seedRoles() {
         ArrayList<RoleClass> list = new ArrayList<>();
 
         Set<ServiceClass> creatorServices = new HashSet<>();
@@ -155,14 +184,35 @@ public class DatabaseSeeder {
         roleRepository.saveAll(list);
     }
 
-    private void seedUser(Long iter){
+    private void seedImages(){
+        try {
+            Resource[] resources = loadResources("classpath*:templates/images/*.*");
+            BufferedImage img = null;
+
+            for(Resource res : resources){
+                ImageClass image = new ImageClass();
+                image.setLocation("templates/images/" + res.getFilename());
+
+                img = ImageIO.read(res.getURL());
+                image.setSize(img.getWidth() + "x" + img.getHeight());
+                image.setType((getExtension(res.getFilename()) != null) ? "image/" + getExtension(res.getFilename()) : "");
+                image.setCaption(res.getFilename());
+
+                imageRepository.save(image);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void seedUsers(Long iter){
         for(long i = 0; i < iter; i++){
             UserClass user = new UserClass();
             user.setEmail(faker.internet().safeEmailAddress());
             user.setName(faker.name().firstName());
             user.setSurname(faker.name().lastName());
             user.setUsername(faker.name().username());
-            user.setPassword(faker.internet().password());
+            user.setPassword("password");
 
             user.setGroup(groupRepository.findByName("logged"));
 
@@ -170,22 +220,24 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedChannel(Long iter){
+    private void seedChannels(Long iter){
         for(long i = 0; i < iter; i++){
             ChannelClass channel = new ChannelClass();
-            channel.setName(faker.bothify("?????######ChannelName"));
+            channel.setName(faker.bothify(faker.lorem().word() + "_#####"));
             channel.setTitle(faker.internet().domainWord());
-            channel.setDescription(faker.chuckNorris().fact());
+            channel.setDescription(faker.lorem().paragraph());
             channel.setRules(faker.lorem().sentence());
 
             UserClass creator = randomElement(userRepository.findAll());
             channel.setCreator(creator);
 
+            channel.setImage(imageRepository.findByCaption("no_channel_img.jpg"));
+
             channelRepository.save(channel);
         }
     }
 
-    private void seedUserChannelRole(){
+    private void seedUserChannelRoleCreators(){
         RoleClass creator = roleRepository.findByName("creator");
         for(ChannelClass channel : channelRepository.findAll()){
 
@@ -205,16 +257,112 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedTag(Long iter){
+    private void seedUserChannelRoleNonCreators(Long iter){
+        RoleClass admin = roleRepository.findByName("admin");
+        RoleClass moderator = roleRepository.findByName("moderator");
+        RoleClass member = roleRepository.findByName("member");
+        ArrayList<RoleClass> roles = new ArrayList<>();
+        roles.add(admin);
+        roles.add(moderator);
+        roles.add(member);
+
+        for(long i = 0; i < iter; i++){
+            ChannelClass channel = randomElement(channelRepository.findAll());
+            List<UserChannelRole> userChannelRoles = userChannelRoleRepository.findUserChannelRolesByChannelId(channel.getId());
+            RoleClass role = randomElement(roles);
+
+            for(UserClass user : shuffle(userRepository.findAll())){
+                boolean addable = true;
+                for(UserChannelRole userChannelRole : userChannelRoles){
+                    if(userChannelRole.getUserChannelRoleFKs().getUserId().equals(user.getId())){
+                        addable = false;
+                        break;
+                    }
+                }
+                if(addable){
+                    UserChannelRole userChannelRole = new UserChannelRole();
+                    UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+
+                    userChannelRoleFKs.setChannelId(channel.getId());
+                    userChannelRoleFKs.setRoleId(role.getId());
+                    userChannelRoleFKs.setUserId(user.getId());
+
+                    userChannelRole.setUserChannelRoleFKs(userChannelRoleFKs);
+                    userChannelRole.setChannel(channel);
+                    userChannelRole.setRole(role);
+                    userChannelRole.setUser(user);
+
+                    userChannelRoleRepository.save(userChannelRole);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void seedReportedUsers(Long nUsers){
+        List<UserClass> users = pickRandomElements(userRepository.findAll(), nUsers);
+        long inserted = 0;
+        for(UserClass user : users){
+            for(ChannelClass channel : channelRepository.findAll()){
+                if(channel.getCreator().getId().equals(user.getId())){
+                    continue;
+                }
+                Set<UserClass> reportedUsers = null;
+                if(channel.getReportedUsers() != null){
+                    reportedUsers = channel.getReportedUsers();
+                } else {
+                    reportedUsers = new HashSet<>();
+                }
+
+                reportedUsers.add(user);
+                channel.setReportedUsers(reportedUsers);
+
+                channelRepository.save(channel);
+                inserted++;
+                if(inserted >= nUsers){
+                    return;
+                }
+            }
+        }
+    }
+
+    private void seedSoftBannedUsers(Long nUsers){
+        List<UserClass> users = pickRandomElements(userRepository.findAll(), nUsers);
+        long inserted = 0;
+        for(UserClass user : users){
+            for(ChannelClass channel : channelRepository.findAll()){
+                if(channel.getCreator().getId().equals(user.getId())){
+                    continue;
+                }
+                Set<UserClass> softBannedUsers = null;
+                if(channel.getSoftBannedUsers() != null){
+                    softBannedUsers = channel.getSoftBannedUsers();
+                } else {
+                    softBannedUsers = new HashSet<>();
+                }
+
+                softBannedUsers.add(user);
+                channel.setSoftBannedUsers(softBannedUsers);
+
+                channelRepository.save(channel);
+                inserted++;
+                if(inserted >= nUsers){
+                    return;
+                }
+            }
+        }
+    }
+
+    private void seedTags(Long iter){
         for(long i = 0; i < iter; i++){
             TagClass tag = new TagClass();
-            tag.setName(faker.bothify("???###Tag"));
+            tag.setName(faker.bothify(faker.lorem().word() + "_#####"));
 
             tagRepository.save(tag);
         }
     }
 
-    private void seedPost(Long iter){
+    private void seedPosts(Long iter){
         for(long i = 0; i < iter; i++){
             PostClass post = new PostClass();
             post.setTitle(faker.lorem().word());
@@ -251,7 +399,7 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedReply(Long iter){
+    private void seedReplies(Long iter){
         for(long i = 0; i < iter; i++){
             ReplyClass reply = new ReplyClass();
 
@@ -293,6 +441,7 @@ public class DatabaseSeeder {
         }
     }
 
+
     private <T> T randomElement(Iterable<T> list){
         Random random = new Random();
         return ((List<T>) list).get(random.nextInt(((List<T>) list).size()));
@@ -305,5 +454,28 @@ public class DatabaseSeeder {
         }
         Collections.shuffle(resultList);
         return resultList.subList(0, nElements.intValue());
+    }
+
+    private <T> List<T> shuffle(Iterable<T> list){
+        ArrayList<T> resultList = new ArrayList<T>();
+        for (T element : list){
+            resultList.add(element);
+        }
+        Collections.shuffle(resultList);
+        return resultList;
+    }
+
+    private Resource[] loadResources(String pattern) throws IOException {
+        return ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(pattern);
+    }
+
+    private String getExtension(String filename){
+        String extension = null;
+        int i = filename.lastIndexOf('.');
+        if(i > 0){
+            extension = filename.substring(i+1);
+        }
+
+        return extension;
     }
 }
