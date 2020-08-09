@@ -52,4 +52,7 @@ public class UserClass implements Serializable {
 
     @ManyToOne(optional = false)
     private GroupClass group;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private ImageClass image;
 }

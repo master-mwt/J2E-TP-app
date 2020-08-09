@@ -87,12 +87,12 @@ public class DatabaseSeeder {
         seedImages();
 
         // dynamic tables
-        seedUsers(15L);
+        seedUsers(20L);
         seedChannels(15L);
 
         // relations
         seedUserChannelRoleCreators();
-        seedUserChannelRoleNonCreators(5L);
+        seedUserChannelRoleNonCreators(8L);
         seedReportedUsers(2L);
         seedSoftBannedUsers(2L);
 
@@ -215,6 +215,8 @@ public class DatabaseSeeder {
             user.setPassword("password");
 
             user.setGroup(groupRepository.findByName("logged"));
+
+            user.setImage(imageRepository.findByCaption("no_profile_img.jpg"));
 
             userRepository.save(user);
         }
@@ -372,6 +374,10 @@ public class DatabaseSeeder {
             post.setUserId(randomElement(userRepository.findAll()).getId());
             post.setChannelId(randomElement(channelRepository.findAll()).getId());
 
+            Set<Long> images = new HashSet<>();
+            images.add(imageRepository.findByCaption("post_default.png").getId());
+            post.setImages(images);
+
             Set<TagClass> tags = new HashSet<>();
             tags.add(randomElement(tagRepository.findAll()));
 
@@ -385,15 +391,38 @@ public class DatabaseSeeder {
             post.setUsersDownvoted(usersDownvotedSet);
 
             Set<Long> usersUpvotedSet = new HashSet<>();
-            for(long k = 0; k < post.getUpvote(); k++){
+            long k = 0;
+            while(k < post.getUpvote()){
                 Long userId = randomElement(userRepository.findAll()).getId();
                 if(usersDownvotedSet.contains(userId)){
                     continue;
                 }
                 usersUpvotedSet.add(userId);
+                k++;
             }
 
             post.setUsersUpvoted(usersUpvotedSet);
+
+            Set<Long> usersHiddenSet = new HashSet<>();
+            for(UserClass user : pickRandomElements(userRepository.findAll(), 2L)){
+                usersHiddenSet.add(user.getId());
+            }
+
+            post.setUsersHidden(usersHiddenSet);
+
+            Set<Long> usersReportedSet = new HashSet<>();
+            for(UserClass user : pickRandomElements(userRepository.findAll(), 2L)){
+                usersReportedSet.add(user.getId());
+            }
+
+            post.setUsersReported(usersReportedSet);
+
+            Set<Long> usersSavedSet = new HashSet<>();
+            for(UserClass user : pickRandomElements(userRepository.findAll(), 2L)){
+                usersSavedSet.add(user.getId());
+            }
+
+            post.setUsersSaved(usersSavedSet);
 
             postRepository.save(post);
         }
@@ -415,12 +444,14 @@ public class DatabaseSeeder {
             reply.setUsersDownvoted(usersDownvotedSet);
 
             Set<Long> usersUpvotedSet = new HashSet<>();
-            for(long k = 0; k < reply.getUpvote(); k++){
+            long k = 0;
+            while(k < reply.getUpvote()){
                 Long userId = randomElement(userRepository.findAll()).getId();
                 if(usersDownvotedSet.contains(userId)){
                     continue;
                 }
                 usersUpvotedSet.add(userId);
+                k++;
             }
 
             reply.setUsersUpvoted(usersUpvotedSet);

@@ -37,6 +37,9 @@ public class PostClass implements Serializable {
     @DBRef
     private Set<ReplyClass> replies;
 
+    @Column(name = "images")
+    private Set<Long> images;
+
     @Column(name = "users_downvoted")
     private Set<Long> usersDownvoted;
 
