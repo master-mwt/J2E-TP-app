@@ -7,8 +7,9 @@ import java.util.List;
 public interface UserBO {
 
     List<UserClass> findAllUsers();
-    void save(UserClass userClass);
     UserClass findUserByID(Long id);
+    UserClass findUserByUsername(String username);
+    void save(UserClass userClass);
     void deleteByID(Long id);
 
 }

@@ -23,7 +23,7 @@ public class GroupController {
 
     @GetMapping("")
     public String index(Model model){
-        List<GroupClass> groupClasses = groupBO.findAllGroups();
+        List<GroupClass> groupClasses = groupBO.findAll();
         model.addAttribute("groups", groupClasses);
         return "/group/index";
     }

@@ -17,8 +17,13 @@ public class ServiceBOImpl implements ServiceBO {
     private ServiceRepository serviceRepository;
 
     @Override
-    public List<ServiceClass> findAllServices() {
+    public List<ServiceClass> findAll() {
         return (List<ServiceClass>) serviceRepository.findAll();
+    }
+
+    @Override
+    public ServiceClass findByName(String name) {
+        return serviceRepository.findByName(name).orElse(null);
     }
 
     @Override

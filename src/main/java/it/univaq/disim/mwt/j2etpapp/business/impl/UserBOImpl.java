@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,15 +22,18 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void save(UserClass userClass) {
-        userRepository.save(userClass);
+    public UserClass findUserByID(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public UserClass findUserByID(Long id) {
-        Optional<UserClass> result = userRepository.findById(id);
+    public UserClass findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
 
-        return result.orElse(null);
+    @Override
+    public void save(UserClass userClass) {
+        userRepository.save(userClass);
     }
 
     @Override

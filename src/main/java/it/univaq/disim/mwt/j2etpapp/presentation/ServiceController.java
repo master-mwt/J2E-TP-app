@@ -23,7 +23,7 @@ public class ServiceController {
 
     @GetMapping("")
     public String index(Model model){
-        List<ServiceClass> services = serviceBO.findAllServices();
+        List<ServiceClass> services = serviceBO.findAll();
         model.addAttribute("services", services);
         return "/service/index";
     }

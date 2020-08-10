@@ -4,7 +4,9 @@ import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ImageRepository extends CrudRepository<ImageClass, Long> {
-    ImageClass findByCaption(String caption);
+    Optional<ImageClass> findByCaption(String caption);
 }

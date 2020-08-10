@@ -1,6 +1,8 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -9,7 +11,9 @@ import java.util.Date;
 import java.util.Set;
 
 // TODO: Validation in all domain classes
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "users")
 public class UserClass implements Serializable {
@@ -33,8 +37,8 @@ public class UserClass implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int hard_ban;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean hard_ban;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

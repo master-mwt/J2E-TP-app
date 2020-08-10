@@ -1,12 +1,16 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "groupst")
 public class GroupClass implements Serializable {
@@ -21,6 +25,6 @@ public class GroupClass implements Serializable {
     @Column(columnDefinition = "text")
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<ServiceClass> services;
 }

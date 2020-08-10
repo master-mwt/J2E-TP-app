@@ -1,13 +1,17 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 import javax.persistence.Version;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Document(collection = "tags")
 public class TagClass implements Serializable {
 

@@ -17,8 +17,13 @@ public class GroupBOImpl implements GroupBO {
     private GroupRepository groupRepository;
 
     @Override
-    public List<GroupClass> findAllGroups() {
+    public List<GroupClass> findAll() {
         return (List<GroupClass>) groupRepository.findAll();
+    }
+
+    @Override
+    public GroupClass findByName(String name) {
+        return groupRepository.findByName(name).orElse(null);
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class DatabaseSeeder {
 
     // Faker
     private Faker faker = new Faker();
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // Repositories
     @Autowired
@@ -100,6 +102,9 @@ public class DatabaseSeeder {
         seedTags(10L);
         seedPosts(8L);
         seedReplies(5L);
+
+        // generate admins
+        seedAdmins();
         System.out.println("End seeding.");
     }
 
@@ -132,8 +137,8 @@ public class DatabaseSeeder {
         administrator.setServices(administratorServices);
 
         Set<ServiceClass> loggedServices = new HashSet<>();
-        loggedServices.add(serviceRepository.findByName("create_post"));
-        loggedServices.add(serviceRepository.findByName("create_channel"));
+        loggedServices.add(serviceRepository.findByName("create_post").get());
+        loggedServices.add(serviceRepository.findByName("create_channel").get());
         logged.setServices(loggedServices);
 
         list.add(administrator);
@@ -145,20 +150,20 @@ public class DatabaseSeeder {
         ArrayList<RoleClass> list = new ArrayList<>();
 
         Set<ServiceClass> creatorServices = new HashSet<>();
-        creatorServices.add(serviceRepository.findByName("create_post"));
-        creatorServices.add(serviceRepository.findByName("create_channel"));
+        creatorServices.add(serviceRepository.findByName("create_post").get());
+        creatorServices.add(serviceRepository.findByName("create_channel").get());
 
         Set<ServiceClass> adminServices = new HashSet<>();
-        adminServices.add(serviceRepository.findByName("create_post"));
-        adminServices.add(serviceRepository.findByName("create_channel"));
+        adminServices.add(serviceRepository.findByName("create_post").get());
+        adminServices.add(serviceRepository.findByName("create_channel").get());
 
         Set<ServiceClass> moderatorServices = new HashSet<>();
-        moderatorServices.add(serviceRepository.findByName("create_post"));
-        moderatorServices.add(serviceRepository.findByName("create_channel"));
+        moderatorServices.add(serviceRepository.findByName("create_post").get());
+        moderatorServices.add(serviceRepository.findByName("create_channel").get());
 
         Set<ServiceClass> memberServices = new HashSet<>();
-        memberServices.add(serviceRepository.findByName("create_post"));
-        memberServices.add(serviceRepository.findByName("create_channel"));
+        memberServices.add(serviceRepository.findByName("create_post").get());
+        memberServices.add(serviceRepository.findByName("create_channel").get());
 
         RoleClass creator = new RoleClass();
         creator.setName("creator");
@@ -186,12 +191,12 @@ public class DatabaseSeeder {
 
     private void seedImages(){
         try {
-            Resource[] resources = loadResources("classpath*:templates/images/*.*");
+            Resource[] resources = loadResources("classpath*:static/images/*.*");
             BufferedImage img = null;
 
             for(Resource res : resources){
                 ImageClass image = new ImageClass();
-                image.setLocation("templates/images/" + res.getFilename());
+                image.setLocation("static/images/" + res.getFilename());
 
                 img = ImageIO.read(res.getURL());
                 image.setSize(img.getWidth() + "x" + img.getHeight());
@@ -212,11 +217,12 @@ public class DatabaseSeeder {
             user.setName(faker.name().firstName());
             user.setSurname(faker.name().lastName());
             user.setUsername(faker.name().username());
-            user.setPassword("password");
 
-            user.setGroup(groupRepository.findByName("logged"));
+            user.setPassword(passwordEncoder.encode("password"));
 
-            user.setImage(imageRepository.findByCaption("no_profile_img.jpg"));
+            user.setGroup(groupRepository.findByName("logged").get());
+
+            user.setImage(imageRepository.findByCaption("no_profile_img.jpg").get());
 
             userRepository.save(user);
         }
@@ -233,14 +239,14 @@ public class DatabaseSeeder {
             UserClass creator = randomElement(userRepository.findAll());
             channel.setCreator(creator);
 
-            channel.setImage(imageRepository.findByCaption("no_channel_img.jpg"));
+            channel.setImage(imageRepository.findByCaption("no_channel_img.jpg").get());
 
             channelRepository.save(channel);
         }
     }
 
     private void seedUserChannelRoleCreators(){
-        RoleClass creator = roleRepository.findByName("creator");
+        RoleClass creator = roleRepository.findByName("creator").get();
         for(ChannelClass channel : channelRepository.findAll()){
 
             UserChannelRole userChannelRole = new UserChannelRole();
@@ -260,9 +266,9 @@ public class DatabaseSeeder {
     }
 
     private void seedUserChannelRoleNonCreators(Long iter){
-        RoleClass admin = roleRepository.findByName("admin");
-        RoleClass moderator = roleRepository.findByName("moderator");
-        RoleClass member = roleRepository.findByName("member");
+        RoleClass admin = roleRepository.findByName("admin").get();
+        RoleClass moderator = roleRepository.findByName("moderator").get();
+        RoleClass member = roleRepository.findByName("member").get();
         ArrayList<RoleClass> roles = new ArrayList<>();
         roles.add(admin);
         roles.add(moderator);
@@ -270,7 +276,7 @@ public class DatabaseSeeder {
 
         for(long i = 0; i < iter; i++){
             ChannelClass channel = randomElement(channelRepository.findAll());
-            List<UserChannelRole> userChannelRoles = userChannelRoleRepository.findUserChannelRolesByChannelId(channel.getId());
+            List<UserChannelRole> userChannelRoles = userChannelRoleRepository.findUserChannelRolesByChannelId(channel.getId()).get();
             RoleClass role = randomElement(roles);
 
             for(UserClass user : shuffle(userRepository.findAll())){
@@ -375,7 +381,7 @@ public class DatabaseSeeder {
             post.setChannelId(randomElement(channelRepository.findAll()).getId());
 
             Set<Long> images = new HashSet<>();
-            images.add(imageRepository.findByCaption("post_default.png").getId());
+            images.add(imageRepository.findByCaption("post_default.png").get().getId());
             post.setImages(images);
 
             Set<TagClass> tags = new HashSet<>();
@@ -470,6 +476,22 @@ public class DatabaseSeeder {
             replyRepository.save(reply);
             postRepository.save(post);
         }
+    }
+
+    private void seedAdmins(){
+        UserClass user = new UserClass();
+        user.setEmail("a@a.it");
+        user.setName("a");
+        user.setSurname("a");
+        user.setUsername("a.admin");
+
+        user.setPassword(passwordEncoder.encode("password"));
+
+        user.setGroup(groupRepository.findByName("administrator").get());
+
+        user.setImage(imageRepository.findByCaption("no_profile_img.jpg").get());
+
+        userRepository.save(user);
     }
 
 

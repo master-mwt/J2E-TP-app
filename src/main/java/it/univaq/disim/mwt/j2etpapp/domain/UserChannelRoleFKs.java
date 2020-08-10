@@ -1,12 +1,16 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Embeddable
 public class UserChannelRoleFKs implements Serializable {
 

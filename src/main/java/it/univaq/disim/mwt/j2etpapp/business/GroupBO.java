@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface GroupBO {
 
-    List<GroupClass> findAllGroups();
-    void save(GroupClass groupClass);
+    List<GroupClass> findAll();
+    GroupClass findByName(String name);
+    void save(GroupClass group);
 
 }

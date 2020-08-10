@@ -1,6 +1,8 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,7 +14,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Document(collection = "replies")
 public class ReplyClass implements Serializable {
 

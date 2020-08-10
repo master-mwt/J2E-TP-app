@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ServiceBO {
 
-    List<ServiceClass> findAllServices();
+    List<ServiceClass> findAll();
+    ServiceClass findByName(String name);
     void save(ServiceClass service);
 
 }
