@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -29,5 +30,30 @@ public class ServiceBOImpl implements ServiceBO {
     @Override
     public void save(ServiceClass service) {
         serviceRepository.save(service);
+    }
+
+    @Override
+    public void saveAll(List<ServiceClass> services) {
+        serviceRepository.saveAll(services);
+    }
+
+    @Override
+    public void saveAll(ServiceClass... services) {
+        serviceRepository.saveAll(Arrays.asList(services));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        serviceRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(ServiceClass service) {
+        serviceRepository.delete(service);
+    }
+
+    @Override
+    public Long count() {
+        return serviceRepository.count();
     }
 }

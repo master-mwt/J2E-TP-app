@@ -24,6 +24,7 @@ import java.util.*;
 
 // TODO: Replace println and printStackTrace with log
 // TODO: Roles, Services, Groups rules
+// TODO: from autowired repositories to business classes (better method)
 @Component
 @Transactional
 public class DatabaseSeeder {

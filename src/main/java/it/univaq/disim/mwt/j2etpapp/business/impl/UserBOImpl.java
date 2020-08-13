@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -17,27 +18,47 @@ public class UserBOImpl implements UserBO {
     private UserRepository userRepository;
 
     @Override
-    public List<UserClass> findAllUsers() {
+    public List<UserClass> findAll() {
         return (List<UserClass>) userRepository.findAll();
     }
 
     @Override
-    public UserClass findUserByID(Long id) {
+    public UserClass findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public UserClass findUserByUsername(String username) {
+    public UserClass findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
     @Override
-    public void save(UserClass userClass) {
-        userRepository.save(userClass);
+    public void save(UserClass user) {
+        userRepository.save(user);
     }
 
     @Override
-    public void deleteByID(Long id) {
+    public void saveAll(List<UserClass> users) {
+        userRepository.saveAll(users);
+    }
+
+    @Override
+    public void saveAll(UserClass... users) {
+        userRepository.saveAll(Arrays.asList(users));
+    }
+
+    @Override
+    public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(UserClass user) {
+        userRepository.delete(user);
+    }
+
+    @Override
+    public Long count() {
+        return userRepository.count();
     }
 }

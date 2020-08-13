@@ -5,5 +5,14 @@ import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import java.util.List;
 
 public interface UserChannelRoleBO {
-    List<UserChannelRole> findUserChannelRolesByChannelId(Long channel_id);
+
+    List<UserChannelRole> findAll();
+    List<UserChannelRole> findByChannelId(Long channelId);
+    void save(UserChannelRole userChannelRole);
+    void saveAll(List<UserChannelRole> userChannelRoles);
+    void saveAll(UserChannelRole... userChannelRoles);
+    void deleteById(Long id);
+    void delete(UserChannelRole userChannelRole);
+    Long count();
+
 }

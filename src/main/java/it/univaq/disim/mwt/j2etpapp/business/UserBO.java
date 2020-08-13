@@ -3,13 +3,17 @@ package it.univaq.disim.mwt.j2etpapp.business;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
-// TODO: List to Set
+
 public interface UserBO {
 
-    List<UserClass> findAllUsers();
-    UserClass findUserByID(Long id);
-    UserClass findUserByUsername(String username);
-    void save(UserClass userClass);
-    void deleteByID(Long id);
+    List<UserClass> findAll();
+    UserClass findById(Long id);
+    UserClass findByUsername(String username);
+    void save(UserClass user);
+    void saveAll(List<UserClass> users);
+    void saveAll(UserClass... users);
+    void deleteById(Long id);
+    void delete(UserClass user);
+    Long count();
 
 }

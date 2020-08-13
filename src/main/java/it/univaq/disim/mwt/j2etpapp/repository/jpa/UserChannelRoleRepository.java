@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserChannelRoleRepository extends CrudRepository<UserChannelRole, Long> {
-    Optional<List<UserChannelRole>> findUserChannelRolesByChannelId(Long channel_id);
+    Optional<List<UserChannelRole>> findUserChannelRolesByChannelId(Long channelId);
 }

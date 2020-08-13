@@ -21,7 +21,7 @@ public class UserController {
     // index
     @GetMapping("")
     public String index(Model model){
-        List<UserClass> userClasses = userBO.findAllUsers();
+        List<UserClass> userClasses = userBO.findAll();
         model.addAttribute("users", userClasses);
         return "/user/index";
     }
@@ -45,7 +45,7 @@ public class UserController {
     // show
     @GetMapping("{id}")
     public String show(@PathVariable("id") Long id, Model model){
-        UserClass userClass = userBO.findUserByID(id);
+        UserClass userClass = userBO.findById(id);
         model.addAttribute("user", userClass);
         return "/user/show";
     }
@@ -53,7 +53,7 @@ public class UserController {
     // update
     @GetMapping("{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model){
-        UserClass userClass = userBO.findUserByID(id);
+        UserClass userClass = userBO.findById(id);
         model.addAttribute("user", userClass);
         return "/user/form";
     }
@@ -70,8 +70,8 @@ public class UserController {
     // delete
     @DeleteMapping("{id}")
     public String destroy(@PathVariable("id") Long id, Model model){
-        userBO.deleteByID(id);
-        model.addAttribute("users", userBO.findAllUsers());
+        userBO.deleteById(id);
+        model.addAttribute("users", userBO.findAll());
         return "/user/index";
     }
 

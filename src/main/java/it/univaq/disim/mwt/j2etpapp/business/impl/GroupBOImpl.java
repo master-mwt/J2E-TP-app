@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,7 +28,32 @@ public class GroupBOImpl implements GroupBO {
     }
 
     @Override
-    public void save(GroupClass groupClass) {
-        groupRepository.save(groupClass);
+    public void save(GroupClass group) {
+        groupRepository.save(group);
+    }
+
+    @Override
+    public void saveAll(List<GroupClass> groups) {
+        groupRepository.saveAll(groups);
+    }
+
+    @Override
+    public void saveAll(GroupClass... groups) {
+        groupRepository.saveAll(Arrays.asList(groups));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        groupRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(GroupClass group) {
+        groupRepository.delete(group);
+    }
+
+    @Override
+    public Long count() {
+        return groupRepository.count();
     }
 }
