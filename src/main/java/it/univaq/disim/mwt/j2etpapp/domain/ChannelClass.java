@@ -15,6 +15,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "channels")
+//TODO: fetchtype eager is better to avoid ?
 public class ChannelClass implements Serializable {
 
     @Id
@@ -52,9 +53,9 @@ public class ChannelClass implements Serializable {
     @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
     private Set<UserChannelRole> userChannelRoles;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserClass> softBannedUsers;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserClass> reportedUsers;
 }

@@ -1,11 +1,8 @@
 package it.univaq.disim.mwt.j2etpapp.seeder;
 
 import com.github.javafaker.Faker;
+import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
-import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
-import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
-import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
-import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -15,7 +12,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,36 +20,34 @@ import java.util.*;
 
 // TODO: Replace println and printStackTrace with log
 // TODO: Roles, Services, Groups rules
-// TODO: from autowired repositories to business classes (better method)
 @Component
-@Transactional
 public class DatabaseSeeder {
 
     // Faker
     private Faker faker = new Faker();
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // Repositories
+    // Business classes
     @Autowired
-    private ChannelRepository channelRepository;
+    private ChannelBO channelBO;
     @Autowired
-    private GroupRepository groupRepository;
+    private GroupBO groupBO;
     @Autowired
-    private ImageRepository imageRepository;
+    private ImageBO imageBO;
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleBO roleBO;
     @Autowired
-    private ServiceRepository serviceRepository;
+    private ServiceBO serviceBO;
     @Autowired
-    private UserChannelRoleRepository userChannelRoleRepository;
+    private UserChannelRoleBO userChannelRoleBO;
     @Autowired
-    private UserRepository userRepository;
+    private UserBO userBO;
     @Autowired
-    private PostRepository postRepository;
+    private PostBO postBO;
     @Autowired
-    private ReplyRepository replyRepository;
+    private ReplyBO replyBO;
     @Autowired
-    private TagRepository tagRepository;
+    private TagBO tagBO;
 
     @Qualifier("webApplicationContext")
     @Autowired
@@ -62,16 +56,16 @@ public class DatabaseSeeder {
 
     @EventListener
     public void seed(ContextRefreshedEvent event){
-        if( !channelRepository.findAll().iterator().hasNext() &&
-            !groupRepository.findAll().iterator().hasNext() &&
-            !imageRepository.findAll().iterator().hasNext() &&
-            !roleRepository.findAll().iterator().hasNext() &&
-            !serviceRepository.findAll().iterator().hasNext() &&
-            !userChannelRoleRepository.findAll().iterator().hasNext() &&
-            !userRepository.findAll().iterator().hasNext() &&
-            !postRepository.findAll().iterator().hasNext() &&
-            !replyRepository.findAll().iterator().hasNext() &&
-            !tagRepository.findAll().iterator().hasNext()
+        if( channelBO.count() == 0 &&
+            groupBO.count() == 0 &&
+            imageBO.count() == 0 &&
+            roleBO.count() == 0 &&
+            serviceBO.count() == 0 &&
+            userChannelRoleBO.count() == 0 &&
+            userBO.count() == 0 &&
+            postBO.count() == 0 &&
+            replyBO.count() == 0 &&
+            tagBO.count() == 0
         ){
             System.out.println("Empty database detected");
             doSeed();
@@ -120,7 +114,7 @@ public class DatabaseSeeder {
 
         list.add(create_post);
         list.add(create_channel);
-        serviceRepository.saveAll(list);
+        serviceBO.saveAll(list);
     }
 
     private void seedGroups() {
@@ -131,40 +125,37 @@ public class DatabaseSeeder {
         GroupClass logged = new GroupClass();
         logged.setName("logged");
 
-        Set<ServiceClass> administratorServices = new HashSet<>();
-        for(ServiceClass service : serviceRepository.findAll()){
-            administratorServices.add(service);
-        }
+        Set<ServiceClass> administratorServices = new HashSet<>(serviceBO.findAll());
         administrator.setServices(administratorServices);
 
         Set<ServiceClass> loggedServices = new HashSet<>();
-        loggedServices.add(serviceRepository.findByName("create_post").get());
-        loggedServices.add(serviceRepository.findByName("create_channel").get());
+        loggedServices.add(serviceBO.findByName("create_post"));
+        loggedServices.add(serviceBO.findByName("create_channel"));
         logged.setServices(loggedServices);
 
         list.add(administrator);
         list.add(logged);
-        groupRepository.saveAll(list);
+        groupBO.saveAll(list);
     }
 
     private void seedRoles() {
         ArrayList<RoleClass> list = new ArrayList<>();
 
         Set<ServiceClass> creatorServices = new HashSet<>();
-        creatorServices.add(serviceRepository.findByName("create_post").get());
-        creatorServices.add(serviceRepository.findByName("create_channel").get());
+        creatorServices.add(serviceBO.findByName("create_post"));
+        creatorServices.add(serviceBO.findByName("create_channel"));
 
         Set<ServiceClass> adminServices = new HashSet<>();
-        adminServices.add(serviceRepository.findByName("create_post").get());
-        adminServices.add(serviceRepository.findByName("create_channel").get());
+        adminServices.add(serviceBO.findByName("create_post"));
+        adminServices.add(serviceBO.findByName("create_channel"));
 
         Set<ServiceClass> moderatorServices = new HashSet<>();
-        moderatorServices.add(serviceRepository.findByName("create_post").get());
-        moderatorServices.add(serviceRepository.findByName("create_channel").get());
+        moderatorServices.add(serviceBO.findByName("create_post"));
+        moderatorServices.add(serviceBO.findByName("create_channel"));
 
         Set<ServiceClass> memberServices = new HashSet<>();
-        memberServices.add(serviceRepository.findByName("create_post").get());
-        memberServices.add(serviceRepository.findByName("create_channel").get());
+        memberServices.add(serviceBO.findByName("create_post"));
+        memberServices.add(serviceBO.findByName("create_channel"));
 
         RoleClass creator = new RoleClass();
         creator.setName("creator");
@@ -187,7 +178,7 @@ public class DatabaseSeeder {
         list.add(admin);
         list.add(moderator);
         list.add(member);
-        roleRepository.saveAll(list);
+        roleBO.saveAll(list);
     }
 
     private void seedImages(){
@@ -204,7 +195,7 @@ public class DatabaseSeeder {
                 image.setType((getExtension(res.getFilename()) != null) ? "image/" + getExtension(res.getFilename()) : "");
                 image.setCaption(res.getFilename());
 
-                imageRepository.save(image);
+                imageBO.save(image);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -221,11 +212,11 @@ public class DatabaseSeeder {
 
             user.setPassword(passwordEncoder.encode("password"));
 
-            user.setGroup(groupRepository.findByName("logged").get());
+            user.setGroup(groupBO.findByName("logged"));
 
-            user.setImage(imageRepository.findByCaption("no_profile_img.jpg").get());
+            user.setImage(imageBO.findByCaption("no_profile_img.jpg"));
 
-            userRepository.save(user);
+            userBO.save(user);
         }
     }
 
@@ -237,18 +228,18 @@ public class DatabaseSeeder {
             channel.setDescription(faker.lorem().paragraph());
             channel.setRules(faker.lorem().sentence());
 
-            UserClass creator = randomElement(userRepository.findAll());
+            UserClass creator = randomElement(userBO.findAll());
             channel.setCreator(creator);
 
-            channel.setImage(imageRepository.findByCaption("no_channel_img.jpg").get());
+            channel.setImage(imageBO.findByCaption("no_channel_img.jpg"));
 
-            channelRepository.save(channel);
+            channelBO.save(channel);
         }
     }
 
     private void seedUserChannelRoleCreators(){
-        RoleClass creator = roleRepository.findByName("creator").get();
-        for(ChannelClass channel : channelRepository.findAll()){
+        RoleClass creator = roleBO.findByName("creator");
+        for(ChannelClass channel : channelBO.findAll()){
 
             UserChannelRole userChannelRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -262,25 +253,25 @@ public class DatabaseSeeder {
             userChannelRole.setRole(creator);
             userChannelRole.setUser(channel.getCreator());
 
-            userChannelRoleRepository.save(userChannelRole);
+            userChannelRoleBO.save(userChannelRole);
         }
     }
 
     private void seedUserChannelRoleNonCreators(Long iter){
-        RoleClass admin = roleRepository.findByName("admin").get();
-        RoleClass moderator = roleRepository.findByName("moderator").get();
-        RoleClass member = roleRepository.findByName("member").get();
+        RoleClass admin = roleBO.findByName("admin");
+        RoleClass moderator = roleBO.findByName("moderator");
+        RoleClass member = roleBO.findByName("member");
         ArrayList<RoleClass> roles = new ArrayList<>();
         roles.add(admin);
         roles.add(moderator);
         roles.add(member);
 
         for(long i = 0; i < iter; i++){
-            ChannelClass channel = randomElement(channelRepository.findAll());
-            List<UserChannelRole> userChannelRoles = userChannelRoleRepository.findUserChannelRolesByChannelId(channel.getId()).get();
+            ChannelClass channel = randomElement(channelBO.findAll());
+            List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByChannelId(channel.getId());
             RoleClass role = randomElement(roles);
 
-            for(UserClass user : shuffle(userRepository.findAll())){
+            for(UserClass user : shuffle(userBO.findAll())){
                 boolean addable = true;
                 for(UserChannelRole userChannelRole : userChannelRoles){
                     if(userChannelRole.getUserChannelRoleFKs().getUserId().equals(user.getId())){
@@ -301,7 +292,7 @@ public class DatabaseSeeder {
                     userChannelRole.setRole(role);
                     userChannelRole.setUser(user);
 
-                    userChannelRoleRepository.save(userChannelRole);
+                    userChannelRoleBO.save(userChannelRole);
                     break;
                 }
             }
@@ -309,10 +300,10 @@ public class DatabaseSeeder {
     }
 
     private void seedReportedUsers(Long nUsers){
-        List<UserClass> users = pickRandomElements(userRepository.findAll(), nUsers);
+        List<UserClass> users = pickRandomElements(userBO.findAll(), nUsers);
         long inserted = 0;
         for(UserClass user : users){
-            for(ChannelClass channel : channelRepository.findAll()){
+            for(ChannelClass channel : channelBO.findAll()){
                 if(channel.getCreator().getId().equals(user.getId())){
                     continue;
                 }
@@ -326,7 +317,7 @@ public class DatabaseSeeder {
                 reportedUsers.add(user);
                 channel.setReportedUsers(reportedUsers);
 
-                channelRepository.save(channel);
+                channelBO.save(channel);
                 inserted++;
                 if(inserted >= nUsers){
                     return;
@@ -336,10 +327,10 @@ public class DatabaseSeeder {
     }
 
     private void seedSoftBannedUsers(Long nUsers){
-        List<UserClass> users = pickRandomElements(userRepository.findAll(), nUsers);
+        List<UserClass> users = pickRandomElements(userBO.findAll(), nUsers);
         long inserted = 0;
         for(UserClass user : users){
-            for(ChannelClass channel : channelRepository.findAll()){
+            for(ChannelClass channel : channelBO.findAll()){
                 if(channel.getCreator().getId().equals(user.getId())){
                     continue;
                 }
@@ -353,7 +344,7 @@ public class DatabaseSeeder {
                 softBannedUsers.add(user);
                 channel.setSoftBannedUsers(softBannedUsers);
 
-                channelRepository.save(channel);
+                channelBO.save(channel);
                 inserted++;
                 if(inserted >= nUsers){
                     return;
@@ -367,7 +358,7 @@ public class DatabaseSeeder {
             TagClass tag = new TagClass();
             tag.setName(faker.bothify(faker.lorem().word() + "_#####"));
 
-            tagRepository.save(tag);
+            tagBO.save(tag);
         }
     }
 
@@ -378,20 +369,20 @@ public class DatabaseSeeder {
             post.setContent(faker.lorem().sentence());
             post.setUpvote(faker.random().nextInt(0, 3).longValue());
             post.setDownvote(faker.random().nextInt(0, 3).longValue());
-            post.setUserId(randomElement(userRepository.findAll()).getId());
-            post.setChannelId(randomElement(channelRepository.findAll()).getId());
+            post.setUserId(randomElement(userBO.findAll()).getId());
+            post.setChannelId(randomElement(channelBO.findAll()).getId());
 
             Set<Long> images = new HashSet<>();
-            images.add(imageRepository.findByCaption("post_default.png").get().getId());
+            images.add(imageBO.findByCaption("post_default.png").getId());
             post.setImages(images);
 
             Set<TagClass> tags = new HashSet<>();
-            tags.add(randomElement(tagRepository.findAll()));
+            tags.add(randomElement(tagBO.findAll()));
 
             post.setTags(tags);
 
             Set<Long> usersDownvotedSet = new HashSet<>();
-            for(UserClass user : pickRandomElements(userRepository.findAll(), post.getDownvote())){
+            for(UserClass user : pickRandomElements(userBO.findAll(), post.getDownvote())){
                 usersDownvotedSet.add(user.getId());
             }
 
@@ -400,8 +391,8 @@ public class DatabaseSeeder {
             Set<Long> usersUpvotedSet = new HashSet<>();
             long k = 0;
             while(k < post.getUpvote()){
-                Long userId = randomElement(userRepository.findAll()).getId();
-                if(usersDownvotedSet.contains(userId)){
+                Long userId = randomElement(userBO.findAll()).getId();
+                if(usersDownvotedSet.contains(userId) || usersUpvotedSet.contains(userId)){
                     continue;
                 }
                 usersUpvotedSet.add(userId);
@@ -411,27 +402,27 @@ public class DatabaseSeeder {
             post.setUsersUpvoted(usersUpvotedSet);
 
             Set<Long> usersHiddenSet = new HashSet<>();
-            for(UserClass user : pickRandomElements(userRepository.findAll(), 2L)){
+            for(UserClass user : pickRandomElements(userBO.findAll(), 2L)){
                 usersHiddenSet.add(user.getId());
             }
 
             post.setUsersHidden(usersHiddenSet);
 
             Set<Long> usersReportedSet = new HashSet<>();
-            for(UserClass user : pickRandomElements(userRepository.findAll(), 2L)){
+            for(UserClass user : pickRandomElements(userBO.findAll(), 2L)){
                 usersReportedSet.add(user.getId());
             }
 
             post.setUsersReported(usersReportedSet);
 
             Set<Long> usersSavedSet = new HashSet<>();
-            for(UserClass user : pickRandomElements(userRepository.findAll(), 2L)){
+            for(UserClass user : pickRandomElements(userBO.findAll(), 2L)){
                 usersSavedSet.add(user.getId());
             }
 
             post.setUsersSaved(usersSavedSet);
 
-            postRepository.save(post);
+            postBO.save(post);
         }
     }
 
@@ -444,7 +435,7 @@ public class DatabaseSeeder {
             reply.setDownvote(faker.random().nextInt(0, 3).longValue());
 
             Set<Long> usersDownvotedSet = new HashSet<>();
-            for(UserClass user : pickRandomElements(userRepository.findAll(), reply.getDownvote())){
+            for(UserClass user : pickRandomElements(userBO.findAll(), reply.getDownvote())){
                 usersDownvotedSet.add(user.getId());
             }
 
@@ -453,8 +444,8 @@ public class DatabaseSeeder {
             Set<Long> usersUpvotedSet = new HashSet<>();
             long k = 0;
             while(k < reply.getUpvote()){
-                Long userId = randomElement(userRepository.findAll()).getId();
-                if(usersDownvotedSet.contains(userId)){
+                Long userId = randomElement(userBO.findAll()).getId();
+                if(usersDownvotedSet.contains(userId) || usersUpvotedSet.contains(userId)){
                     continue;
                 }
                 usersUpvotedSet.add(userId);
@@ -463,7 +454,7 @@ public class DatabaseSeeder {
 
             reply.setUsersUpvoted(usersUpvotedSet);
 
-            PostClass post = randomElement(postRepository.findAll());
+            PostClass post = randomElement(postBO.findAll());
             Set<ReplyClass> replies = post.getReplies();
 
             if(replies == null || replies.isEmpty()){
@@ -474,8 +465,8 @@ public class DatabaseSeeder {
             post.setReplies(replies);
             reply.setPost(post);
 
-            replyRepository.save(reply);
-            postRepository.save(post);
+            replyBO.save(reply);
+            postBO.save(post);
         }
     }
 
@@ -488,11 +479,11 @@ public class DatabaseSeeder {
 
         user.setPassword(passwordEncoder.encode("password"));
 
-        user.setGroup(groupRepository.findByName("administrator").get());
+        user.setGroup(groupBO.findByName("administrator"));
 
-        user.setImage(imageRepository.findByCaption("no_profile_img.jpg").get());
+        user.setImage(imageBO.findByCaption("no_profile_img.jpg"));
 
-        userRepository.save(user);
+        userBO.save(user);
     }
 
 

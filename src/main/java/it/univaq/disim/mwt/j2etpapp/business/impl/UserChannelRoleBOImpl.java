@@ -24,7 +24,7 @@ public class UserChannelRoleBOImpl implements UserChannelRoleBO {
 
     @Override
     public List<UserChannelRole> findByChannelId(Long channelId) {
-        return userChannelRoleRepository.findUserChannelRolesByChannelId(channelId).orElse(null);
+        return userChannelRoleRepository.findByChannelId(channelId).orElse(null);
     }
 
     @Override

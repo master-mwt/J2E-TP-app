@@ -15,11 +15,7 @@ import java.io.Serializable;
 @Table(name = "users_channels_roles")
 public class UserChannelRole implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
-    @Embedded
+    @EmbeddedId
     private UserChannelRoleFKs userChannelRoleFKs;
 
     @ManyToOne(optional = false)
