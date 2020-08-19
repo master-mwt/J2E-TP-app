@@ -1,38 +1,35 @@
-<!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      >
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <!-- csrf resolved by spring security -->
     <title>j2etpapp</title>
 
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/static/css/bootstrap.min.css}">
-    <script src="../../static/js/jquery-3.5.1.slim.min.js" th:src="@{/static/js/jquery-3.5.1.slim.min.js}"></script>
-    <script src="../../static/js/popper.min.js" th:src="@{/static/js/popper.min.js}"></script>
-    <script src="../../static/js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+    <link rel="icon" th:href="@{/images/main_logo.png}" type="image/png" />
 
-    <link rel="stylesheet" href="../../static/css/adminlte.min.css" th:href="@{/static/css/adminlte.min.css}">
-    <script src="../../static/js/adminlte.min.js" th:src="@{/static/js/adminlte.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <script th:src="@{/js/jquery-3.5.1.slim.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/adminlte.min.css}" />
+    <script th:src="@{/js/adminlte.min.js}"></script>
     <!-- font -->
     <!-- easymde -->
     <!-- marked -->
   </head>
-<body class="hold-transition sidebar-mini">
-  <!-- wrapper -->
-  <div class="wrapper">
-    <div class="row bg-dark text-ligh rounded">
-      <h1>exskel</h1>
-    </div>
-    <div class="content-wrapper">
-      <div class="container p-4" layout:fragment="content">
-
+  <body class="hold-transition sidebar-mini">
+    <!-- wrapper -->
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <div class="container p-4" layout:fragment="content"></div>
       </div>
     </div>
-  </div>
-  
-</body>
+  </body>
 </html>
