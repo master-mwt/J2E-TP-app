@@ -10,13 +10,13 @@
     <!-- csrf resolved by spring security -->
     <title>j2etpapp</title>
 
-    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
-    <script src="../../static/js/jquery-3.5.1.slim.min.js"></script>
-    <script src="../../static/js/popper.min.js"></script>
-    <script src="../../static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/static/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.5.1.slim.min.js" th:src="@{/static/js/jquery-3.5.1.slim.min.js}"></script>
+    <script src="../../static/js/popper.min.js" th:src="@{/static/js/popper.min.js}"></script>
+    <script src="../../static/js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
 
-    <link rel="stylesheet" href="../../static/css/adminlte.min.css">
-    <script src="../../static/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="../../static/css/adminlte.min.css" th:href="@{/static/css/adminlte.min.css}">
+    <script src="../../static/js/adminlte.min.js" th:src="@{/static/js/adminlte.min.js}"></script>
     <!-- font -->
     <!-- easymde -->
     <!-- marked -->
@@ -24,7 +24,9 @@
 <body class="hold-transition sidebar-mini">
   <!-- wrapper -->
   <div class="wrapper">
-    <h1>exskel</h1>
+    <div class="row bg-dark text-ligh rounded">
+      <h1>exskel</h1>
+    </div>
     <div class="content-wrapper">
       <div class="container p-4" layout:fragment="content">
 
