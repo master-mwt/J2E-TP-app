@@ -7,5 +7,15 @@
 >
   <div class="container p-4 rounded bg-dark" layout:fragment="content">
     <h1>welcome</h1>
+    <ul th:each="post : ${posts}">
+      <li>
+        <h4 th:text="${post.getTitle()}">static post title (replaced)</h4>
+        <p th:text="${post.getContent()}">static post content (replaced)</p>
+        <p th:text="${post.getCreated_at()}">static post data (replaced)</p>
+        <ul th:each="tag : ${post.getTags()}">
+          <li th:text="${tag.getName()}">static tag name (replaced)</li>
+        </ul>
+      </li>
+    </ul>
   </div>
 </html>

@@ -7,6 +7,8 @@ import java.util.List;
 public interface PostBO {
 
     List<PostClass> findAll();
+    List<PostClass> findAllOrderByCreatedAtDesc();
+    Page<PostClass> findAllPaginatedOrderByCreatedAtDesc(int page, int size);
     PostClass findById(String id);
     void save(PostClass post);
     void saveAll(List<PostClass> posts);
