@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{exskel}"
+>
+  <aside
+    class="main-sidebar sidebar-dark-primary elevation-4 position-fixed"
+    th:fragment="sidebar"
+  >
+    <!-- brand logo -->
+    <a href="" class="brand-link">
+      <img
+        th:src="@{/images/main_logo.png}"
+        alt="logo"
+        class="brand-image img-circle elevation-3"
+        style="opacity: 0.8;"
+      />
+      <span class="brand-text font-weight-light">kernel panic</span>
+    </a>
+    <!-- sidebar -->
+    <div class="sidebar">
+      <!-- only_auth -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image d-block my-auto">
+          <a href="">
+            <img
+              th:src="@{/images/no_profile_img.jpg}"
+              alt="profile_image"
+              class="img-circle elevation-2"
+              style="width: 32px; height: 32px;"
+            />
+          </a>
+        </div>
+        <div class="info">
+          <a href="" class="d-block text-truncate">username</a>
+        </div>
+        <!-- end only_auth -->
+      </div>
+      <!-- sidebar menu -->
+      <nav
+        class="mt-2"
+        th:replace="~{commons/sidebar_menu :: sidebar_menu}"
+      ></nav>
+    </div>
+  </aside>
+  <!-- control sidebar -->
+  <aside class="control-sidebar control sidebar-dark"></aside>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{sidebar}"
+>
+  <nav class="mt-2" th:fragment="sidebar_menu">
+    <ul
+      class="nav nav-pills nav-sidebar flex-column"
+      data-widget="treeview"
+      role="menu"
+      data-accordion="false"
+    >
+      <li class="nav-header px-0 px-3">USER</li>
+      <li class="nav-item">
+        <a href="" class="nav-link">
+          <i class="nav-icon fas fa-user-circle"> </i>
+          <p class="">home</p>
+        </a>
+      </li>
+
+      <li class="nav-header px-0 px-3">PROVA JS</li>
+      <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-tools"></i>
+          <p>
+            Backend
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-check nav-icon"></i>
+              <p>Channels</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Tags</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-check nav-icon"></i>
+              <p>Posts</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-check nav-icon"></i>
+              <p>Replies</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-check nav-icon"></i>
+              <p>Comments</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-check nav-icon"></i>
+              <p>Users</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-check nav-icon"></i>
+              <p>Logs</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-header px-0 px-3">USER</li>
+      <li class="nav-item">
+        <a href="" class="nav-link">
+          <i class="nav-icon fas fa-question-circle"> </i>
+          <p class="">help</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="" class="nav-link">
+          <i class="nav-icon fas fa-info"> </i>
+          <p class="">about</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="" class="nav-link">
+          <i class="nav-icon fas fa-address-book"> </i>
+          <p class="">contact us</p>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</html>
