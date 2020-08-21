@@ -33,6 +33,11 @@ public class TagBOImpl implements TagBO {
     }
 
     @Override
+    public TagClass findByNameContains(String name) {
+        return tagRepository.findByNameContains(name).orElse(null);
+    }
+
+    @Override
     public void save(TagClass tag) {
         tagRepository.save(tag);
     }

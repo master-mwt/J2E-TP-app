@@ -1,12 +1,14 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
+import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +27,21 @@ public class ReplyBOImpl implements ReplyBO {
     @Override
     public ReplyClass findById(String id) {
         return replyRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<ReplyClass> findByPost(PostClass post) {
+        return replyRepository.findByPost(post).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<ReplyClass> findByChannelId(Long channelId) {
+        return replyRepository.findByChannelId(channelId).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<ReplyClass> findByUserId(Long userId) {
+        return replyRepository.findByUserId(userId).orElse(new ArrayList<>());
     }
 
     @Override

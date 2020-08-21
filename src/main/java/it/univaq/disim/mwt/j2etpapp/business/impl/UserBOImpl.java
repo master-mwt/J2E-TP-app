@@ -1,12 +1,15 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +33,26 @@ public class UserBOImpl implements UserBO {
     @Override
     public UserClass findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public List<UserClass> findByUsernameContains(String username) {
+        return userRepository.findByUsernameContains(username).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public Page<UserClass> findByUsernameContainsPaginated(String username, int page, int size) {
+        return new Page<>(userRepository.findByUsernameContains(username, PageRequest.of(page, size)));
+    }
+
+    @Override
+    public List<UserClass> findByEmailContains(String email) {
+        return userRepository.findByEmailContains(email).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public Page<UserClass> findByEmailContainsPaginated(String email, int page, int size) {
+        return new Page<>(userRepository.findByEmailContains(email, PageRequest.of(page, size)));
     }
 
     @Override

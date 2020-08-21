@@ -60,6 +60,6 @@ public class Page<T> {
 
     @Override
     public String toString() {
-        return "Page[ number: " + this.number + ", size: " + this.size + " ]";
+        return "Page[ number: " + this.number + ", size: " + this.size + ", total_pages: " + this.totalPages + ", number_of_elements: " + this.numberOfElements + " ]";
     }
 }

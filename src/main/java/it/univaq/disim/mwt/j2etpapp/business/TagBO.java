@@ -9,6 +9,7 @@ public interface TagBO {
     List<TagClass> findAll();
     TagClass findById(String id);
     TagClass findByName(String name);
+    TagClass findByNameContains(String name);
     void save(TagClass tag);
     void saveAll(List<TagClass> tags);
     void saveAll(TagClass... tags);

@@ -9,6 +9,8 @@ public interface ChannelBO {
     List<ChannelClass> findAll();
     ChannelClass findById(Long id);
     ChannelClass findByName(String name);
+    List<ChannelClass> findByNameContains(String name);
+    Page<ChannelClass> findByNameContainsPaginated(String name, int page, int size);
     void save(ChannelClass channel);
     void saveAll(List<ChannelClass> channels);
     void saveAll(ChannelClass... channels);

@@ -9,6 +9,10 @@ public interface UserBO {
     List<UserClass> findAll();
     UserClass findById(Long id);
     UserClass findByUsername(String username);
+    List<UserClass> findByUsernameContains(String username);
+    Page<UserClass> findByUsernameContainsPaginated(String username, int page, int size);
+    List<UserClass> findByEmailContains(String email);
+    Page<UserClass> findByEmailContainsPaginated(String email, int page, int size);
     void save(UserClass user);
     void saveAll(List<UserClass> users);
     void saveAll(UserClass... users);

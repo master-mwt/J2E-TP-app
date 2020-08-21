@@ -1,12 +1,15 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
+import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +33,16 @@ public class ChannelBOImpl implements ChannelBO {
     @Override
     public ChannelClass findByName(String name) {
         return channelRepository.findByName(name).orElse(null);
+    }
+
+    @Override
+    public List<ChannelClass> findByNameContains(String name) {
+        return channelRepository.findByNameContains(name).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public Page<ChannelClass> findByNameContainsPaginated(String name, int page, int size) {
+        return new Page<>(channelRepository.findByNameContains(name, PageRequest.of(page, size)));
     }
 
     @Override

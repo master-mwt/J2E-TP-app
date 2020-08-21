@@ -1,14 +1,20 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
+import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PostBO {
 
     List<PostClass> findAll();
     List<PostClass> findAllOrderByCreatedAtDesc();
-    Page<PostClass> findAllPaginatedOrderByCreatedAtDesc(int page, int size);
+    Page<PostClass> findAllOrderByCreatedAtDescPaginated(int page, int size);
+    List<PostClass> findByChannelId(Long channelId);
+    List<PostClass> findByUserId(Long userId);
+    List<PostClass> findByTagsContains(Set<TagClass> tags);
+    List<PostClass> findByTitleContains(String title);
     PostClass findById(String id);
     void save(PostClass post);
     void saveAll(List<PostClass> posts);

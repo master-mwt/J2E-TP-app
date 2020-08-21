@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,16 @@ public class UserChannelRoleBOImpl implements UserChannelRoleBO {
     @Override
     public List<UserChannelRole> findByChannelId(Long channelId) {
         return userChannelRoleRepository.findByChannelId(channelId).orElse(null);
+    }
+
+    @Override
+    public List<UserChannelRole> findByChannelIdAndRoleId(Long channelId, Long roleId) {
+        return userChannelRoleRepository.findByChannelIdAndRoleId(channelId, roleId).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public UserChannelRole findByChannelIdAndUserId(Long channelId, Long userId) {
+        return userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
     }
 
     @Override

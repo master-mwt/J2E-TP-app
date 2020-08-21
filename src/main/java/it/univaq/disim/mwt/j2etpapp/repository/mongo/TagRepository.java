@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TagRepository extends CrudRepository<TagClass, String> {
     Optional<TagClass> findByName(String name);
+    Optional<TagClass> findByNameContains(String name);
 }
