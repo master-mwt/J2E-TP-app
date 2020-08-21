@@ -33,6 +33,16 @@
       class="main-header navbar navbar-expand navbar-white navbar-light sticky-top"
       th:replace="~{commons/navbar :: navbar}"
     ></nav>
+    <!-- messages modal -->
+    <div
+      class="modal fade"
+      id="messages_modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="messages_modal_label"
+      aria-hidden="true"
+      th:replace="~{commons/navbar_modal :: navbar_modal}"
+    ></div>
     <!-- sidebar -->
     <aside
       class="main-sidebar sidebar-dark-primary elevation-4 position-fixed"
