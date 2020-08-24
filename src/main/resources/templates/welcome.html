@@ -131,5 +131,35 @@
         </div>
       </div>
     </div>
+    <!-- JScroll func -->
+    <script th:inline="javascript">
+      $('ul.pagination').hide();
+      $(function() {
+        $('document').ready(function() {
+          $('.markdown-content').each(function(){
+            let markdown_content = $(this).data('markdown-content');
+            $(this).html(marked(markdown_content));
+          });
+          $('.infinite-scroll').jscroll({
+            autoTrigger: true,
+            loadingHtml: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            padding: 0,
+            nextSelector: '.pagination li.active + li a',
+            contentSelector: 'div.infinite-scroll',
+            callback: function() {
+              $('ul.pagination').remove();
+              // Marked markdown parser func
+              // maybe remove document ready
+              $(document).ready(function(){
+                $('.markdown-content').each(function(){
+                  let markdown_content = $(this).data('markdown-content');
+                  $(this).html(marked(markdown_content));
+                });
+              });
+            }
+          });
+        });
+      });
+    </script>
   </div>
 </html>
