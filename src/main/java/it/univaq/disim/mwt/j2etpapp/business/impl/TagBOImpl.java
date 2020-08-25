@@ -1,12 +1,15 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.TagBO;
 import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,8 +36,13 @@ public class TagBOImpl implements TagBO {
     }
 
     @Override
-    public TagClass findByNameContains(String name) {
-        return tagRepository.findByNameContains(name).orElse(null);
+    public List<TagClass> findByNameContains(String name) {
+        return tagRepository.findByNameContains(name).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public Page<TagClass> findByNameContainsPaginated(String name, int page, int size) {
+        return new Page<>(tagRepository.findByNameContains(name, PageRequest.of(page, size)));
     }
 
     @Override

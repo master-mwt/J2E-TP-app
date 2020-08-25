@@ -9,7 +9,8 @@ public interface TagBO {
     List<TagClass> findAll();
     TagClass findById(String id);
     TagClass findByName(String name);
-    TagClass findByNameContains(String name);
+    List<TagClass> findByNameContains(String name);
+    Page<TagClass> findByNameContainsPaginated(String name, int page, int size);
     void save(TagClass tag);
     void saveAll(List<TagClass> tags);
     void saveAll(TagClass... tags);

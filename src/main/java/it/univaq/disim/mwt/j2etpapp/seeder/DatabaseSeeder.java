@@ -3,6 +3,9 @@ package it.univaq.disim.mwt.j2etpapp.seeder;
 import com.github.javafaker.Faker;
 import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
+import net.steppschuh.markdowngenerator.text.emphasis.BoldText;
+import net.steppschuh.markdowngenerator.text.emphasis.ItalicText;
+import net.steppschuh.markdowngenerator.text.heading.Heading;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -90,13 +93,13 @@ public class DatabaseSeeder {
         // relations
         seedUserChannelRoleCreators();
         seedUserChannelRoleNonCreators(8L);
-        seedReportedUsers(2L);
-        seedSoftBannedUsers(2L);
+        seedReportedUsers(5L);
+        seedSoftBannedUsers(3L);
 
         // mongodb collections
-        seedTags(10L);
-        seedPosts(8L);
-        seedReplies(5L);
+        seedTags(20L);
+        seedPosts(40L);
+        seedReplies(20L);
 
         // generate admins
         seedAdmins();
@@ -366,7 +369,19 @@ public class DatabaseSeeder {
         for(long i = 0; i < iter; i++){
             PostClass post = new PostClass();
             post.setTitle(faker.lorem().word());
-            post.setContent(faker.lorem().sentence());
+
+            StringBuilder builder = new StringBuilder();
+            builder.append(new Heading(faker.lorem().sentence(), 1))
+                    .append("\n")
+                    .append(new Heading(faker.lorem().sentence(), 2))
+                    .append("\n")
+                    .append(new BoldText(faker.lorem().sentence()))
+                    .append("\n")
+                    .append(new ItalicText(faker.lorem().sentence()))
+                    .append("\n");
+
+            post.setContent(builder.toString());
+
             post.setUpvote(faker.random().nextInt(0, 3).longValue());
             post.setDownvote(faker.random().nextInt(0, 3).longValue());
             post.setUserId(randomElement(userBO.findAll()).getId());
