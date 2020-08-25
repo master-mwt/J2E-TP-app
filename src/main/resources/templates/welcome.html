@@ -128,26 +128,22 @@
             </div>
           </div>
 
+          <ul th:if="${page.getTotalPages() > 1}" class="pagination">
+            <li class="page-item active"><a class="page-link" href="#" th:href="@{/posts/page/{id}/(id=${page.getNumber()})}" th:text="${page.getNumber()}"></a></li>
+            <li class="page-item" th:if="${!page.isLast()}"><a class="page-link" href="#" th:href="@{/posts/page/{id}/(id=${page.getNumber()+1})}">Next</a></li>
+          </ul>
+
         </div>
       </div>
     </div>
-
-    <ul th:if="${page.getTotalPages() > 1}" class="pagination">
-      <li class="page-item active"><a class="page-link" href="#" th:href="@{/posts/page/{id}/(id=${page.getNumber()})}" th:text="${page.getNumber()}"></a></li>
-      <li class="page-item" th:if="${!page.isLast()}"><a class="page-link" href="#" th:href="@{/posts/page/{id}/(id=${page.getNumber()+1})}">Next</a></li>
-    </ul>
     <!-- JScroll func -->
-    <!--
     <script th:inline="javascript">
-      console.log('javascript inline');
-      console.log($('.pagination li.active + li a'));
       $('ul.pagination').hide();
       $(function() {
         $('document').ready(function() {
           $('.markdown-content').each(function(){
             let markdown_content = $(this).data('markdown-content');
             $(this).html(marked(markdown_content));
-            console.log('marked');
           });
           $('.infinite-scroll').jscroll({
             autoTrigger: true,
@@ -156,7 +152,6 @@
             nextSelector: '.pagination li.active + li a',
             contentSelector: 'div.infinite-scroll',
             callback: function() {
-              console.log('jscroll callback');
               $('ul.pagination').remove();
               // Marked markdown parser func
               // maybe remove document ready
@@ -171,6 +166,5 @@
         });
       });
     </script>
-    -->
   </div>
 </html>
