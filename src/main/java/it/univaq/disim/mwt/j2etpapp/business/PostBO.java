@@ -15,6 +15,7 @@ public interface PostBO {
     List<PostClass> findByUserId(Long userId);
     List<PostClass> findByTagsContains(Set<TagClass> tags);
     List<PostClass> findByTitleContains(String title);
+    Page<PostClass> findByTitleContainsPaginated(String title, int page, int size);
     PostClass findById(String id);
     void save(PostClass post);
     void saveAll(List<PostClass> posts);

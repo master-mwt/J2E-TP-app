@@ -2,6 +2,8 @@ package it.univaq.disim.mwt.j2etpapp.repository.mongo;
 
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,7 @@ public interface PostRepository extends PagingAndSortingRepository<PostClass, St
     Optional<List<PostClass>> findByUserId(Long userId);
     Optional<List<PostClass>> findByTagsContains(Set<TagClass> tags);
     Optional<List<PostClass>> findByTitleContains(String title);
+    Page<PostClass> findByTitleContains(String title, Pageable pageable);
     // TODO: these queries are ok ?
     Optional<List<PostClass>> findByUsersDownvotedContains(Set<Long> usersDownvoted);
     Optional<List<PostClass>> findByUsersUpvotedContains(Set<Long> usersUpvoted);
