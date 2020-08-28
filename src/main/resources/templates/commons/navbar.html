@@ -76,11 +76,15 @@
       <!-- guest only -->
       <li class="nav-item">
         <!-- login -->
-        <a href="" class="nav-link"><i class="fas fa-sign-in-alt"></i></a>
+        <a th:href="@{mylogin}" class="nav-link"
+          ><i class="fas fa-sign-in-alt"></i
+        ></a>
       </li>
       <li class="nav-item">
         <!-- register -->
-        <a href="" class="nav-link"><i class="fas fa-user-plus"></i></a>
+        <a th:href="@{register}" class="nav-link"
+          ><i class="fas fa-user-plus"></i
+        ></a>
       </li>
       <!-- end guest only -->
       <!-- auth only -->
@@ -94,7 +98,7 @@
           action=""
           id="logout-form"
           method="post"
-          style="display: none;"
+          style="display: none"
         ></form>
       </li>
       <!-- end only auth -->

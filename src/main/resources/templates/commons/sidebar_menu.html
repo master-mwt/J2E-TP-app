@@ -14,6 +14,7 @@
     >
       <li class="nav-header px-0 px-3">USER</li>
       <li class="nav-item">
+        <!-- redirect to auth register or to home with posts filtered by channel subscription -->
         <a href="" class="nav-link">
           <i class="nav-icon fas fa-user-circle"> </i>
           <p class="">home</p>
@@ -21,6 +22,7 @@
       </li>
 
       <li class="nav-item has-treeview">
+        <!-- redirect to auth register or to dashboard -->
         <a href="#" class="nav-link">
           <i class="nav-icon fas fa-home"></i>
           <p>
@@ -133,19 +135,19 @@
 
       <li class="nav-header px-0 px-3">USER</li>
       <li class="nav-item">
-        <a href="" class="nav-link">
+        <a th:href="@{help}" class="nav-link">
           <i class="nav-icon fas fa-question-circle"> </i>
           <p class="">help</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="" class="nav-link">
+        <a th:href="@{about}" class="nav-link">
           <i class="nav-icon fas fa-info"> </i>
           <p class="">about</p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="" class="nav-link">
+        <a th:href="@{contact}" class="nav-link">
           <i class="nav-icon fas fa-address-book"> </i>
           <p class="">contact us</p>
         </a>

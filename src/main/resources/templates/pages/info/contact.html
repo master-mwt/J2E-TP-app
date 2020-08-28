@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{commons/exskel}"
+>
+  <div class="container p-4" layout:fragment="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <h1 class="text-center mt-3 mb-4">contacts</h1>
+
+        <!-- leaflet :: open street map -->
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.6.0/dist/leaftlet.css"
+        />
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+        <!-- issues with this element -->
+        <!-- <div
+          class="mapid"
+          style="height: 500px"
+          class="rounded border border-primary"
+        ></div> -->
+        <!-- issues with this element -->
+      </div>
+    </div>
+    <script>
+      var mymap = L.map("mapid").setView([42.35, 13.3944], 14);
+      L.tileLayer("https://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(mymap);
+    </script>
+  </div>
+</html>

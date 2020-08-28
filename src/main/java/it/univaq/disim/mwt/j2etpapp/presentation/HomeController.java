@@ -28,7 +28,39 @@ public class HomeController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("postBO", postBO);
         model.addAttribute("page", postFirstPage);
-        return "welcome";
+        return "pages/welcome";
+    }
+
+    @GetMapping("about")
+    public String about(Model model) {
+        return "pages/info/about";
+    }
+
+    @GetMapping("help")
+    public String help(Model model) {
+        return "pages/info/help";
+    }
+
+    @GetMapping("contact")
+    public String contact(Model model) {
+        return "pages/info/contact";
+    }
+
+    @GetMapping("register")
+    public String register(Model model) {
+        return "pages/auth/register";
+    }
+
+    // mylogin in route to not override spring security login page
+    @GetMapping("mylogin")
+    public String mylogin(Model model) {
+        return "pages/auth/login";
+    }
+
+    // only for testing
+    @GetMapping("empty")
+    public String empty(Model model) {
+        return "pages/search_res/empty_res";
     }
 
     @GetMapping("/posts/page/{page}")
@@ -38,6 +70,6 @@ public class HomeController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("postBO", postBO);
         model.addAttribute("page", postPage);
-        return "welcome";
+        return "pages/welcome";
     }
 }
