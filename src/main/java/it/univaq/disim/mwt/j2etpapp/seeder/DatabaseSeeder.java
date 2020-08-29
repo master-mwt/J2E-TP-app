@@ -191,7 +191,7 @@ public class DatabaseSeeder {
 
             for(Resource res : resources){
                 ImageClass image = new ImageClass();
-                image.setLocation("static/images/" + res.getFilename());
+                image.setLocation("images/" + res.getFilename());
 
                 img = ImageIO.read(res.getURL());
                 image.setSize(img.getWidth() + "x" + img.getHeight());

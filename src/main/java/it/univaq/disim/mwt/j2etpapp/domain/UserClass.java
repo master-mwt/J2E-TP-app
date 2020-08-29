@@ -57,6 +57,6 @@ public class UserClass implements Serializable {
     @ManyToOne(optional = false)
     private GroupClass group;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private ImageClass image;
 }
