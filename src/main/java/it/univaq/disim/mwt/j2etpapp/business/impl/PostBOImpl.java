@@ -54,6 +54,11 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
+    public Page<PostClass> findByTagsContainsPaginated(Set<TagClass> tags, int page, int size) {
+        return new Page<>(postRepository.findByTagsContains(tags, PageRequest.of(page, size)));
+    }
+
+    @Override
     public List<PostClass> findByTitleContains(String title) {
         return postRepository.findByTitleContains(title).orElse(new ArrayList<>());
     }

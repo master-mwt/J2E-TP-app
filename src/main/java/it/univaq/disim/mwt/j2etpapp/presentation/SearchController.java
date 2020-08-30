@@ -3,7 +3,6 @@ package it.univaq.disim.mwt.j2etpapp.presentation;
 import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
-import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.websocket.server.PathParam;
+import java.util.HashSet;
 
 @Controller
 public class SearchController {
@@ -36,6 +36,8 @@ public class SearchController {
                 case "posts":
                     Page<PostClass> postPage = postBO.findByTitleContainsPaginated(query, 0, 10);
                     model.addAttribute("postPage", postPage);
+                    model.addAttribute("channelBO", channelBO);
+                    model.addAttribute("userBO", userBO);
                     return "pages/search_res/posts_res";
                 case "channels":
                     Page<ChannelClass> channelPage = channelBO.findByNameContainsPaginated(query, 0, 10);
@@ -48,8 +50,10 @@ public class SearchController {
                     model.addAttribute("userPage", userPage);
                     return "pages/search_res/users_res";
                 case "tags":
-                    Page<TagClass> tagPage = tagBO.findByNameContainsPaginated(query, 0, 10);
-                    model.addAttribute("tagPage", tagPage);
+                    Page<PostClass> postPageByTags = postBO.findByTagsContainsPaginated(new HashSet<>(tagBO.findByNameContains(query)), 0, 10);
+                    model.addAttribute("postPage", postPageByTags);
+                    model.addAttribute("channelBO", channelBO);
+                    model.addAttribute("userBO", userBO);
                     return "pages/search_res/tags_res";
                 default:
                     return "redirect:/";
@@ -63,6 +67,8 @@ public class SearchController {
     public String postPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
         Page<PostClass> postPage = postBO.findByTitleContainsPaginated(query, page, 10);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
         return "pages/search_res/posts_res";
     }
 
@@ -79,13 +85,16 @@ public class SearchController {
     public String userPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
         Page<UserClass> userPage = userBO.findByUsernameContainsPaginated(query, page, 10);
         model.addAttribute("userPage", userPage);
+        model.addAttribute("userBO", userBO);
         return "pages/search_res/users_res";
     }
 
     @GetMapping(value = "/search/tags/page/{page}")
     public String tagPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
-        Page<TagClass> tagPage = tagBO.findByNameContainsPaginated(query, page, 10);
-        model.addAttribute("tagPage", tagPage);
+        Page<PostClass> postPage = postBO.findByTagsContainsPaginated(new HashSet<>(tagBO.findByNameContains(query)), page, 10);
+        model.addAttribute("postPage", postPage);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
         return "pages/search_res/tags_res";
     }
 }

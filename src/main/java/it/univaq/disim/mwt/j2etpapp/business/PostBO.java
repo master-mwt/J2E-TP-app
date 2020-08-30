@@ -14,6 +14,7 @@ public interface PostBO {
     List<PostClass> findByChannelId(Long channelId);
     List<PostClass> findByUserId(Long userId);
     List<PostClass> findByTagsContains(Set<TagClass> tags);
+    Page<PostClass> findByTagsContainsPaginated(Set<TagClass> tags, int page, int size);
     List<PostClass> findByTitleContains(String title);
     Page<PostClass> findByTitleContainsPaginated(String title, int page, int size);
     PostClass findById(String id);

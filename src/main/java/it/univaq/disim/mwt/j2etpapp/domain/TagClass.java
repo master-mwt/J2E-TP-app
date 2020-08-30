@@ -21,4 +21,12 @@ public class TagClass implements Serializable {
 
     @Version
     private Long version;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TagClass tagClass = (TagClass) o;
+        return name.equals(tagClass.name);
+    }
 }

@@ -16,6 +16,7 @@ public interface PostRepository extends PagingAndSortingRepository<PostClass, St
     Optional<List<PostClass>> findByChannelId(Long channelId);
     Optional<List<PostClass>> findByUserId(Long userId);
     Optional<List<PostClass>> findByTagsContains(Set<TagClass> tags);
+    Page<PostClass> findByTagsContains(Set<TagClass> tags, Pageable pageable);
     Optional<List<PostClass>> findByTitleContains(String title);
     Page<PostClass> findByTitleContains(String title, Pageable pageable);
     // TODO: these queries are ok ?

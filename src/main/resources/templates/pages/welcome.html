@@ -18,11 +18,11 @@
             style="flex: 0 0 50px; background-color: #222;"
           >
             <!-- upvote -->
-            <a href="" id="post-id-upvote" class="upvote">
+            <a href="" th:id="${'post-' + post.getId() + '-upvote'}" class="upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- unupvote -->
-            <a href="" id="post-id-upvote" class="text-warning upvote">
+            <a href="" th:id="${'post-' + post.getId() + '-upvote'}" class="text-warning upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- else -->
@@ -30,19 +30,19 @@
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- upvote or undownvote -->
-            <span id="post-id-votenumber" class="my-1 text-warning votenumber"
+            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-warning votenumber"
               >1</span
             >
             <!-- else -->
-            <span id="post-id-votenumber" class="my-1 text-light votenumber"
+            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-light votenumber"
               >1</span
             >
             <!-- downvote -->
-            <a href="" id="post-id-downvote" class="downvote">
+            <a href="" th:id="${'post-' + post.getId() + '-downvote'}" class="downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
             <!-- undownvote -->
-            <a href="" id="post-id-downvote" class="text-warning downvote">
+            <a href="" th:id="${'post-' + post.getId() + '-downvote'}" class="text-warning downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
             <!-- else -->
@@ -73,11 +73,11 @@
                 <!-- end for -->
               </div>
               <!-- carousel controls -->
-              <a href="#postcarousel-id" class="carousel-control-prev" role="button" data-slide="prev">
+              <a th:href="${'#postcarousel-' + post.getId()}" class="carousel-control-prev" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">prev</span>
               </a>
-              <a href="#postcarousel-id" class="carousel-control-next" role="button" data-slide="next">
+              <a th:href="${'#postcarousel-' + post.getId()}" class="carousel-control-next" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">next</span>
               </a>
@@ -104,23 +104,23 @@
             </div>
             <div class="card-footer border-0 p-1 px-3 text-left mt-1" style="border-bottom-left-radius: 0px">
               <!-- if auth and post saved (guest -> login) -->
-              <a id="post-id-save" href=""
+              <a th:id="${'post-' + post.getId() + '-save'}" href=""
                 class="text-decoration-none mr-2 save"><i id="post-id-save-icon"
                   class="far fa-bookmark mr-1"></i>Save</a>
               <!-- if auth and post unsaved (guest -> login) -->
-              <a id="post-id-save" href=""
-                class="text-decoration-none mr-2 text-danger save"><i id="post-{{ $post->id }}-save-icon"
+              <a th:id="${'post-' + post.getId() + '-save'}" href=""
+                class="text-decoration-none mr-2 text-danger save"><i th:id="${'post-' + post.getId() + '-save-icon'}"
                   class="fas fa-bookmark mr-1"></i>Unsave</a>
               <!-- else route to login -->
               <a href="" class="text-decoration-none mr-2"><i class="far fa-bookmark mr-1"></i>Save</a>
               <!-- end if -->
               <!-- if auth and post hidden (guest -> login) -->
-              <a id="post-id-hide" href=""
-                class="text-decoration-none mr-2 hide"><i id="post-id-hide-icon"
+              <a th:id="${'post-' + post.getId() + '-hide'}" href=""
+                class="text-decoration-none mr-2 hide"><i th:id="${'post-' + post.getId() + '-hide-icon'}"
                   class="far fa-eye-slash mr-1"></i>Hide</a>
               <!-- if auth and post unhidden (guest -> login) -->
-              <a id="post-id-hide" href=""
-                class="text-decoration-none mr-2 text-danger hide"><i id="post-id-hide-icon"
+              <a th:id="${'post-' + post.getId() + '-hide'}" href=""
+                class="text-decoration-none mr-2 text-danger hide"><i th:id="${'post-' + post.getId() + '-hide-icon'}"
                   class="fas fa-eye-slash mr-1"></i>Unhide</a>
               <!-- else route to login -->
               <a href="" class="text-decoration-none mr-2"><i class="far fa-eye-slash mr-1"></i>Hide</a>
