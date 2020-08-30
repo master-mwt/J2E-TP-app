@@ -9,36 +9,78 @@
     <div class="row justify-content-center">
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- foreach $users as $user -->
-        <div th:each="user : ${userPage.getContent()}" class="card bg-dark col-lg-10 mx-auto d-flex flex-column px-0" style="max-width: 600px">
-          <div class="col card-header border-0 px-3 d-flex flex-row" style="align-items: center">
-            <img th:if="${user.getImage() == null}" th:src="@{images/no_profile_img.jpg}" alt="" width="40px" height="40px" class="rounded-circle">
-            <img th:if="${user.getImage() != null}" th:src="${user.getImage().getLocation()}" alt="" width="40px" height="40px" class="rounded-circle">
-            <h4 class="m-0 ml-3"><a class="text-decoration-none" th:href="@{/discover/user/{id}/(id=${user.getId()})}" th:text="${user.getUsername()}">user username</a></h4>
+        <div
+          th:each="user : ${userPage.getContent()}"
+          class="card bg-dark col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px"
+        >
+          <div
+            class="col card-header border-0 px-3 d-flex flex-row"
+            style="align-items: center"
+          >
+            <img
+              th:if="${user.getImage() == null}"
+              th:src="@{images/no_profile_img.jpg}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded-circle"
+            />
+            <img
+              th:if="${user.getImage() != null}"
+              th:src="${user.getImage().getLocation()}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded-circle"
+            />
+            <h4 class="m-0 ml-3">
+              <a
+                class="text-decoration-none"
+                th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                th:text="${user.getUsername()}"
+                >user username</a
+              >
+            </h4>
           </div>
         </div>
         <!-- endforeach -->
 
         <ul th:if="${userPage.getTotalPages() > 1}" class="pagination">
-          <li class="page-item active"><a class="page-link" href="#" th:href="@{/search/users/page/{id}/(id=${userPage.getNumber()}, query=${#httpServletRequest.getParameter('query')})}" th:text="${userPage.getNumber()}"></a></li>
-          <li class="page-item" th:if="${!userPage.isLast()}"><a class="page-link" href="#" th:href="@{/search/users/page/{id}/(id=${userPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}">Next</a></li>
+          <li class="page-item active">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/search/users/page/{id}/(id=${userPage.getNumber()}, query=${#httpServletRequest.getParameter('query')})}"
+              th:text="${userPage.getNumber()}"
+            ></a>
+          </li>
+          <li class="page-item" th:if="${!userPage.isLast()}">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/search/users/page/{id}/(id=${userPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}"
+              >Next</a
+            >
+          </li>
         </ul>
-
       </div>
     </div>
     <!-- JScroll func -->
     <script th:inline="javascript" type="text/javascript">
-      $('ul.pagination').hide();
-      $(function() {
-        $('document').ready(function() {
-          $('.infinite-scroll').jscroll({
+      $("ul.pagination").hide();
+      $(function () {
+        $("document").ready(function () {
+          $(".infinite-scroll").jscroll({
             autoTrigger: true,
-            loadingHtml: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            loadingHtml:
+              '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
             padding: 0,
-            nextSelector: '.pagination li.active + li a',
-            contentSelector: 'div.infinite-scroll',
-            callback: function() {
-              $('ul.pagination').remove();
-            }
+            nextSelector: ".pagination li.active + li a",
+            contentSelector: "div.infinite-scroll",
+            callback: function () {
+              $("ul.pagination").remove();
+            },
           });
         });
       });

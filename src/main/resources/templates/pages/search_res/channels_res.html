@@ -10,41 +10,89 @@
     <div class="row justify-content-center">
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- forearch $channels as $channel -->
-        <div th:each="channel : ${channelPage.getContent()}" class="card bg-dark col-lg-10 mx-auto d-flex flex-column px-0" style="max-width: 600px">
-          <div class="col card-header border-0 px-3 d-flex flex-row" style="align-items: center">
-
-            <img th:if="${channel.getImage() == null}" th:src="@{images/no_channel_img.jpg}" alt="" width="40px" height="40px" class="rounded">
-            <img th:if="${channel.getImage() != null}" th:src="${channel.getImage().getLocation()}" alt="" width="40px" height="40px" class="rounded">
-            <h3 class="m-0 ml-3"><a class="text-decoration-none" th:href="@{/discover/channel/{id}/(id=${channel.getId()})}" th:text="${channel.getName()}">channel name</a></h3>
+        <div
+          th:each="channel : ${channelPage.getContent()}"
+          class="card bg-dark col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px"
+        >
+          <div
+            class="col card-header border-0 px-3 d-flex flex-row"
+            style="align-items: center"
+          >
+            <img
+              th:if="${channel.getImage() == null}"
+              th:src="@{images/no_channel_img.jpg}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded"
+            />
+            <img
+              th:if="${channel.getImage() != null}"
+              th:src="${channel.getImage().getLocation()}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded"
+            />
+            <h3 class="m-0 ml-3">
+              <a
+                class="text-decoration-none"
+                th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                th:text="${channel.getName()}"
+                >channel name</a
+              >
+            </h3>
 
             <!-- if !is_null($channel->member) -->
-            <h5 sec:authorize="!isAnonymous()" th:if="${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()) != null}" class="m-0 ml-auto text-warning" th:text="${roleBO.findById(userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()).getRole().getId()).getName()}">channel member role name</h5>
+            <h5
+              sec:authorize="!isAnonymous()"
+              th:if="${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()) != null}"
+              class="m-0 ml-auto text-warning"
+              th:text="${roleBO.findById(userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()).getRole().getId()).getName()}"
+            >
+              channel member role name
+            </h5>
             <!-- endif -->
           </div>
         </div>
         <!-- endforeach -->
 
         <ul th:if="${channelPage.getTotalPages() > 1}" class="pagination">
-          <li class="page-item active"><a class="page-link" href="#" th:href="@{/search/channels/page/{id}/(id=${channelPage.getNumber()}, query=${#httpServletRequest.getParameter('query')})}" th:text="${channelPage.getNumber()}"></a></li>
-          <li class="page-item" th:if="${!channelPage.isLast()}"><a class="page-link" href="#" th:href="@{/search/channels/page/{id}/(id=${channelPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}">Next</a></li>
+          <li class="page-item active">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/search/channels/page/{id}/(id=${channelPage.getNumber()}, query=${#httpServletRequest.getParameter('query')})}"
+              th:text="${channelPage.getNumber()}"
+            ></a>
+          </li>
+          <li class="page-item" th:if="${!channelPage.isLast()}">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/search/channels/page/{id}/(id=${channelPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}"
+              >Next</a
+            >
+          </li>
         </ul>
-
       </div>
     </div>
     <!-- JScroll func -->
     <script th:inline="javascript" type="text/javascript">
-      $('ul.pagination').hide();
-      $(function() {
-        $('document').ready(function() {
-          $('.infinite-scroll').jscroll({
+      $("ul.pagination").hide();
+      $(function () {
+        $("document").ready(function () {
+          $(".infinite-scroll").jscroll({
             autoTrigger: true,
-            loadingHtml: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            loadingHtml:
+              '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
             padding: 0,
-            nextSelector: '.pagination li.active + li a',
-            contentSelector: 'div.infinite-scroll',
-            callback: function() {
-              $('ul.pagination').remove();
-            }
+            nextSelector: ".pagination li.active + li a",
+            contentSelector: "div.infinite-scroll",
+            callback: function () {
+              $("ul.pagination").remove();
+            },
           });
         });
       });
