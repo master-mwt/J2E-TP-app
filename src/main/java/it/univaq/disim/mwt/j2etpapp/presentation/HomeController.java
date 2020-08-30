@@ -63,6 +63,12 @@ public class HomeController {
         return "pages/search_res/empty_res";
     }
 
+    // only for testing
+    @GetMapping("channel")
+    public String channel(Model model) {
+        return "pages/discover/channel";
+    }
+
     @GetMapping("/posts/page/{page}")
     public String postPaginated(@PathVariable("page") int page, Model model) {
         Page<PostClass> postPage = postBO.findAllOrderByCreatedAtDescPaginated(page, 10);
