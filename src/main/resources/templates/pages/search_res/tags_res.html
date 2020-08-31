@@ -36,14 +36,14 @@
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1">
-                <a href=""
-                  class="text-decoration-none"><b th:utext="${channelBO.findById(post.getChannelId()).getName() + ' &#183'}">post.channel_name &#183</b></a> <span
+              <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
+                <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}">post.channel_name &#183</b></a> <span
                   class="text-muted">Posted by </span>
-                <a href=""
-                  class="text-decoration-none" th:text="${userBO.findById(post.getUserId()).getUsername()}">post.username</a>
+                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                  class="text-decoration-none" th:text="${user.getUsername()}">post.username</a>
               </p>
-              <h5 class="m-0 mb-1"><a href=""
+              <h5 class="m-0 mb-1"><a th:href="@{/discover/post/{id}/(id=${post.getId()})}"
                   class="text-decoration-none" th:text="${post.getTitle()}">post.title</a></h5>
             </div>
             <a th:href="${'#content-collapse-' + post.getId()}" role="button"
@@ -57,11 +57,11 @@
               <!-- foreach post.tags as tag -->
               <th:block th:each="tag : ${post.getTags()}">
                 <!-- if tag.tag-id.name == var query -->
-                <span th:if="${tag.getName().contains(#httpServletRequest.getParameter('query'))}" class="badge badge-pill mt-2"
-                       style="font-size: 11px; background-color: #ffa07a" th:text="${tag.getName()}">tag.tag-id.name</span>
+                <a th:if="${tag.getName().contains(#httpServletRequest.getParameter('query'))}" th:href="@{/search/(target=tags, query=${tag.getName()})}"><span class="badge badge-pill mt-2"
+                       style="font-size: 11px; background-color: #ffa07a" th:text="${tag.getName()}">tag.tag-id.name</span></a>
                 <!-- else -->
-                <span th:if="${!tag.getName().contains(#httpServletRequest.getParameter('query'))}" class="badge badge-pill mt-2"
-                      style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}">tag.tag-id.name</span>
+                <a th:if="${!tag.getName().contains(#httpServletRequest.getParameter('query'))}" th:href="@{/search/(target=tags, query=${tag.getName()})}"><span class="badge badge-pill mt-2"
+                      style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}">tag.tag-id.name</span></a>
               </th:block>
               <!-- endforeach -->
             </div>

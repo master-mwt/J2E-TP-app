@@ -36,14 +36,14 @@
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1">
-                <a href=""
-                  class="text-decoration-none"><b th:utext="${channelBO.findById(post.getChannelId()).getName() + ' &#183'}">post.channel_name &#183</b></a> <span
+              <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
+                <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}">post.channel_name &#183</b></a> <span
                   class="text-muted">Posted by </span>
-                <a href=""
-                  class="text-decoration-none" th:text="${userBO.findById(post.getUserId()).getUsername()}">post.username</a>
+                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                  class="text-decoration-none" th:text="${user.getUsername()}">post.username</a>
               </p>
-              <h5 class="m-0 mb-1"><a href=""
+              <h5 class="m-0 mb-1"><a th:href="@{/discover/post/{id}/(id=${post.getId()})}"
                   class="text-decoration-none" th:text="${post.getTitle()}">post.title</a></h5>
             </div>
             <a th:href="${'#content-collapse-' + post.getId()}" role="button"
@@ -53,7 +53,7 @@
             <div class="card-body text-left px-3 py-1 collapse mb-1" th:id="${'content-collapse-' + post.getId()}">
               <div class="markdown-content" th:data-markdown-content="${post.getContent()}"></div>
               <!-- foreach post.tags as tag -->
-              <a th:each="tag : ${post.getTags()}" href=""><span
+              <a th:each="tag : ${post.getTags()}" th:href="@{/search/(target=tags, query=${tag.getName()})}"><span
                   class="badge badge-pill" style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}">tag.tag-id.name</span></a>
               <!-- endforeach -->
             </div>

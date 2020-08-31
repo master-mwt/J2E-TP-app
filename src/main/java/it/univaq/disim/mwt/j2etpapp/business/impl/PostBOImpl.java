@@ -44,6 +44,11 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
+    public Page<PostClass> findByChannelIdOrderByCreatedAtDescPaginated(Long channelId, int page, int size) {
+        return new Page<>(postRepository.findByChannelId(channelId, PageRequest.of(page, size, Sort.by("created_at").descending())));
+    }
+
+    @Override
     public List<PostClass> findByUserId(Long userId) {
         return postRepository.findByUserId(userId).orElse(new ArrayList<>());
     }

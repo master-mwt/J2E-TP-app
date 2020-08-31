@@ -12,6 +12,7 @@ public interface PostBO {
     List<PostClass> findAllOrderByCreatedAtDesc();
     Page<PostClass> findAllOrderByCreatedAtDescPaginated(int page, int size);
     List<PostClass> findByChannelId(Long channelId);
+    Page<PostClass> findByChannelIdOrderByCreatedAtDescPaginated(Long channelId, int page, int size);
     List<PostClass> findByUserId(Long userId);
     List<PostClass> findByTagsContains(Set<TagClass> tags);
     Page<PostClass> findByTagsContainsPaginated(Set<TagClass> tags, int page, int size);
