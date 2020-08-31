@@ -14,7 +14,8 @@
           class="rounded my-4"
           width="350px"
         />
-        <h2 class="text-primary">no results</h2>
+        <h2 th:if="${emptySearch == true}" class="text-primary">empty search</h2>
+        <h2 th:if="${emptySearch == null || emptySearch == false}" class="text-primary">no results</h2>
       </div>
     </div>
   </div>

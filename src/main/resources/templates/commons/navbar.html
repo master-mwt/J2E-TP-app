@@ -38,10 +38,14 @@
               -webkit-appearance: none;
             "
           >
-            <option value="posts">posts</option>
-            <option value="channels">channels</option>
-            <option value="users">users</option>
-            <option value="tags">tags</option>
+            <option th:if="${'posts'.equals(#httpServletRequest.getParameter('target'))}" value="posts" selected="selected">posts</option>
+            <option th:unless="${'posts'.equals(#httpServletRequest.getParameter('target'))}" value="posts">posts</option>
+            <option th:if="${'channels'.equals(#httpServletRequest.getParameter('target'))}" value="channels" selected="selected">channels</option>
+            <option th:unless="${'channels'.equals(#httpServletRequest.getParameter('target'))}" value="channels">channels</option>
+            <option th:if="${'users'.equals(#httpServletRequest.getParameter('target'))}" value="users" selected="selected">users</option>
+            <option th:unless="${'users'.equals(#httpServletRequest.getParameter('target'))}" value="users">users</option>
+            <option th:if="${'tags'.equals(#httpServletRequest.getParameter('target'))}" value="tags" selected="selected">tags</option>
+            <option th:unless="${'tags'.equals(#httpServletRequest.getParameter('target'))}" value="tags">tags</option>
           </select>
         </div>
         <input
@@ -50,7 +54,7 @@
           placeholder="search"
           aria-label="search"
           name="query"
-          value=""
+          th:value="${#httpServletRequest.getParameter('query')}"
         />
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
