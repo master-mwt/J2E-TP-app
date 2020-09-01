@@ -1,12 +1,12 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
-import it.univaq.disim.mwt.j2etpapp.business.Page;
-import it.univaq.disim.mwt.j2etpapp.business.PostBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
+import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,10 @@ public class DiscoverController {
     private UserBO userBO;
     @Autowired
     private PostBO postBO;
+    @Autowired
+    private UserChannelRoleBO userChannelRoleBO;
 
+    // TODO: discoverChannel and discoverChannelPostPage passing variables through template
     @GetMapping("/discover/channel/{id}")
     public String discoverChannel(@PathVariable("id") Long id, Model model) {
         ChannelClass channel = channelBO.findById(id);
@@ -29,6 +32,10 @@ public class DiscoverController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("userChannelRoleBO", userChannelRoleBO);
+        model.addAttribute("principal", (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null);
+        UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId()) : null;
+        model.addAttribute("subscription", subscription);
         return "pages/discover/channel";
     }
 
@@ -39,6 +46,7 @@ public class DiscoverController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("userChannelRoleBO", userChannelRoleBO);
         return "pages/discover/channel";
     }
 

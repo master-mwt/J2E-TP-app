@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.*;
 
 // TODO: Replace println and printStackTrace with log
@@ -214,6 +215,8 @@ public class DatabaseSeeder {
             user.setUsername(faker.name().username());
 
             user.setPassword(passwordEncoder.encode("password"));
+
+            user.setBirthDate(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
             user.setGroup(groupBO.findByName("logged"));
 
@@ -491,6 +494,8 @@ public class DatabaseSeeder {
         user.setUsername("a.admin");
 
         user.setPassword(passwordEncoder.encode("password"));
+
+        user.setBirthDate(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
         user.setGroup(groupBO.findByName("administrator"));
 

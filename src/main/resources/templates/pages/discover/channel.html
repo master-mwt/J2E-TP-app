@@ -5,6 +5,7 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorate="~{commons/exskel}"
 >
+  <!-- TODO: all if-else conditions -->
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
       <div class="col-md-12 text-center px-0">
@@ -23,12 +24,12 @@
               height="50px"
               class="rounded"
             />
-            <h2 class="m-0 ml-3">channel.name</h2>
+            <h2 class="m-0 ml-3" th:text="${channel.getName()}">channel.name</h2>
             <!-- if current user is subscribed -->
-            <h5 class="m-0 ml-3 text-muted">
+            <h5 th:if="${subscription != null}" class="m-0 ml-3 text-muted">
               Subscribed as
               <span class="text-uppercase text-warning"
-                >channel.member.current_user.role</span
+                th:text="${subscription.getRole().getName()}">channel.member.current_user.role</span
               >
             </h5>
             <!-- if current user is not subscribed & current user group == 1 -->
@@ -58,9 +59,9 @@
           </div>
           <div class="card-body text-left px-3 py-2">
             <h5 class="text-muted">Description</h5>
-            <p class="">channel.description</p>
+            <p class="" th:text="${channel.getDescription()}">channel.description</p>
             <h5 class="text-muted">Rules</h5>
-            <p class="">channel.rules</p>
+            <p class="" th:text="${channel.getRules()}">channel.rules</p>
           </div>
           <!-- if logged & current user is channel member & current user group == 1 -->
           <div class="card-footer">

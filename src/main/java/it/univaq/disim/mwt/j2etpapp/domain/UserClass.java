@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -39,6 +40,9 @@ public class UserClass implements Serializable {
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean hard_ban;
+
+    @Column(name = "birth_date", nullable = false)
+    private LocalDate birthDate;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
