@@ -369,6 +369,14 @@ public class DatabaseSeeder {
     }
 
     private void seedPosts(Long iter){
+        RoleClass admin = roleBO.findByName("admin");
+        RoleClass moderator = roleBO.findByName("moderator");
+        RoleClass member = roleBO.findByName("member");
+        ArrayList<RoleClass> roles = new ArrayList<>();
+        roles.add(admin);
+        roles.add(moderator);
+        roles.add(member);
+
         for(long i = 0; i < iter; i++){
             PostClass post = new PostClass();
             post.setTitle(faker.lorem().word());
@@ -389,6 +397,19 @@ public class DatabaseSeeder {
             post.setDownvote(faker.random().nextInt(0, 3).longValue());
             post.setUserId(randomElement(userBO.findAll()).getId());
             post.setChannelId(randomElement(channelBO.findAll()).getId());
+
+            if(userChannelRoleBO.findByChannelIdAndUserId(post.getChannelId(), post.getUserId()) == null){
+                RoleClass role = randomElement(roles);
+                UserChannelRole userChannelRole = new UserChannelRole();
+                UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+
+                userChannelRoleFKs.setChannelId(post.getChannelId());
+                userChannelRoleFKs.setRoleId(role.getId());
+                userChannelRoleFKs.setUserId(post.getUserId());
+                userChannelRole.setUserChannelRoleFKs(userChannelRoleFKs);
+
+                userChannelRoleBO.save(userChannelRole);
+            }
 
             Set<Long> images = new HashSet<>();
             images.add(imageBO.findByCaption("post_default.png").getId());
@@ -443,12 +464,38 @@ public class DatabaseSeeder {
     }
 
     private void seedReplies(Long iter){
+        RoleClass admin = roleBO.findByName("admin");
+        RoleClass moderator = roleBO.findByName("moderator");
+        RoleClass member = roleBO.findByName("member");
+        ArrayList<RoleClass> roles = new ArrayList<>();
+        roles.add(admin);
+        roles.add(moderator);
+        roles.add(member);
+
         for(long i = 0; i < iter; i++){
             ReplyClass reply = new ReplyClass();
 
             reply.setContent(faker.lorem().sentence());
             reply.setUpvote(faker.random().nextInt(0, 3).longValue());
             reply.setDownvote(faker.random().nextInt(0, 3).longValue());
+
+            PostClass post = randomElement(postBO.findAll());
+
+            reply.setUserId(randomElement(userBO.findAll()).getId());
+            reply.setChannelId(post.getChannelId());
+
+            if(userChannelRoleBO.findByChannelIdAndUserId(reply.getChannelId(), reply.getUserId()) == null){
+                RoleClass role = randomElement(roles);
+                UserChannelRole userChannelRole = new UserChannelRole();
+                UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+
+                userChannelRoleFKs.setChannelId(reply.getChannelId());
+                userChannelRoleFKs.setRoleId(role.getId());
+                userChannelRoleFKs.setUserId(reply.getUserId());
+                userChannelRole.setUserChannelRoleFKs(userChannelRoleFKs);
+
+                userChannelRoleBO.save(userChannelRole);
+            }
 
             Set<Long> usersDownvotedSet = new HashSet<>();
             for(UserClass user : pickRandomElements(userBO.findAll(), reply.getDownvote())){
@@ -470,7 +517,6 @@ public class DatabaseSeeder {
 
             reply.setUsersUpvoted(usersUpvotedSet);
 
-            PostClass post = randomElement(postBO.findAll());
             Set<ReplyClass> replies = post.getReplies();
 
             if(replies == null || replies.isEmpty()){

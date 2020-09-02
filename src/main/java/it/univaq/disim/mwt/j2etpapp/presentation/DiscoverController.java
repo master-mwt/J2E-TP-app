@@ -24,7 +24,6 @@ public class DiscoverController {
     @Autowired
     private UserChannelRoleBO userChannelRoleBO;
 
-    // TODO: discoverChannel and discoverChannelPostPage passing variables through template
     @GetMapping("/discover/channel/{id}")
     public String discoverChannel(@PathVariable("id") Long id, Model model) {
         ChannelClass channel = channelBO.findById(id);
@@ -47,6 +46,9 @@ public class DiscoverController {
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
         model.addAttribute("userChannelRoleBO", userChannelRoleBO);
+        model.addAttribute("principal", (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null);
+        UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId()) : null;
+        model.addAttribute("subscription", subscription);
         return "pages/discover/channel";
     }
 

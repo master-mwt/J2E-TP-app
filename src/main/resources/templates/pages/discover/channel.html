@@ -3,9 +3,9 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   layout:decorate="~{commons/exskel}"
 >
-  <!-- TODO: all if-else conditions -->
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
       <div class="col-md-12 text-center px-0">
@@ -33,11 +33,11 @@
               >
             </h5>
             <!-- if current user is not subscribed & current user group == 1 -->
-            <button onclick="" class="btn btn btn-outline-light ml-auto">
+            <button sec:authorize="!isAnonymous()" th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName())}" onclick="" class="btn btn btn-outline-light ml-auto">
               JOIN
             </button>
             <!-- if current user is subscribed & current user role == creator -->
-            <div class="d-flex flex-column ml-auto">
+            <div sec:authorize="!isAnonymous()" th:if="${(subscription != null) && ('creator'.equals(subscription.getRole().getName()))}" class="d-flex flex-column ml-auto">
               <button
                 class="btn btn-outline-danger mb-2"
                 data-toggle="modal"
@@ -53,7 +53,7 @@
               >
             </div>
             <!-- if current user is subscribed -->
-            <button onclick="" class="btn btn btn-outline-warning ml-auto">
+            <button sec:authorize="!isAnonymous()" th:if="${subscription != null}" onclick="" class="btn btn btn-outline-warning ml-auto">
               LEAVE
             </button>
           </div>
@@ -64,7 +64,7 @@
             <p class="" th:text="${channel.getRules()}">channel.rules</p>
           </div>
           <!-- if logged & current user is channel member & current user group == 1 -->
-          <div class="card-footer">
+          <div sec:authorize="!isAnonymous()" th:if="${(subscription != null) && ('logged'.equals(principal.getGroup().getName()))}" class="card-footer">
             <a role="button" href="" class="btn btn-sm btn-info float-right"
               >Members</a
             >
@@ -73,15 +73,14 @@
               role="button"
               href=""
               class="btn btn-sm btn-info float-right mr-2"
-              >Reported Posts</a
-            >
-            @endif @if($channel->member->role_id->name != 'member' &&
-            $channel->member->role_id->name != 'moderator')
+              th:unless="${'member'.equals(subscription.getRole().getName())}"
+              >Reported Posts</a>
             <!-- if current user role != member & != moderator -->
             <a
               role="button"
               href=""
               class="btn btn-sm btn-info float-right mr-2"
+              th:unless="${'member'.equals(subscription.getRole().getName()) && 'moderator'.equals(subscription.getRole().getName())}"
               >Banned Users</a
             >
           </div>
@@ -92,16 +91,17 @@
       <div
         class="alert alert-danger col-md-12 text-center"
         style="max-width: 800px"
+        th:if="${(errors != null) && (errors.size() > 0)}"
       >
         <strong>server error</strong>
         <ul>
           <!-- foreach errors as error -->
-          <li>{{$error}}</li>
+          <li th:each="error : ${errors}" th:text="${error}">{{$error}}</li>
           <!-- endforeach -->
         </ul>
       </div>
       <!-- if logged -->
-      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px">
+      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px" sec:authorize="!isAnonymous()">
         <button
           class="btn btn-success btn-block"
           data-toggle="modal"
@@ -111,7 +111,7 @@
         </button>
       </div>
       <!-- else -->
-      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px">
+      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px" sec:authorize="isAnonymous()">
         <a role="button" href="" class="btn btn-success btn-block text-light"
           >Make a Post</a
         >
@@ -122,37 +122,39 @@
         <div
           class="card col-lg-10 mx-auto d-flex flex-row px-0"
           style="max-width: 800px"
+          th:each="post : ${postPage.getContent()}"
         >
           <div
             class="rounded-left py-3 d-flex flex-column"
             style="flex: 0 0 50px; background-color: #222"
           >
             <!-- if post not upvoted -->
-            <a id="post-postid-upvote" href="" class="upvote"
+            <a th:id="${'post-' + post.getId() + '-upvote'}" href="" class="upvote"
               ><i class="fas fa-arrow-up mb-1"></i
             ></a>
             <!-- if post upvoted -->
-            <a id="post-postid-upvote" href="" class="text-warning upvote"
+            <a th:id="${'post-' + post.getId() + '-upvote'}" href="" class="text-warning upvote"
               ><i class="fas fa-arrow-up mb-1"></i
             ></a>
             <!-- else, not logged -->
             <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- if post upvoted | post downvoted -->
             <span
-              id="post-postid-votenumber"
+              th:id="${'post-' + post.getId() + '-votenumber'}"
               class="my-1 text-warning votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}"
               >upv-dov</span
             >
             <!-- else -->
-            <span id="post-postid-votenumber" class="my-1 text-light votenumber"
-              >upv-dov</span
+            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-light votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span
             >
             <!-- if post not downvoted -->
-            <a id="post-postid-downvote" href="" class="downvote"
+            <a th:id="${'post-' + post.getId() + '-downvote'}" href="" class="downvote"
               ><i class="fas fa-arrow-down"></i
             ></a>
             <!-- if post downvoted -->
-            <a id="post-postid-downvote" href="" class="text-warning downvote"
+            <a th:id="${'post-' + post.getId() + '-downvote'}" href="" class="text-warning downvote"
               ><i class="fas fa-arrow-down"></i
             ></a>
             <!-- else -->
@@ -169,7 +171,7 @@
 
             <!-- if post has images, e.g. boolean -->
             <div
-              id="postcarousel-postid"
+              th:id="${'postcarousel-' + post.getId()}"
               class="carousel slide overflow-hidden"
               data-ride="carousel"
               style="max-width: 800px; height: 200px"
@@ -186,7 +188,7 @@
                 <!-- endforeach -->
               </div>
               <a
-                href="#postcarousel-postid"
+                th:href="${'#postcarousel-' + post.getId()}"
                 class="carousel-control-prev"
                 role="button"
                 data-slide="prev"
@@ -198,7 +200,7 @@
                 <span class="sr-only">prev</span>
               </a>
               <a
-                href="#postcarousel-postid"
+                th:href="${'#postcarousel-' + post.getId()}"
                 class="carousel-control-next"
                 role="button"
                 data-slide="next"
@@ -213,24 +215,26 @@
             <!-- endif -->
 
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1">
+              <p class="m-0 mb-1" th:with="user=${userBO.findById(post.getUserId())}, userChannelRole=${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), user.getId())}">
                 <span class="text-muted">Posted by </span>
-                <a href="" class="text-decoration-none">post.username</a>
+                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}" class="text-decoration-none" th:text="${user.getUsername()}">post.username</a>
                 <span class="badge badge-pill badge-secondary ml-1"
-                  >post.user.role</span
+                      th:if="${userChannelRole != null}"
+                      th:text="${userChannelRole.getRole().getName()}">post.user.role</span
                 >
               </p>
               <h5 class="m-0">
-                <a href="" class="text-decoration-none">post.title</a>
+                <a th:href="@{/discover/post/{id}/(id=${post.getId()})}" class="text-decoration-none" th:text="${post.getTitle()}">post.title</a>
               </h5>
             </div>
             <div class="card-body text-left px-3 py-1">
-              <div class="markdown-content" data-markdown-content=""></div>
+              <div class="markdown-content" th:data-markdown-content="${post.getContent()}"></div>
               <!-- foreach tags as tag -->
-              <a href=""
+              <a th:each="tag : ${post.getTags()}" th:href="@{/search/(target=tags, query=${tag.getName()})}"
                 ><span
                   class="badge badge-pill"
                   style="font-size: 11px; background-color: #ddd"
+                  th:text="${tag.getName()}"
                   >tag.tag-id.name</span
                 ></a
               >
@@ -242,18 +246,17 @@
             >
               <!-- if post not saved -->
               <a
-                id="post-postid-save"
+                th:id="${'post-' + post.getId() + '-save'}"
                 href=""
                 class="text-decoration-none mr-2 save"
-                ><i id="post-postid-save-icon" class="far fa-bookmark mr-1"></i
-                >Save</a
-              >
+                ><i th:id="${'post-' + post.getId() + '-save-icon'}" class="far fa-bookmark mr-1"></i
+                >Save</a>
               <!-- if post saved -->
               <a
-                id="post-postid-save"
+                th:id="${'post-' + post.getId() + '-save'}"
                 href=""
                 class="text-decoration-none mr-2 text-danger save"
-                ><i id="post-postid-save-icon" class="fas fa-bookmark mr-1"></i
+                ><i th:id="${'post-' + post.getId() + '-save-icon'}" class="fas fa-bookmark mr-1"></i
                 >Unsave</a
               >
               <!-- else -->
@@ -262,40 +265,36 @@
               >
               <!-- if post not hidden -->
               <a
-                id="post-postid-hide"
+                th:id="${'post-' + post.getId() + '-hide'}"
                 href=""
                 class="text-decoration-none mr-2 hide"
-                ><i id="post-postid-hide-icon" class="far fa-eye-slash mr-1"></i
-                >Hide</a
-              >
+                ><i th:id="${'post-' + post.getId() + '-hide-icon'}" class="far fa-eye-slash mr-1"></i
+                >Hide</a>
               <!-- if post hidden -->
               <a
-                id="post-postid-hide"
+                th:id="${'post-' + post.getId() + '-hide'}"
                 href=""
                 class="text-decoration-none mr-2 text-danger hide"
-                ><i id="post-postid-hide-icon" class="fas fa-eye-slash mr-1"></i
-                >Unhide</a
-              >
+                ><i th:id="${'post-' + post.getId() + '-hide-icon'}" class="fas fa-eye-slash mr-1"></i
+                >Unhide</a>
               <!-- else -->
-              <a href="{{route('login')}}" class="text-decoration-none mr-2"
+              <a th:href="@{/login}" class="text-decoration-none mr-2"
                 ><i class="far fa-eye-slash mr-1"></i>Hide</a
               >
               <!-- if post not reported -->
               <a
-                id="post-postid-report"
+                th:id="${'post-' + post.getId() + '-report'}"
                 href=""
                 class="text-decoration-none mr-2 report"
-                ><i id="post-postid-report-icon" class="far fa-flag mr-1"></i
-                >Report Post</a
-              >
+                ><i th:id="${'post-' + post.getId() + '-report-icon'}" class="far fa-flag mr-1"></i
+                >Report Post</a>
               <!-- if post reported -->
               <a
-                id="post-postid-report"
+                th:id="${'post-' + post.getId() + '-report'}"
                 href=""
                 class="text-decoration-none mr-2 text-danger report"
-                ><i id="post-postid-report-icon" class="fas fa-flag mr-1"></i
-                >Unreport Post</a
-              >
+                ><i th:id="${'post-' + post.getId() + '-report-icon'}" class="fas fa-flag mr-1"></i
+                >Unreport Post</a>
               <!-- else -->
               <a href="" class="text-decoration-none mr-2"
                 ><i class="far fa-flag mr-1"></i>Report Post</a
@@ -304,6 +303,10 @@
           </div>
         </div>
         <!-- endforeach -->
+        <ul th:if="${postPage.getTotalPages() > 1}" class="pagination">
+          <li class="page-item active"><a class="page-link" href="#" th:href="@{/discover/channel/{id}/posts/page/{pageId}/(id=${channel.getId()}, pageId=${postPage.getNumber()})}" th:text="${postPage.getNumber()}"></a></li>
+          <li class="page-item" th:if="${!postPage.isLast()}"><a class="page-link" href="#" th:href="@{/discover/channel/{id}/posts/page/{pageId}/(id=${channel.getId()}, pageId=${postPage.getNumber()+1})}">Next</a></li>
+        </ul>
       </div>
     </div>
 
