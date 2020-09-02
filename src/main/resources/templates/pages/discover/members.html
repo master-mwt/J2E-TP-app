@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{commons/exskel}"
+>
+  <div class="container p-4" layout:fragment="content">
+    <div class="row justify-content-center">
+      <a role="button" href="" class="btn btn-dark mb-4"
+        ><i class="fas fa-arrow-left mr-2"></i> back to channel channel.name</a
+      >
+      <div class="col-md-12 text-center infinite-scroll px-0">
+        <!-- foreach channel.members as member -->
+        <!-- if member.role is creator -->
+        <!-- IMPLEMENT IF STATEMENT WITH THYMELEAF AND REMOVE (THIS) </div> TAGS -->
+        <div
+          class="card col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px; background-color: #111"
+        >
+          <!-- (THIS) -->
+        </div>
+        <!-- if member.role is admin -->
+        <div
+          class="card col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px; background-color: #222"
+        >
+          <!-- (THIS) -->
+        </div>
+        <!-- if member.role is moderator -->
+        <div
+          class="card col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px; background-color: #333"
+        >
+          <!-- (THIS) -->
+        </div>
+        <!-- if member.role is member -->
+        <div
+          class="card col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px; background-color: #444"
+        >
+          <!-- else -->
+          <!-- end if -->
+          <div
+            class="col card-header border-0 px-3 d-flex flex-row"
+            style="align-items: center"
+          >
+            <img
+              th:src="@{/images/no_profile_img.jpg}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded-circle"
+            />
+            <!-- if member not reported -->
+            <h4 class="m-0 ml-3">
+              <a href="" class="text-decoration-none text-info" href=""
+                >member.username</a
+              >
+            </h4>
+            <span class="ml-3 badge badge-pill badge-info"
+              >{{$member->reported}}</span
+            >
+            <!-- if member is reported -->
+            <h4 class="m-0 ml-3">
+              <a href="" class="text-decoration-none text-warning" href=""
+                >member.username</a
+              >
+            </h4>
+            <span class="ml-3 badge badge-pill badge-warning"
+              >member.reported</span
+            >
+            <!-- else -->
+            <!-- end if -->
+
+            <!-- if member.role is creator -->
+            <h5 class="m-0 ml-auto">
+              <span class="text-danger">member.role.name</span>
+            </h5>
+
+            <!-- if member.role is admin -->
+            <h5 class="m-0 ml-auto">
+              <span class="text-warning">member.role.name</span>
+            </h5>
+
+            <!-- if member.role is moderator -->
+            <h5 class="m-0 ml-auto">
+              <span class="text-success">member.role.name</span>
+            </h5>
+
+            <!-- if member.role is member -->
+            <h5 class="m-0 ml-auto">
+              <span class="text-light">member.role.name</span>
+            </h5>
+
+            <!-- else -->
+            <!-- end if -->
+          </div>
+          <!-- if member.role is NOT creator -->
+          <div class="card-body p-0 px-3 border-0 d-flex flex-column">
+            <!-- if user.role is creator | is admin -->
+            <!-- if member is NOT banned -->
+            <a href="" class="ml-auto" style="color: orange">BAN USER</a>
+            <!-- else -->
+            <!-- end if -->
+            <!-- end if -->
+
+            <!-- if user.role is creator | is admin | is moderator -->
+            <!-- if member is NOT reported -->
+            <a href="" class="ml-auto" style="color: violet">REPORT USER</a>
+            <!-- else -->
+            <a href="" class="ml-auto text-warning">UNREPORT USER</a>
+            <!-- end if -->
+            <!-- end if -->
+          </div>
+          <!-- end if -->
+          <div class="card-footer border-0">
+            <!-- if user.role is creator -->
+
+            <!-- if member.role is admin -->
+            <button
+              onclick=""
+              class="btn btn-sm btn-outline-light float-right ml-2"
+            >
+              <i class="fas fa-arrow-down mr-2"></i
+              ><span class="">Downgrade to MODERATOR</span>
+            </button>
+
+            <!-- if member.role is moderator -->
+            <button
+              onclick=""
+              class="btn btn-sm btn-outline-light float-right ml-2"
+            >
+              <i class="fas fa-arrow-down mr-2"></i
+              ><span class="">Downgrade to MEMBER</span>
+            </button>
+            <button onclick="" class="btn btn-sm btn-outline-light float-right">
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span class="">Upgrade to ADMIN</span>
+            </button>
+
+            <!-- if member.role is member -->
+            <button onclick="" class="btn btn-sm btn-outline-light float-right">
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span class="">Upgrade to MODERATOR</span>
+            </button>
+
+            <!-- else -->
+            <!-- end if -->
+
+            <!-- if user.role is admin -->
+            <!-- if member.role is moderator -->
+            <button
+              onclick=""
+              class="btn btn-sm btn-outline-light float-right ml-2"
+            >
+              <i class="fas fa-arrow-down mr-2"></i
+              ><span class="">Downgrade to MEMBER</span>
+            </button>
+
+            <!-- if member.role is member -->
+            <button onclick="" class="btn btn-sm btn-outline-light float-right">
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span class="">Upgrade to MODERATOR</span>
+            </button>
+
+            <!-- else -->
+            <!-- end if -->
+
+            <!-- is user.group is 1 -->
+            <!-- if member.role is creator -->
+            <button
+              onclick=""
+              class="btn btn-sm btn-outline-light float-right ml-2"
+            >
+              <i class="fas fa-arrow-down mr-2"></i
+              ><span class="">Downgrade to ADMIN</span>
+            </button>
+
+            <!-- if member.role is admin -->
+            <button
+              onclick=""
+              class="btn btn-sm btn-outline-light float-right ml-2"
+            >
+              <i class="fas fa-arrow-down mr-2"></i
+              ><span class="">Downgrade to MODERATOR</span>
+            </button>
+            <button onclick="" class="btn btn-sm btn-outline-light float-right">
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span class="">Upgrade to CREATOR</span>
+            </button>
+
+            <!-- if member.role is moderator -->
+            <button
+              onclick=""
+              class="btn btn-sm btn-outline-light float-right ml-2"
+            >
+              <i class="fas fa-arrow-down mr-2"></i
+              ><span class="">Downgrade to MEMBER</span>
+            </button>
+            <button onclick="" class="btn btn-sm btn-outline-light float-right">
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span class="">Upgrade to ADMIN</span>
+            </button>
+
+            <!-- if member.role is member -->
+            <button onclick="" class="btn btn-sm btn-outline-light float-right">
+              <i class="fas fa-arrow-up mr-2"></i>
+              <span class="">Upgrade to MODERATOR</span>
+            </button>
+
+            <!-- else -->
+            <!-- end if -->
+
+            <!-- else -->
+            <!-- end if -->
+          </div>
+        </div>
+        <!-- end foreach -->
+      </div>
+    </div>
+
+    <!-- JScroll func -->
+    <script type="text/javascript">
+      $("ul.pagination").hide();
+      $(function () {
+        $("document").ready(function () {
+          $(".infinite-scroll").jscroll({
+            autoTrigger: true,
+            loadingHtml:
+              '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            padding: 0,
+            nextSelector: ".pagination li.active + li a",
+            contentSelector: "div.infinite-scroll",
+            callback: function () {
+              $("ul.pagination").remove();
+            },
+          });
+        });
+      });
+    </script>
+  </div>
+</html>

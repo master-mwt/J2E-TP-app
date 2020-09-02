@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{commons/exskel}"
+>
+  <div class="container p-4" layout:fragment="content">
+    <div class="row justify-content-center">
+      <a role="button" href="" class="btn btn-dark mb-4"
+        ><i class="fas fa-arrow-left mr-2"></i> back to channel channel.name</a
+      >
+      <div class="col-md-12 text-center infinite-scroll px-0">
+        <!-- foreach channel.members as member -->
+        <div
+          class="card col-lg-10 mx-auto d-flex flex-column px-0"
+          style="max-width: 600px; background-color: #111"
+        >
+          <div
+            class="col card-header border-0 px-3 d-flex flex-row"
+            style="align-items: center"
+          >
+            <img
+              th:src="@{/images/no_profile_img.jpg}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded-circle"
+            />
+            <h4 class="m-0 ml-3">
+              <a href="" class="text-decoration-none text-info" href=""
+                >member.username}</a
+              >
+            </h4>
+            <a href="" class="ml-auto" style="color: orange">UNBAN USER</a>
+          </div>
+        </div>
+        <!-- end foreach -->
+      </div>
+    </div>
+
+    <!-- JScroll func -->
+    <script type="text/javascript">
+      $("ul.pagination").hide();
+      $(function () {
+        $("document").ready(function () {
+          $(".infinite-scroll").jscroll({
+            autoTrigger: true,
+            loadingHtml:
+              '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            padding: 0,
+            nextSelector: ".pagination li.active + li a",
+            contentSelector: "div.infinite-scroll",
+            callback: function () {
+              $("ul.pagination").remove();
+            },
+          });
+        });
+      });
+    </script>
+  </div>
+</html>

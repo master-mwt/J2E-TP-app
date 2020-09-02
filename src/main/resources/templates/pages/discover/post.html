@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{commons/exskel}"
+>
+  <div class="container p-4" layout:fragment="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12 text-center px-0">
+        <div class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
+          <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #222">
+            <!-- if post not upvoted -->
+            <a id="post-postid-upvote" href="" class="upvote"><i
+                class="fas fa-arrow-up mb-1"></i></a>
+            <!-- if post upvoted -->
+            <a id="post-postid-upvote" href="" class="text-warning upvote"><i
+                class="fas fa-arrow-up mb-1"></i></a>
+            <!-- else -->
+            <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
+            <!-- if post upvoted | downvoted -->
+            <span id="post-postid-votenumber"
+              class="my-1 text-warning votenumber">upv-dov</span>
+            <!-- else -->
+            <span id="post-postid-votenumber"
+              class="my-1 text-light votenumber">upv-dov</span>
+            <!-- if post not downvoted -->
+            <a id="post-postid-downvote" href="" class="downvote"><i
+                class="fas fa-arrow-down"></i></a>
+            <!-- if post downvoted -->
+            <a id="post-postid-downvote" href=""
+              class="text-warning downvote"><i class="fas fa-arrow-down"></i></a>
+            <!-- else -->
+            <a href="" class=""><i class="fas fa-arrow-down"></i></a>
+          </div>
+          <div class="col p-0 d-flex flex-column overflow-auto">
+  
+            <style>
+              .carousel-control-prev:hover,
+              .carousel-control-next:hover {
+                background-color: rgba(200, 200, 200, 0.2);
+                transition: 0.3s;
+              }
+            </style>
+    
+            <!-- if post has images -->
+            <div id="postcarousel-postid" class="carousel slide overflow-hidden" data-ride="carousel"
+              style="max-width:800px;">
+              <div class="carousel-inner bg-secondary rounded-right">
+                <!-- foreach images as image -->
+                <!-- if first loop -->
+                <div class="carousel-item active">
+                  <img src="" class="d-block mx-auto w-100 h-auto">
+                </div>
+                <!-- else -->
+                <div class="carousel-item">
+                  <img src="" class="d-block mx-auto w-100 h-auto">
+                </div>
+                <!-- endforeach -->
+              </div>
+              <a href="#postcarousel-postid" class="carousel-control-prev" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">prev</span>
+              </a>
+              <a href="#postcarousel-postid" class="carousel-control-next" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">next</span>
+              </a>
+            </div>
+            <!-- endif -->
+            <div class="card-header text-left border-0 px-3">
+              <p class="m-0 mb-1">
+                <a href=""
+                  class="text-decoration-none"><b>post.channel_name &#183</b></a> <span
+                  class="text-muted">Posted by </span>
+                <a href=""
+                  class="text-decoration-none">post.username</a>
+              </p>
+              <h5 class="m-0"><a href=""
+                  class="text-decoration-none">post.title</a></h5>
+            </div>
+            <div class="card-body text-left px-3 py-1">
+              <div class="markdown-content" data-markdown-content=""></div>
+              <!-- foreach post.tags as tag -->
+              <a href=""><span
+                  class="badge badge-pill" style="font-size: 11px; background-color: #ddd">tag.tag-id.name</span></a>
+              <!-- endforeach -->
+            </div>
+            <div class="card-footer border-0 p-1 px-3 text-left mt-1" style="border-bottom-left-radius: 0px">
+              <!-- if post not saved -->
+              <a id="post-postid-save"
+                href=""
+                class="text-decoration-none mr-2 save"><i id="post-postid-save-icon"
+                  class="far fa-bookmark mr-1"></i>Save</a>
+              <!-- if post saved -->
+              <a id="post-postid-save"
+                href=""
+                class="text-decoration-none mr-2 text-danger save"><i id="post-postid-save-icon"
+                  class="fas fa-bookmark mr-1"></i>Unsave</a>
+              <!-- else -->
+              <a href="" class="text-decoration-none mr-2"><i class="far fa-bookmark mr-1"></i>Save</a>
+              <!-- if post not hidden -->
+              <a id="post-postid-hide"
+                href=""
+                class="text-decoration-none mr-2 hide"><i id="post-postid-hide-icon"
+                  class="far fa-eye-slash mr-1"></i>Hide</a>
+              <!-- if post hidden -->
+              <a id="post-postid-hide"
+                href=""
+                class="text-decoration-none mr-2 text-danger hide"><i id="post-postid-hide-icon"
+                  class="fas fa-eye-slash mr-1"></i>Unhide</a>
+              <!-- else -->
+              <a href="" class="text-decoration-none mr-2"><i class="far fa-eye-slash mr-1"></i>Hide</a>
+              <!-- if post not reported -->
+              <a id="post-postid-report"
+                href=""
+                class="text-decoration-none report"><i id="post-postid-report-icon"
+                  class="far fa-flag mr-1"></i>Report Post</a>
+              <!-- if post reported -->
+              <a id="post-postid-report"
+                href=""
+                class="text-decoration-none text-danger report"><i id="post-postid-report-icon"
+                  class="fas fa-flag mr-1"></i>Unreport Post</a>
+              <!-- else -->
+              <a href="" class="text-decoration-none"><i class="far fa-flag mr-1"></i>Report Post</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- only logged -->
+      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px">
+        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#easymde-modal-reply">Make a
+          Reply</button>
+      </div>
+      <!-- else -->
+      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px">
+        <a role="button" href="" class="btn btn-success btn-block text-light">Make a Reply</a>
+      </div>
+      <!-- end only logged -->
+    
+      <div class="col-md-12 text-center infinite-scroll px-0">
+        <!-- foreach replies as reply -->
+        <div id="reply-replyid" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
+          <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #ddd">
+            <!-- if reply not upvoted -->
+            <a id="reply-replyid-upvote" href="" class="replyupvote"><i
+                class="fas fa-arrow-up mb-1"></i></a>
+            <!-- if reply upvoted -->
+            <a id="reply-replyid-upvote" href=""
+              class="text-danger replyupvote"><i class="fas fa-arrow-up mb-1"></i></a>
+            <!-- else -->
+            <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
+            <!-- if reply upvoted | downvoted -->
+            <span id="reply-replyid-votenumber"
+              class="my-1 text-danger text-bold votenumber">upv-dov</span>
+            <!-- else -->
+            <span id="reply-replyid-votenumber"
+              class="my-1 text-dark text-bold votenumber">upv-dov</span>
+            <!-- if reply not downvoted -->
+            <a id="reply-replyid-downvote" href="" class="replydownvote"><i
+                class="fas fa-arrow-down"></i></a>
+            <!-- if reply downvoted -->
+            <a id="reply-replyid-downvote" href=""
+              class="text-danger replydownvote"><i class="fas fa-arrow-down"></i></a>
+            <!-- else -->
+            <a href="" class=""><i class="fas fa-arrow-down"></i></a>
+          </div>
+          <div class="col p-0 d-flex flex-column overflow-auto">
+            <div class="card-header text-left border-0 px-3">
+              <p class="m-0 mb-1">
+                <span class="text-muted">Posted by </span>
+                <a href=""
+                  class="text-decoration-none">reply.username</a>
+              </p>
+            </div>
+            <div class="card-body text-left px-3 py-1">
+              <div class="markdown-content" data-markdown-content=""></div>
+            </div>
+            <div class="card-footer border-0 p-1 px-3 text-left" style="border-bottom-left-radius: 0px">
+              <a href="" class="text-decoration-none float-right" data-toggle="collapse"><i
+                  class="fas fa-eye mr-2"></i>Edit Reply (optional feature)</a>
+              <a href=""
+                class="text-decoration-none mr-2 text-danger replydelete"><i class="fa fa-exclamation-triangle"></i> Delete
+                Reply</a>
+            </div>
+          </div>
+        </div>
+        <!-- end foreach -->
+      </div>
+    </div>
+
+    <!-- JScroll func -->
+    <script type="text/javascript">
+      $('ul.pagination').hide();
+      $(function () {
+        $('document').ready(function () {
+          $('.markdown-content').each(function () {
+            let markdown_content = $(this).data('markdown-content');
+            $(this).html(marked(markdown_content));
+          });
+          $('.infinite-scroll').jscroll({
+            autoTrigger: true,
+            loadingHtml: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            padding: 0,
+            nextSelector: '.pagination li.active + li a',
+            contentSelector: 'div.infinite-scroll',
+            callback: function () {
+              $('ul.pagination').remove();
+              // Marked markdown parser func
+              // maybe remove document ready
+              $(document).ready(function () {
+                $('.markdown-content').each(function () {
+                  let markdown_content = $(this).data('markdown-content');
+                  $(this).html(marked(markdown_content));
+                });
+              });
+            }
+          });
+        });
+      });
+    </script>
+    
+    <!-- only logged -->
+    <form action="/replies" method="post">
+      <div class="modal fade" id="easymde-modal-reply" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="easymde-modal-reply-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title ml-auto" id="easymde-modal-reply-label">make a reply</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- {{ Form::hidden('channel_id', $post->channel_id->id) }}
+              {{ Form::hidden('post_id', $post->id) }} -->
+              <textarea name="content" id="easymde-area-reply" cols="" rows=""></textarea>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary">submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- end only logged -->
+    
+    <!-- only logged -->
+    <script type="text/javascript">
+
+      //easymde-area-reply [easymde-modal-reply]
+      new EasyMDE({
+        autoDownloadFontAwesome: false,
+        indentWithTabs: true,
+        lineWrapping: true,
+        minHeight: "400px",
+        //showIcons: ['strikethrough', 'code', 'table', 'redo', 'heading', 'undo', 'heading-bigger', 'heading-smaller', 'heading-1', 'heading-2', 'heading-3', 'clean-block', 'horizontal-rule'],
+        showIcons: ['strikethrough', 'code', 'table', 'redo', 'heading', 'undo', 'heading-bigger', 'heading-smaller', 'clean-block', 'horizontal-rule'],
+        element: document.getElementById('easymde-area-reply'),
+        initialValue: '',
+        //TODO: insertTexts (horizontalRule, link, IMAGE, table) customize how buttons that insert text behave
+        insertTexts: {
+          image: ["<img src=\"", "\" width=\"\" heigth=\"\">"],
+        },
+        uploadImage: false,
+      });
+
+    </script>
+    <!-- end only logged -->
+
+  </div>
+</html>
