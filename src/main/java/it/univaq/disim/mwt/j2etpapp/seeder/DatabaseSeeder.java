@@ -397,6 +397,9 @@ public class DatabaseSeeder {
             post.setDownvote(faker.random().nextInt(0, 3).longValue());
             post.setUserId(randomElement(userBO.findAll()).getId());
             post.setChannelId(randomElement(channelBO.findAll()).getId());
+            
+            // reported post probability: 1/4
+            post.setReported(randomElement(Arrays.asList(false, false, true, false)));
 
             if(userChannelRoleBO.findByChannelIdAndUserId(post.getChannelId(), post.getUserId()) == null){
                 RoleClass role = randomElement(roles);

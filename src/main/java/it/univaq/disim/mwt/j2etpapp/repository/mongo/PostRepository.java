@@ -15,7 +15,9 @@ import java.util.Set;
 public interface PostRepository extends PagingAndSortingRepository<PostClass, String> {
     Optional<List<PostClass>> findByChannelId(Long channelId);
     Page<PostClass> findByChannelId(Long channelId, Pageable pageable);
+    Page<PostClass> findByChannelIdAndReported(Long channelId, boolean reported, Pageable pageable);
     Optional<List<PostClass>> findByUserId(Long userId);
+    Page<PostClass> findByUserId(Long userId, Pageable pageable);
     Optional<List<PostClass>> findByTagsContains(Set<TagClass> tags);
     Page<PostClass> findByTagsContains(Set<TagClass> tags, Pageable pageable);
     Optional<List<PostClass>> findByTitleContains(String title);

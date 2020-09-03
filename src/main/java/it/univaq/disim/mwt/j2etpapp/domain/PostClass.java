@@ -38,6 +38,8 @@ public class PostClass implements Serializable {
     @Column(name = "channel_id")
     private Long channelId;
 
+    private boolean reported;
+
     private Set<TagClass> tags;
 
     @DBRef

@@ -1,9 +1,11 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserChannelRoleBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserChannelRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,11 @@ public class UserChannelRoleBOImpl implements UserChannelRoleBO {
     @Override
     public List<UserChannelRole> findByChannelId(Long channelId) {
         return userChannelRoleRepository.findByChannelId(channelId).orElse(null);
+    }
+
+    @Override
+    public Page<UserChannelRole> findByChannelIdPaginated(Long channelId, int page, int size) {
+        return new Page<>(userChannelRoleRepository.findByChannelId(channelId, PageRequest.of(page, size)));
     }
 
     @Override

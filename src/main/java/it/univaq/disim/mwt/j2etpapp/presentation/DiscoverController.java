@@ -4,6 +4,7 @@ import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +40,7 @@ public class DiscoverController {
     }
 
     @GetMapping("/discover/channel/{id}/posts/page/{pageId}")
-    public String discoverChannelPostPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
+    public String discoverChannelPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(id, pageId, 10);
         model.addAttribute("channel", channel);
@@ -52,10 +53,73 @@ public class DiscoverController {
         return "pages/discover/channel";
     }
 
+    @GetMapping("/discover/channel/{id}/posts/reported")
+    public String discoverChannelPostsReported(@PathVariable("id") Long id, Model model) {
+        ChannelClass channel = channelBO.findById(id);
+        Page<PostClass> postPage = postBO.findByChannelIdReportedOrderByCreatedAtDescPaginated(id, 0, 10);
+        model.addAttribute("channel", channel);
+        model.addAttribute("postPage", postPage);
+        return "pages/discover/reported_posts";
+    }
+
+    @GetMapping("/discover/channel/{id}/posts/reported/page/{pageId}")
+    public String discoverChannelPostsReportedPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
+        ChannelClass channel = channelBO.findById(id);
+        Page<PostClass> postPage = postBO.findByChannelIdReportedOrderByCreatedAtDescPaginated(id, pageId, 10);
+        model.addAttribute("channel", channel);
+        model.addAttribute("postPage", postPage);
+        return "pages/discover/reported_posts";
+    }
+
+    @GetMapping("/discover/channel/{id}/members")
+    public String discoverChannelMembers(@PathVariable("id") Long id, Model model) {
+        ChannelClass channel = channelBO.findById(id);
+        Page<UserChannelRole> members = userChannelRoleBO.findByChannelIdPaginated(channel.getId(), 0, 10);
+        model.addAttribute("channel", channel);
+        model.addAttribute("members", members);
+        model.addAttribute("userBO", userBO);
+        return "pages/discover/members";
+    }
+
+    @GetMapping("/discover/channel/{id}/members/page/{pageId}")
+    public String discoverChannelMembersPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
+        ChannelClass channel = channelBO.findById(id);
+        Page<UserChannelRole> members = userChannelRoleBO.findByChannelIdPaginated(channel.getId(), pageId, 10);
+        model.addAttribute("channel", channel);
+        model.addAttribute("members", members);
+        model.addAttribute("userBO", userBO);
+        return "pages/discover/members";
+    }
+
+    @GetMapping("/discover/channel/{id}/members/banned")
+    public String discoverChannelMembersBanned(@PathVariable("id") Long id, Model model) {
+        ChannelClass channel = channelBO.findById(id);
+        model.addAttribute("channel", channel);
+        return "pages/discover/banned_users";
+    }
+
     @GetMapping("/discover/user/{id}")
     public String discoverUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userBO.findById(id));
         return "pages/discover/user";
+    }
+
+    @GetMapping("/discover/user/{id}/posts")
+    public String discoverUserPosts(@PathVariable("id") Long id, Model model) {
+        UserClass user = userBO.findById(id);
+        Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), 0, 10);
+        model.addAttribute("user", user);
+        model.addAttribute("postPage", postPage);
+        return "pages/discover/user_posts";
+    }
+
+    @GetMapping("/discover/user/{id}/posts/page/{pageId}")
+    public String discoverUserPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int page, Model model) {
+        UserClass user = userBO.findById(id);
+        Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), page, 10);
+        model.addAttribute("user", user);
+        model.addAttribute("postPage", postPage);
+        return "pages/discover/user_posts";
     }
 
     @GetMapping("/discover/post/{id}")
