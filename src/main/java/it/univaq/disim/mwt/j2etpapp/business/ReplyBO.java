@@ -10,6 +10,7 @@ public interface ReplyBO {
     List<ReplyClass> findAll();
     ReplyClass findById(String id);
     List<ReplyClass> findByPost(PostClass post);
+    Page<ReplyClass> findByPostOrderByCreatedAtDescPaginated(PostClass post, int page, int size);
     List<ReplyClass> findByChannelId(Long channelId);
     List<ReplyClass> findByUserId(Long userId);
     void save(ReplyClass reply);

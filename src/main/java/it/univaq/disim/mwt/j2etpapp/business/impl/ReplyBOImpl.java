@@ -1,10 +1,13 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,11 @@ public class ReplyBOImpl implements ReplyBO {
     @Override
     public List<ReplyClass> findByPost(PostClass post) {
         return replyRepository.findByPost(post).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public Page<ReplyClass> findByPostOrderByCreatedAtDescPaginated(PostClass post, int page, int size) {
+        return new Page<>(replyRepository.findByPost(post, PageRequest.of(page, size, Sort.by("created_at").descending())));
     }
 
     @Override

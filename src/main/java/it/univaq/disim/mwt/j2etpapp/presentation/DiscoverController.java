@@ -24,6 +24,8 @@ public class DiscoverController {
     private PostBO postBO;
     @Autowired
     private UserChannelRoleBO userChannelRoleBO;
+    @Autowired
+    private ReplyBO replyBO;
 
     @GetMapping("/discover/channel/{id}")
     public String discoverChannel(@PathVariable("id") Long id, Model model) {
@@ -124,7 +126,19 @@ public class DiscoverController {
 
     @GetMapping("/discover/post/{id}")
     public String discoverPost(@PathVariable("id") String id, Model model) {
-        model.addAttribute("post", postBO.findById(id));
+        PostClass post = postBO.findById(id);
+        model.addAttribute("post", post);
+        model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
+        model.addAttribute("userBO", userBO);
+        return "pages/discover/post";
+    }
+
+    @GetMapping("/discover/post/{id}/replies/page/{pageId}")
+    public String discoverPostPage(@PathVariable("id") String id, @PathVariable("pageId") int page, Model model) {
+        PostClass post = postBO.findById(id);
+        model.addAttribute("post", post);
+        model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, page, 10));
+        model.addAttribute("userBO", userBO);
         return "pages/discover/post";
     }
 }
