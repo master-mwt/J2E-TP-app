@@ -46,17 +46,6 @@ public class HomeController {
         return "pages/info/contact";
     }
 
-    @GetMapping("register")
-    public String register(Model model) {
-        return "pages/auth/register";
-    }
-
-    // mylogin in route to not override spring security login page
-    @GetMapping("mylogin")
-    public String mylogin(Model model) {
-        return "pages/auth/login";
-    }
-
     // only for testing
     @GetMapping("empty")
     public String empty(Model model) {

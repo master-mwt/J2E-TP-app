@@ -32,7 +32,7 @@ public class UserClass implements Serializable {
     @Column(nullable = false)
     private String surname;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)

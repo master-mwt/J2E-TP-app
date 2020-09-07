@@ -36,7 +36,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("administrator")
                 .antMatchers("/home").hasAnyRole("administrator", "logged")
                 .antMatchers("/", "/static/**", "/favicon.ico").permitAll()
-                .and().formLogin();
+                .and().formLogin()
+                // login
+                .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/", true)
+                .and()
+                // remember me
+                .rememberMe()
+                // remember me: checkbox parameter remember
+                .rememberMeParameter("remember")
+                .key("j2etpapp-remember")
+                // remember me: 1 day
+                .tokenValiditySeconds(86400)
+                .and()
+                // logout
+                .logout()
+                .deleteCookies("JSESSIONID")
+                .permitAll();
     }
 
     @Bean

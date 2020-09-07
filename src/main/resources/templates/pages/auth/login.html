@@ -11,13 +11,14 @@
         <div class="card">
           <div class="card-header">login</div>
           <div class="card-body">
-            <!-- session message
-            <div class="alert alert-danger">session message</div>
-            end session message -->
+            <!-- session message -->
+            <div th:if="${param.error}" class="alert alert-danger">Invalid username and password</div>
+            <div th:if="${param.logout}" class="alert alert-success">Logout successful</div>
+            <!-- end session message -->
 
-            <form method="POST" action="">
+            <form method="POST" th:action="@{/login}">
               <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right"
+                <!--<label for="email" class="col-md-4 col-form-label text-md-right"
                   >e-mail address</label
                 >
                 <div class="col-md-6">
@@ -31,7 +32,28 @@
                     autocomplete="email"
                     autofocus
                   />
-                  <!-- error email -->
+                  &lt;!&ndash; error email &ndash;&gt;
+                  &lt;!&ndash; <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span> &ndash;&gt;
+                  &lt;!&ndash; end error &ndash;&gt;
+                </div>-->
+
+                <label for="username" class="col-md-4 col-form-label text-md-right"
+                  >username</label
+                >
+                <div class="col-md-6">
+                  <input
+                    id="username"
+                    type="text"
+                    class="form-control"
+                    name="username"
+                    value=""
+                    required
+                    autocomplete="username"
+                    autofocus
+                  />
+                  <!-- error username -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span> -->

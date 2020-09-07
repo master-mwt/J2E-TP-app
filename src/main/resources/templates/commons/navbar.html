@@ -3,6 +3,7 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   layout:decorate="~{exskel}"
 >
   <nav
@@ -68,6 +69,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- only auth -->
       <button
+        sec:authorize="!isAnonymous()"
         class="btn btn-outline-none border-0"
         id="notify-btn"
         type="button"
@@ -78,28 +80,29 @@
       </button>
       <!-- end only auth -->
       <!-- guest only -->
-      <li class="nav-item">
-        <!-- login -->
-        <a th:href="@{mylogin}" class="nav-link"
+      <th:block sec:authorize="isAnonymous()">
+        <li class="nav-item">
+          <!-- login -->
+          <a th:href="@{login}" class="nav-link"
           ><i class="fas fa-sign-in-alt"></i
-        ></a>
-      </li>
-      <li class="nav-item">
-        <!-- register -->
-        <a th:href="@{register}" class="nav-link"
+          ></a>
+        </li>
+        <li class="nav-item">
+          <!-- register -->
+          <a th:href="@{register}" class="nav-link"
           ><i class="fas fa-user-plus"></i
-        ></a>
-      </li>
+          ></a>
+        </li>
+      </th:block>
       <!-- end guest only -->
       <!-- auth only -->
-      <li class="nav-item">
+      <li class="nav-item" sec:authorize="!isAnonymous()">
         <!-- logout -->
-        <a href="" class="nav-link" onclick="">
+        <a href="javascript:void()" class="nav-link" onclick="$('#logout-form').submit();">
           <i class="fas fa-sign-out-alt"></i>
         </a>
-
         <form
-          action=""
+          th:action="@{logout}"
           id="logout-form"
           method="post"
           style="display: none"
