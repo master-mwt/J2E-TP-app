@@ -12,13 +12,14 @@
           <div class="card-header">register</div>
 
           <div class="card-body">
-            <form method="POST" action="">
+            <form method="POST" th:action="@{register}" th:object="${user}">
               <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right"
                   >name</label
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{name}"
                     id="name"
                     type="text"
                     class="form-control"
@@ -44,6 +45,7 @@
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{surname}"
                     id="surname"
                     type="text"
                     class="form-control"
@@ -69,6 +71,7 @@
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{username}"
                     id="username"
                     type="text"
                     class="form-control"
@@ -94,6 +97,7 @@
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{birthDate}"
                     id="birth_date"
                     type="date"
                     class="form-control"
@@ -117,6 +121,7 @@
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{email}"
                     id="email"
                     type="email"
                     class="form-control"
@@ -141,6 +146,7 @@
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{password}"
                     id="password"
                     type="password"
                     class="form-control"
@@ -164,6 +170,7 @@
                 >
                 <div class="col-md-6">
                   <input
+                    th:field="*{matchingPassword}"
                     id="password-confirm"
                     type="password"
                     class="form-control"

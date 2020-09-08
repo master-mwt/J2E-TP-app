@@ -37,6 +37,8 @@ public class UserClass implements Serializable {
 
     @Column(nullable = false)
     private String password;
+    @Transient
+    private String matchingPassword;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean hard_ban;
