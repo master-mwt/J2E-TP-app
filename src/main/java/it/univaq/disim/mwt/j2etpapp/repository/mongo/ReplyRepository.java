@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ReplyRepository extends PagingAndSortingRepository<ReplyClass, String> {
@@ -16,4 +17,6 @@ public interface ReplyRepository extends PagingAndSortingRepository<ReplyClass, 
     Page<ReplyClass> findByPost(PostClass post, Pageable pageable);
     Optional<List<ReplyClass>> findByChannelId(Long channelId);
     Optional<List<ReplyClass>> findByUserId(Long userId);
+    Page<ReplyClass> findByUsersDownvotedContains(Set<Long> usersDownvoted, Pageable pageable);
+    Page<ReplyClass> findByUsersUpvotedContains(Set<Long> usersUpvoted, Pageable pageable);
 }

@@ -11,10 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -81,6 +78,31 @@ public class PostBOImpl implements PostBO {
     @Override
     public Page<PostClass> findByTitleContainsPaginated(String title, int page, int size) {
         return new Page<>(postRepository.findByTitleContains(title, PageRequest.of(page, size)));
+    }
+
+    @Override
+    public Page<PostClass> findByUserDownvotedPaginated(Long userId, int page, int size) {
+        return new Page<>(postRepository.findByUsersDownvotedContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
+    }
+
+    @Override
+    public Page<PostClass> findByUserUpvotedPaginated(Long userId, int page, int size) {
+        return new Page<>(postRepository.findByUsersUpvotedContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
+    }
+
+    @Override
+    public Page<PostClass> findByUserHiddenPaginated(Long userId, int page, int size) {
+        return new Page<>(postRepository.findByUsersHiddenContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
+    }
+
+    @Override
+    public Page<PostClass> findByUserReportedPaginated(Long userId, int page, int size) {
+        return new Page<>(postRepository.findByUsersReportedContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
+    }
+
+    @Override
+    public Page<PostClass> findByUserSavedPaginated(Long userId, int page, int size) {
+        return new Page<>(postRepository.findByUsersSavedContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
     }
 
     @Override

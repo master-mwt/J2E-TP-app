@@ -20,6 +20,11 @@ public interface PostBO {
     Page<PostClass> findByTagsContainsPaginated(Set<TagClass> tags, int page, int size);
     List<PostClass> findByTitleContains(String title);
     Page<PostClass> findByTitleContainsPaginated(String title, int page, int size);
+    Page<PostClass> findByUserDownvotedPaginated(Long userId, int page, int size);
+    Page<PostClass> findByUserUpvotedPaginated(Long userId, int page, int size);
+    Page<PostClass> findByUserHiddenPaginated(Long userId, int page, int size);
+    Page<PostClass> findByUserReportedPaginated(Long userId, int page, int size);
+    Page<PostClass> findByUserSavedPaginated(Long userId, int page, int size);
     PostClass findById(String id);
     void save(PostClass post);
     void saveAll(List<PostClass> posts);

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -50,6 +51,16 @@ public class ReplyBOImpl implements ReplyBO {
     @Override
     public List<ReplyClass> findByUserId(Long userId) {
         return replyRepository.findByUserId(userId).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public Page<ReplyClass> findByUserDownvotedPaginated(Long userId, int page, int size) {
+        return new Page<>(replyRepository.findByUsersDownvotedContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
+    }
+
+    @Override
+    public Page<ReplyClass> findByUserUpvotedPaginated(Long userId, int page, int size) {
+        return new Page<>(replyRepository.findByUsersUpvotedContains(new HashSet<>(Arrays.asList(userId)), PageRequest.of(page, size)));
     }
 
     @Override
