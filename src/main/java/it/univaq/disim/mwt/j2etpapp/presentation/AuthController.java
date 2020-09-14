@@ -1,9 +1,13 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
-import it.univaq.disim.mwt.j2etpapp.business.AuthService;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
+import it.univaq.disim.mwt.j2etpapp.business.GroupBO;
+import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,15 +21,17 @@ import javax.validation.Valid;
 @Controller
 public class AuthController {
 
+    private static PasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Autowired
-    private AuthService authService;
+    private UserBO userBO;
+    @Autowired
+    private GroupBO groupBO;
 
     @GetMapping("/login")
     public String showLogin(){
         return "pages/auth/login";
     }
-
-    // TODO: maybe login controller function ?
 
     // TODO: maybe login forgot your password function ?
 
@@ -56,9 +62,19 @@ public class AuthController {
         }
 
         // registration
-        authService.performRegistration(user);
+        performRegistration(user);
 
         redirectAttributes.addAttribute("registered", true);
         return "redirect:/login";
+    }
+
+    private void performRegistration(UserClass user) {
+        GroupClass logged = groupBO.findByName("logged");
+
+        user.setGroup(logged);
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        // user creation
+        userBO.save(user);
     }
 }
