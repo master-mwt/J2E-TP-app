@@ -30,4 +30,12 @@ public class RoleClass implements Serializable {
 
     @OneToMany(mappedBy = "role")
     private Set<UserChannelRole> userChannelRoles;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoleClass roleClass = (RoleClass) o;
+        return name.equals(roleClass.name);
+    }
 }
