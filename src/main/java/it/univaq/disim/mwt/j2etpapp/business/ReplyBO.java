@@ -15,6 +15,8 @@ public interface ReplyBO {
     List<ReplyClass> findByUserId(Long userId);
     Page<ReplyClass> findByUserDownvotedPaginated(Long userId, int page, int size);
     Page<ReplyClass> findByUserUpvotedPaginated(Long userId, int page, int size);
+    List<ReplyClass> findByUserDownvoted(Long userId);
+    List<ReplyClass> findByUserUpvoted(Long userId);
     void save(ReplyClass reply);
     void saveAll(List<ReplyClass> replies);
     void saveAll(ReplyClass... replies);

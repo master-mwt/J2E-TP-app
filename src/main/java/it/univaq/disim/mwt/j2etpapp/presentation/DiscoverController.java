@@ -61,6 +61,8 @@ public class DiscoverController {
         Page<PostClass> postPage = postBO.findByChannelIdReportedOrderByCreatedAtDescPaginated(id, 0, 10);
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
         return "pages/discover/reported_posts";
     }
 
@@ -70,6 +72,8 @@ public class DiscoverController {
         Page<PostClass> postPage = postBO.findByChannelIdReportedOrderByCreatedAtDescPaginated(id, pageId, 10);
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
         return "pages/discover/reported_posts";
     }
 
@@ -112,6 +116,8 @@ public class DiscoverController {
         Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), 0, 10);
         model.addAttribute("user", user);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
         return "pages/discover/user_posts";
     }
 
@@ -121,6 +127,8 @@ public class DiscoverController {
         Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), page, 10);
         model.addAttribute("user", user);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
         return "pages/discover/user_posts";
     }
 
@@ -130,6 +138,7 @@ public class DiscoverController {
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
         model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
         return "pages/discover/post";
     }
 
@@ -139,6 +148,7 @@ public class DiscoverController {
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, page, 10));
         model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
         return "pages/discover/post";
     }
 }

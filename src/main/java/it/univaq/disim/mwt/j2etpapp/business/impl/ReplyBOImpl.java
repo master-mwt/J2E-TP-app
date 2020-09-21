@@ -64,6 +64,16 @@ public class ReplyBOImpl implements ReplyBO {
     }
 
     @Override
+    public List<ReplyClass> findByUserDownvoted(Long userId) {
+        return replyRepository.findByUsersDownvotedContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<ReplyClass> findByUserUpvoted(Long userId) {
+        return replyRepository.findByUsersUpvotedContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
     public void save(ReplyClass reply) {
         replyRepository.save(reply);
     }

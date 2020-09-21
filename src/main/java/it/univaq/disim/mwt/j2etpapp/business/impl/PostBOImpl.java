@@ -106,6 +106,31 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
+    public List<PostClass> findByUserDownvoted(Long userId) {
+        return postRepository.findByUsersDownvotedContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<PostClass> findByUserUpvoted(Long userId) {
+        return postRepository.findByUsersUpvotedContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<PostClass> findByUserHidden(Long userId) {
+        return postRepository.findByUsersHiddenContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<PostClass> findByUserReported(Long userId) {
+        return postRepository.findByUsersReportedContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<PostClass> findByUserSaved(Long userId) {
+        return postRepository.findByUsersSavedContains(new HashSet<>(Arrays.asList(userId))).orElse(new ArrayList<>());
+    }
+
+    @Override
     public PostClass findById(String id) {
         return postRepository.findById(id).orElse(null);
     }

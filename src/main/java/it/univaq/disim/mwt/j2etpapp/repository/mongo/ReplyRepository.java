@@ -19,4 +19,6 @@ public interface ReplyRepository extends PagingAndSortingRepository<ReplyClass, 
     Optional<List<ReplyClass>> findByUserId(Long userId);
     Page<ReplyClass> findByUsersDownvotedContains(Set<Long> usersDownvoted, Pageable pageable);
     Page<ReplyClass> findByUsersUpvotedContains(Set<Long> usersUpvoted, Pageable pageable);
+    Optional<List<ReplyClass>> findByUsersDownvotedContains(Set<Long> usersDownvoted);
+    Optional<List<ReplyClass>> findByUsersUpvotedContains(Set<Long> usersUpvoted);
 }

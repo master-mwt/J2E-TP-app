@@ -142,27 +142,27 @@
     
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- foreach replies as reply -->
-        <div th:each="reply : ${replyPage.getContent()}" id="reply-replyid" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
+        <div th:each="reply : ${replyPage.getContent()}" th:id="${'reply-' + reply.getId()}" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
           <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #ddd">
             <!-- if reply not upvoted -->
-            <a id="reply-replyid-upvote" href="" class="replyupvote"><i
+            <a th:id="${'reply-' + reply.getId() + '-upvote'}" href="" class="replyupvote"><i
                 class="fas fa-arrow-up mb-1"></i></a>
             <!-- if reply upvoted -->
-            <a id="reply-replyid-upvote" href=""
+            <a th:id="${'reply-' + reply.getId() + '-upvote'}" href=""
               class="text-danger replyupvote"><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- else -->
             <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- if reply upvoted | downvoted -->
-            <span id="reply-replyid-votenumber"
+            <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
               class="my-1 text-danger text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
             <!-- else -->
-            <span id="reply-replyid-votenumber"
+            <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
               class="my-1 text-dark text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
             <!-- if reply not downvoted -->
-            <a id="reply-replyid-downvote" href="" class="replydownvote"><i
+            <a th:id="${'reply-' + reply.getId() + '-downvote'}" href="" class="replydownvote"><i
                 class="fas fa-arrow-down"></i></a>
             <!-- if reply downvoted -->
-            <a id="reply-replyid-downvote" href=""
+            <a th:id="${'reply-' + reply.getId() + '-downvote'}" href=""
               class="text-danger replydownvote"><i class="fas fa-arrow-down"></i></a>
             <!-- else -->
             <a href="" class=""><i class="fas fa-arrow-down"></i></a>

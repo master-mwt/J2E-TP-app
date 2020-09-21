@@ -25,6 +25,11 @@ public interface PostBO {
     Page<PostClass> findByUserHiddenPaginated(Long userId, int page, int size);
     Page<PostClass> findByUserReportedPaginated(Long userId, int page, int size);
     Page<PostClass> findByUserSavedPaginated(Long userId, int page, int size);
+    List<PostClass> findByUserDownvoted(Long userId);
+    List<PostClass> findByUserUpvoted(Long userId);
+    List<PostClass> findByUserHidden(Long userId);
+    List<PostClass> findByUserReported(Long userId);
+    List<PostClass> findByUserSaved(Long userId);
     PostClass findById(String id);
     void save(PostClass post);
     void saveAll(List<PostClass> posts);

@@ -11,25 +11,33 @@
         <div class="card">
           <div class="card-header d-flex flex-row">
             <img
+              th:if="${user.getImage() == null}"
               th:src="@{/images/no_profile_img.jpg}"
               alt="user-profile-image"
               class="rounded border"
               width="80"
             />
+            <img
+                    th:unless="${user.getImage() == null}"
+                    th:src="${user.getImage().getLocation()}"
+                    alt="user-profile-image"
+                    class="rounded border"
+                    width="80"
+            />
             <div class="d-flex flex-column my-auto ml-4">
               <a href="" class="text-decoration-none">change profile image</a>
               <a href="" class="text-decoration-none">remove profile image</a>
-              <h4 class="m-0">user.name user.surname</h4>
-              <h5 class="m-0 text-muted">user.username</h5>
+              <h4 class="m-0" th:text="${user.getName() + ' ' + user.getSurname()}">user.name user.surname</h4>
+              <h5 class="m-0 text-muted" th:text="${user.getUsername()}">user.username</h5>
             </div>
           </div>
           <div class="card-body">
             <h5 class="m-0 mb-2">
-              <b>email</b><span class="ml-4 text-muted">user.email</span>
+              <b>email</b><span class="ml-4 text-muted" th:text="${user.getEmail()}">user.email</span>
             </h5>
             <h5 class="m-0">
               <b>birth date</b
-              ><span class="ml-4 text-muted">user.birth_date}</span>
+              ><span class="ml-4 text-muted" th:text="${user.getBirthDate()}">user.birth_date</span>
             </h5>
           </div>
           <div class="card-footer">

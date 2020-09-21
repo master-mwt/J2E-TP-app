@@ -27,4 +27,9 @@ public interface PostRepository extends PagingAndSortingRepository<PostClass, St
     Page<PostClass> findByUsersHiddenContains(Set<Long> usersHidden, Pageable pageable);
     Page<PostClass> findByUsersReportedContains(Set<Long> usersReported, Pageable pageable);
     Page<PostClass> findByUsersSavedContains(Set<Long> usersSaved, Pageable pageable);
+    Optional<List<PostClass>> findByUsersDownvotedContains(Set<Long> usersDownvoted);
+    Optional<List<PostClass>> findByUsersUpvotedContains(Set<Long> usersUpvoted);
+    Optional<List<PostClass>> findByUsersHiddenContains(Set<Long> usersHidden);
+    Optional<List<PostClass>> findByUsersReportedContains(Set<Long> usersReported);
+    Optional<List<PostClass>> findByUsersSavedContains(Set<Long> usersSaved);
 }

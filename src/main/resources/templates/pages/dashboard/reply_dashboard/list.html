@@ -10,29 +10,29 @@
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- CERCHIAMO DI UNIFICARE MYREPLIES A REPLY SAVED,HIDDEN,REPORTED,ECC -->
         <!-- forelse replies as reply -->
-        <div id="reply-replyid" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
+        <div th:each="reply : ${replies}" th:id="${'reply-' + reply.getId()}" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
           <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #ddd">
             <!-- if reply not upvoted -->
-            <a id="reply-replyid-upvote" href="" class="replyupvote"><i
+            <a th:id="${'reply-' + reply.getId() + '-upvote'}" href="" class="replyupvote"><i
                 class="fas fa-arrow-up mb-1"></i></a>
             <!-- if reply upvoted -->
-            <a id="reply-replyid-upvote" href=""
+            <a th:id="${'reply-' + reply.getId() + '-upvote'}" href=""
               class="text-danger replyupvote"><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- else -->
             <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- end if -->
             <!-- if reply upvoted | downvoted -->
-            <span id="reply-replyid-votenumber"
+            <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
               class="my-1 text-danger text-bold votenumber">upv-dov</span>
             <!-- else -->
-            <span id="reply-replyid-votenumber"
+            <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
               class="my-1 text-dark text-bold votenumber">upv-dov</span>
             <!-- end if -->
             <!-- if reply not downvoted -->
-            <a id="reply-replyid-downvote" href="" class="replydownvote"><i
+            <a th:id="${'reply-' + reply.getId() + '-downvote'}" href="" class="replydownvote"><i
                 class="fas fa-arrow-down"></i></a>
             <!-- if reply downvoted -->
-            <a id="reply-replyid-downvote" href=""
+            <a th:id="${'reply-' + reply.getId() + '-downvote'}" href=""
               class="text-danger replydownvote"><i class="fas fa-arrow-down"></i></a>
             <!-- else -->
             <a href="" class=""><i class="fas fa-arrow-down"></i></a>
@@ -40,21 +40,21 @@
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1">
-                <a href=""
-                  class="text-decoration-none"><b>reply.channel_name &#183</b></a>
+              <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
+                <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}">reply.channel_name &#183</b></a>
                 <span class="text-muted">Reply posted by </span>
-                <a href=""
-                  class="text-decoration-none">reply.username</a>
+                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                  class="text-decoration-none" th:text="${user.getUsername()}">reply.username</a>
     
               </p>
             </div>
-            <a href="#content-collapse-replyid" role="button"
+            <a th:href="${'#content-collapse-' + reply.getId()}" role="button"
               class="text-decoration-none px-3 py-2 btn btn-sm btn-block btn-outline-secondary" data-toggle="collapse"><i
                 class="fas fa-eye mr-2"></i>See Reply Content</a>
     
-            <div class="card-body text-left px-3 py-1 collapse" id="content-collapse-replyid">
-              <div class="markdown-content" data-markdown-content=""></div>
+            <div class="card-body text-left px-3 py-1 collapse" th:id="${'content-collapse-' + reply.getId()}">
+              <div class="markdown-content" th:data-markdown-content="${reply.getContent()}"></div>
             </div>
             <div class="card-footer border-0 p-1 px-3 text-left" style="border-bottom-left-radius: 0px">
     
@@ -76,6 +76,7 @@
     </div>
 
     <!-- JScroll func -->
+    <!--
     <script type="text/javascript">
       $('ul.pagination').hide();
       $(function () {
@@ -105,5 +106,6 @@
         });
       });
     </script>
+    -->
   </div>
 </html>
