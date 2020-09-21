@@ -25,7 +25,8 @@ public class RoleClass implements Serializable {
     @Column(columnDefinition = "text")
     private String description;
 
-    @ManyToMany
+    // TODO: it is ok this fetch type ?
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<ServiceClass> services;
 
     @OneToMany(mappedBy = "role")

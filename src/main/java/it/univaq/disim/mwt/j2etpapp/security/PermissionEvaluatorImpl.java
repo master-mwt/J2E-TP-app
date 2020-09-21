@@ -1,22 +1,15 @@
 package it.univaq.disim.mwt.j2etpapp.security;
 
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
-import it.univaq.disim.mwt.j2etpapp.business.PostBO;
-import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserBO;
-import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
-import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
-import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
-import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.business.*;
+import it.univaq.disim.mwt.j2etpapp.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-// TODO: uncomment to activate class
-//@Component
+@Component
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
     @Autowired
@@ -27,6 +20,8 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     private ReplyBO replyBO;
     @Autowired
     private UserBO userBO;
+    @Autowired
+    private UserChannelRoleBO userChannelRoleBO;
 
     @Override
     public boolean hasPermission(Authentication authentication, Object object, Object permission) {
@@ -34,6 +29,10 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
         if(principal == null){
             return false;
+        }
+
+        if("administrator".equals(principal.getUser().getGroup().getName())) {
+            return true;
         }
 
         // if-else for all permission-protected classes
@@ -58,6 +57,10 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
             return false;
         }
 
+        if("administrator".equals(principal.getUser().getGroup().getName())) {
+            return true;
+        }
+
         // if-else for all permission-protected classes
         if(ChannelClass.class.getName().equals(className)){
             return hasPermissionOnChannel(principal.getUser(), channelBO.findById((Long) objectId), (String) permission);
@@ -74,23 +77,51 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     
     // hasPermission implementations for each protected class
     private boolean hasPermissionOnChannel(UserClass currentUser, ChannelClass channel, String permission){
-        // TODO: check if current user can modify object
-        throw new NotImplementedException();
+        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), currentUser.getId());
+        if(userChannelRole != null) {
+            RoleClass role = userChannelRole.getRole();
+            for (ServiceClass service : role.getServices()) {
+                if(service.getName().equals(permission)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean hasPermissionOnPost(UserClass currentUser, PostClass post, String permission){
-        // TODO: check if current user can modify object
-        throw new NotImplementedException();
+        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(post.getChannelId(), currentUser.getId());
+        if(userChannelRole != null) {
+            RoleClass role = userChannelRole.getRole();
+            for (ServiceClass service : role.getServices()) {
+                if(service.getName().equals(permission) && post.getUserId().equals(currentUser.getId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean hasPermissionOnReply(UserClass currentUser, ReplyClass reply, String permission){
-        // TODO: check if current user can modify object
-        throw new NotImplementedException();
+        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(reply.getChannelId(), currentUser.getId());
+        if(userChannelRole != null) {
+            RoleClass role = userChannelRole.getRole();
+            for (ServiceClass service : role.getServices()) {
+                if(service.getName().equals(permission) && reply.getUserId().equals(currentUser.getId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean hasPermissionOnUser(UserClass currentUser, UserClass user, String permission){
-        // TODO: check if current user can modify object
-        throw new NotImplementedException();
+        for (ServiceClass service : currentUser.getGroup().getServices()) {
+            if(service.getName().equals(permission) && currentUser.getId().equals(user.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

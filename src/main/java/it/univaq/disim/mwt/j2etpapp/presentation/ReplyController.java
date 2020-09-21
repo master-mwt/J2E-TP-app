@@ -23,7 +23,6 @@ public class ReplyController {
     private ReplyBO replyBO;
 
     @PostMapping("{replyId}/upvote")
-    //@PreAuthorize("hasPermission(#replyId, 'it.univaq.disim.mwt.j2etpapp.ReplyController', 'upvote_reply')")
     public ResponseEntity doUpvote(@PathVariable("replyId") String replyId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -39,7 +38,6 @@ public class ReplyController {
     }
 
     @PostMapping("{replyId}/downvote")
-    //@PreAuthorize("hasPermission(#replyId, 'it.univaq.disim.mwt.j2etpapp.ReplyController', 'downvote_reply')")
     public ResponseEntity doDownvote(@PathVariable("replyId") String replyId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
