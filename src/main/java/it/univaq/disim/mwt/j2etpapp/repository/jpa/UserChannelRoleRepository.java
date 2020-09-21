@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserChannelRoleRepository extends CrudRepository<UserChannelRole, Long> {
     Optional<List<UserChannelRole>> findByChannelId(Long channelId);
+    Optional<List<UserChannelRole>> findByUserId(Long userId);
     Page<UserChannelRole> findByChannelId(Long channelId, Pageable pageable);
     Optional<List<UserChannelRole>> findByChannelIdAndRoleId(Long channelId, Long RoleId);
     Optional<UserChannelRole> findByChannelIdAndUserId(Long channelId, Long userId);

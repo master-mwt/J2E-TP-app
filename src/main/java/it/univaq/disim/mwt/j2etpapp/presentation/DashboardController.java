@@ -1,0 +1,132 @@
+package it.univaq.disim.mwt.j2etpapp.presentation;
+
+import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
+import it.univaq.disim.mwt.j2etpapp.business.PostBO;
+import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
+import it.univaq.disim.mwt.j2etpapp.business.UserChannelRoleBO;
+import it.univaq.disim.mwt.j2etpapp.domain.*;
+import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Controller
+public class DashboardController {
+
+    @Autowired
+    private ChannelBO channelBO;
+    @Autowired
+    private PostBO postBO;
+    @Autowired
+    private ReplyBO replyBO;
+    @Autowired
+    private UserChannelRoleBO userChannelRoleBO;
+
+    @GetMapping("home")
+    public String home(Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        model.addAttribute("user", principal);
+        return "pages/dashboard/home";
+    }
+
+    @GetMapping("home/mychannels")
+    public String dashboardChannel(Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
+
+        List<ChannelClass> channels = new ArrayList<>();
+        for (UserChannelRole userChannelRole : userChannelRoles) {
+            channels.add(userChannelRole.getChannel());
+        }
+        model.addAttribute("channels", channels);
+        model.addAttribute("userchannelroles", userChannelRoles);
+        return "pages/dashboard/channel_dashboard/list";
+    }
+
+    @GetMapping("home/channel/{id}/image/upload")
+    public String dashboardImageUploadChannel(@PathVariable("id") Long channelId, Model model) {
+        model.addAttribute("channel", channelBO.findById(channelId));
+        return "pages/dashboard/image_upload/channel_img_upl";
+    }
+
+    @GetMapping("home/profile/image/upload")
+    public String dashboardImageUploadProfile(Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        model.addAttribute("user", principal);
+        return "pages/dashboard/image_upload/profile_img_upl";
+    }
+
+    @GetMapping("home/myposts")
+    public String dashboardPost(Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        // saved, hidden, reported, ...
+        Set<PostClass> posts = new HashSet<>();
+        posts.addAll(postBO.findByUserSavedPaginated(principal.getId(), 0, 10).getContent());
+        posts.addAll(postBO.findByUserUpvotedPaginated(principal.getId(), 0, 10).getContent());
+        posts.addAll(postBO.findByUserDownvotedPaginated(principal.getId(), 0, 10).getContent());
+        posts.addAll(postBO.findByUserHiddenPaginated(principal.getId(), 0, 10).getContent());
+        posts.addAll(postBO.findByUserReportedPaginated(principal.getId(), 0, 10).getContent());
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("user", principal);
+
+        return "pages/dashboard/post_dashboard/list";
+    }
+
+    @GetMapping("home/myposts/page/{page}")
+    public String dashboardPostPage(@PathVariable("page") int page, Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        // saved, hidden, reported, ...
+        Set<PostClass> posts = new HashSet<>();
+        posts.addAll(postBO.findByUserSavedPaginated(principal.getId(), page, 10).getContent());
+        posts.addAll(postBO.findByUserUpvotedPaginated(principal.getId(), page, 10).getContent());
+        posts.addAll(postBO.findByUserDownvotedPaginated(principal.getId(), page, 10).getContent());
+        posts.addAll(postBO.findByUserHiddenPaginated(principal.getId(), page, 10).getContent());
+        posts.addAll(postBO.findByUserReportedPaginated(principal.getId(), page, 10).getContent());
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("user", principal);
+
+        return "pages/dashboard/post_dashboard/list";
+    }
+
+    @GetMapping("home/myreplies")
+    public String dashboardReply(Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        // downvoted, upvoted
+        Set<ReplyClass> replies = new HashSet<>();
+        replyBO.findByUserUpvotedPaginated(principal.getId(), 0, 10);
+        replyBO.findByUserDownvotedPaginated(principal.getId(), 0, 10);
+
+        model.addAttribute("replies", replies);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("user", principal);
+
+        return "pages/dashboard/reply_dashboard/list";
+    }
+
+    @GetMapping("home/myreplies/page/{page}")
+    public String dashboardReplyPage(@PathVariable("page") int page, Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        // downvoted, upvoted
+        Set<ReplyClass> replies = new HashSet<>();
+        replyBO.findByUserUpvotedPaginated(principal.getId(), page, 10);
+        replyBO.findByUserDownvotedPaginated(principal.getId(), page, 10);
+
+        model.addAttribute("replies", replies);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("user", principal);
+
+        return "pages/dashboard/reply_dashboard/list";
+    }
+}
