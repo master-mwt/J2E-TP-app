@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 
+//TODO: MISSING LOGGING FEATURE IN ALL CLASSES!!
+//TODO: Missing enabling @PreAuthorize in classes
 @RestController
 @RequestMapping("channel")
 public class ChannelController {
@@ -27,6 +29,7 @@ public class ChannelController {
     private UserBO userBO;
 
     @PostMapping("{channelId}/join")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
     public ResponseEntity doJoin(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -46,6 +49,7 @@ public class ChannelController {
     }
 
     @PostMapping("{channelId}/leave")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'leave_channel')")
     public ResponseEntity doLeave(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -56,6 +60,7 @@ public class ChannelController {
     }
 
     @DeleteMapping("{channelId}")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'delete_channel')")
     public ResponseEntity doDelete(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -66,6 +71,7 @@ public class ChannelController {
     }
 
     @PostMapping("{channelId}/posts/{postId}/report")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_post_in_channel')")
     public ResponseEntity doReportPostInChannel(@PathVariable("channelId") Long channelId, @PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -81,6 +87,7 @@ public class ChannelController {
     }
 
     @PostMapping("{channelId}/members/{userId}/report")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
     public ResponseEntity doReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -96,6 +103,7 @@ public class ChannelController {
     }
 
     @PostMapping("{channelId}/members/{userId}/softban")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
     public ResponseEntity doSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -111,6 +119,7 @@ public class ChannelController {
     }
 
     @PostMapping("{channelId}/members/{userId}/upgrade")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_users_in_channel')")
     public ResponseEntity upgradeMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         RoleClass member = roleBO.findByName("member");
@@ -137,6 +146,7 @@ public class ChannelController {
     }
 
     @PostMapping("{channelId}/members/{userId}/downgrade")
+    //@PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_users_in_channel')")
     public ResponseEntity downgradeMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         RoleClass member = roleBO.findByName("member");
