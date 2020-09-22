@@ -57,6 +57,15 @@ public class ChannelController {
         return modelAndView;
     }
 
+    @DeleteMapping("{channelId}/delete")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'delete_channel')")
+    public ModelAndView delete(@PathVariable("channelId") Long channelId) {
+        channelBO.deleteById(channelId);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
+
     @PostMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
     public ResponseEntity doJoin(@PathVariable("channelId") Long channelId) {
