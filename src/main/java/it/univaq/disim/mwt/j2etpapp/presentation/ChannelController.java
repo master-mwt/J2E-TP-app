@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 
 //TODO: MISSING LOGGING FEATURE IN ALL CLASSES!!
@@ -27,6 +30,32 @@ public class ChannelController {
     private PostBO postBO;
     @Autowired
     private UserBO userBO;
+
+    // TODO: is it ok to keep here this functions
+    @GetMapping("create")
+    public ModelAndView create() {
+        // TODO: create channel
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("channel", new ChannelClass());
+        modelAndView.setViewName("channel/form");
+        return modelAndView;
+    }
+
+    @PostMapping("create")
+    public ModelAndView save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors) {
+        // TODO: save channel (is ok ?)
+        ModelAndView modelAndView = new ModelAndView();
+
+        if(errors.hasErrors()) {
+            modelAndView.addObject("errors", errors.getAllErrors());
+            modelAndView.setViewName("channel/form");
+        }
+        channelBO.save(channel);
+
+        modelAndView.addObject("post", channel);
+        modelAndView.setViewName("redirect:/channel/view");
+        return modelAndView;
+    }
 
     @PostMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
