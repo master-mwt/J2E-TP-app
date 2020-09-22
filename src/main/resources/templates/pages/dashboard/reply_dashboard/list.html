@@ -23,10 +23,10 @@
             <!-- end if -->
             <!-- if reply upvoted | downvoted -->
             <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
-              class="my-1 text-danger text-bold votenumber">upv-dov</span>
+              class="my-1 text-danger text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
             <!-- else -->
             <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
-              class="my-1 text-dark text-bold votenumber">upv-dov</span>
+              class="my-1 text-dark text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
             <!-- end if -->
             <!-- if reply not downvoted -->
             <a th:id="${'reply-' + reply.getId() + '-downvote'}" href="" class="replydownvote"><i
@@ -69,8 +69,10 @@
           </div>
         </div>
         <!-- if empty -->
-        <img src="@{/images/no_res_2.png}" alt="" class="rounded my-4" width="350px">
-        <h2 class="text-primary">no results ...</h2>
+        <th:block th:if="${replies.isEmpty()}">
+          <img src="@{/images/no_res_2.png}" alt="" class="rounded my-4" width="350px">
+          <h2 class="text-primary">no results ...</h2>
+        </th:block>
         <!-- end forelse -->
       </div>
     </div>

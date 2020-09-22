@@ -30,12 +30,12 @@
               class="rounded-circle"
             />
             <img
-                    th:unless="${user.getImage() == null}"
-                    th:src="@{/{link}/(link=${user.getImage().getLocation()})}"
-                    alt=""
-                    width="40px"
-                    height="40px"
-                    class="rounded-circle"
+              th:unless="${user.getImage() == null}"
+              th:src="@{/{link}/(link=${user.getImage().getLocation()})}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded-circle"
             />
             <h4 class="m-0 ml-3">
               <a th:href="@{/discover/user/{id}/(id=${user.getId()})}" class="text-decoration-none text-info"
@@ -50,7 +50,7 @@
     </div>
 
     <!-- JScroll func -->
-    <!-- TODO: pagination -->
+    <!--
     <script type="text/javascript">
       $("ul.pagination").hide();
       $(function () {
@@ -69,5 +69,6 @@
         });
       });
     </script>
+    -->
   </div>
 </html>
