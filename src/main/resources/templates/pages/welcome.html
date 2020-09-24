@@ -3,6 +3,7 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   layout:decorate="~{commons/exskel}"
 >
   <div class="container p-4" layout:fragment="content">
@@ -17,36 +18,60 @@
             class="rounded-left py-3 d-flex flex-column"
             style="flex: 0 0 50px; background-color: #222;"
           >
-            <!-- upvote -->
-            <a href="" th:id="${'post-' + post.getId() + '-upvote'}" class="upvote">
+            <!-- if post is not upvoted, upvote is enabled-->
+            <a href=""
+               sec:authorize="!isAnonymous()"
+               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:id="${'post-' + post.getId() + '-upvote'}" class="upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
-            <!-- unupvote -->
-            <a href="" th:id="${'post-' + post.getId() + '-upvote'}" class="text-warning upvote">
+            <!-- if post is upvoted, unupvote is enabled-->
+            <a href=""
+               sec:authorize="!isAnonymous()"
+               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:id="${'post-' + post.getId() + '-upvote'}" class="text-warning upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
-            <!-- else -->
-            <a href="" class="">
+            <!-- else (guest user), redirect to login -->
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class="">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
-            <!-- upvote or undownvote -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-warning votenumber"
-              >1</span
-            >
-            <!-- else -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-light votenumber"
-              >1</span
-            >
-            <!-- downvote -->
-            <a href="" th:id="${'post-' + post.getId() + '-downvote'}" class="downvote">
+            <!-- if post is upvoted or downvoted, draw text-warning info -->
+            <span th:id="${'post-' + post.getId() + '-votenumber'}"
+                  sec:authorize="!isAnonymous()"
+                  th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                  class="my-1 text-warning votenumber"
+                  th:text="${post.getUpvote() - post.getDownvote()}"
+              ></span>
+            <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
+            <span th:id="${'post-' + post.getId() + '-votenumber'}"
+                  sec:authorize="!isAnonymous()"
+                  th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                  class="my-1 text-light votenumber"
+                  th:text="${post.getUpvote() - post.getDownvote()}"></span>
+            <!-- else guest, draw text-light info -->
+            <span th:id="${'post-' + post.getId() + '-votenumber'}"
+                  sec:authorize="isAnonymous()"
+                  class="my-1 text-light votenumber"
+                  th:text="${post.getUpvote() - post.getDownvote()}"></span>
+            <!-- if post is not downvoted, downvote is enabled-->
+            <a href="" th:id="${'post-' + post.getId() + '-downvote'}"
+               sec:authorize="isAuthenticated()"
+               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               class="downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
-            <!-- undownvote -->
-            <a href="" th:id="${'post-' + post.getId() + '-downvote'}" class="text-warning downvote">
+            <!-- if post is downvoted, undownvote is enabled-->
+            <a href="" th:id="${'post-' + post.getId() + '-downvote'}"
+               sec:authorize="isAuthenticated()"
+               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               class="text-warning downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
-            <!-- else -->
-            <a href="" class=""><i class="fas fa-arrow-down"></i></a>
+            <!-- else (guest user), redirect to login -->
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class="">
+              <i class="fas fa-arrow-down"></i>
+            </a>
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
 
