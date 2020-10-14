@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
@@ -62,12 +63,37 @@ public class ReplyController {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
             ReplyClass reply = replyBO.findById(replyId);
+            boolean upvotedAlready = false;
+            boolean downvotedAlready = false;
+
             if(reply.getUsersUpvoted() == null){
                 reply.setUsersUpvoted(new HashSet<>());
             }
-            reply.getUsersUpvoted().add(principal.getId());
-            replyBO.save(reply);
-            return new ResponseEntity(HttpStatus.OK);
+
+            if(reply.getUsersUpvoted().contains(principal.getId())) {
+                upvotedAlready = true;
+            }
+
+            if(reply.getUsersDownvoted() != null && reply.getUsersDownvoted().contains(principal.getId())) {
+                downvotedAlready = true;
+            }
+
+            if(upvotedAlready) {
+                reply.getUsersUpvoted().remove(principal.getId());
+                reply.setUpvote(reply.getUpvote() - 1);
+                replyBO.save(reply);
+            } else if(downvotedAlready) {
+                reply.getUsersDownvoted().remove(principal.getId());
+                reply.setDownvote(reply.getDownvote() - 1);
+                reply.getUsersUpvoted().add(principal.getId());
+                reply.setUpvote(reply.getUpvote() + 1);
+                replyBO.save(reply);
+            } else {
+                reply.getUsersUpvoted().add(principal.getId());
+                reply.setUpvote(reply.getUpvote() + 1);
+                replyBO.save(reply);
+            }
+            return new ResponseEntity<AjaxResponse>(new AjaxResponse(reply.getUpvote() - reply.getDownvote(), upvotedAlready, downvotedAlready), HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
@@ -77,12 +103,37 @@ public class ReplyController {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
             ReplyClass reply = replyBO.findById(replyId);
+            boolean upvotedAlready = false;
+            boolean downvotedAlready = false;
+
             if(reply.getUsersDownvoted() == null){
                 reply.setUsersDownvoted(new HashSet<>());
             }
-            reply.getUsersDownvoted().add(principal.getId());
-            replyBO.save(reply);
-            return new ResponseEntity(HttpStatus.OK);
+
+            if(reply.getUsersDownvoted().contains(principal.getId())) {
+                downvotedAlready = true;
+            }
+
+            if(reply.getUsersUpvoted() != null && reply.getUsersUpvoted().contains(principal.getId())) {
+                upvotedAlready = true;
+            }
+
+            if(downvotedAlready) {
+                reply.getUsersDownvoted().remove(principal.getId());
+                reply.setDownvote(reply.getDownvote() - 1);
+                replyBO.save(reply);
+            } else if(upvotedAlready) {
+                reply.getUsersUpvoted().remove(principal.getId());
+                reply.setUpvote(reply.getUpvote() - 1);
+                reply.getUsersDownvoted().add(principal.getId());
+                reply.setDownvote(reply.getDownvote() + 1);
+                replyBO.save(reply);
+            } else {
+                reply.getUsersDownvoted().add(principal.getId());
+                reply.setDownvote(reply.getDownvote() + 1);
+                replyBO.save(reply);
+            }
+            return new ResponseEntity<AjaxResponse>(new AjaxResponse(reply.getUpvote() - reply.getDownvote(), upvotedAlready, downvotedAlready), HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }

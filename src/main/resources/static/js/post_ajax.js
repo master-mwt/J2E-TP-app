@@ -4,7 +4,7 @@
 
 import {makeToast} from './notify.js';
 
-let loginpath = window.location.protocol + "//" + window.location.host + "/login";
+let loginpath = window.location.protocol + "//" + window.location.host + '/j2etpapp' + "/login";
 
 $(document).ready(function() {
     // upvote handler

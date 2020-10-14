@@ -53,9 +53,11 @@ public class ChannelClass implements Serializable {
     @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
     private Set<UserChannelRole> userChannelRoles;
 
+    // TODO: Remove eager !! (maybe fetch data from repository with @Query)
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserClass> softBannedUsers;
 
+    // TODO: Remove eager !! (maybe fetch data from repository with @Query)
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserClass> reportedUsers;
 }
