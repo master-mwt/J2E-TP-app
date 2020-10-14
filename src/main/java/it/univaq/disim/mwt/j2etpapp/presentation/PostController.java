@@ -146,7 +146,13 @@ public class PostController {
             if(post.getUsersHidden() == null){
                 post.setUsersHidden(new HashSet<>());
             }
-            post.getUsersHidden().add(principal.getId());
+
+            if(post.getUsersHidden().contains(principal.getId())) {
+                post.getUsersHidden().remove(principal.getId());
+            } else {
+                post.getUsersHidden().add(principal.getId());
+
+            }
             postBO.save(post);
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -161,7 +167,13 @@ public class PostController {
             if(post.getUsersReported() == null){
                 post.setUsersReported(new HashSet<>());
             }
-            post.getUsersReported().add(principal.getId());
+
+            if(post.getUsersReported().contains(principal.getId())) {
+                post.getUsersReported().remove(principal.getId());
+            } else {
+                post.getUsersReported().add(principal.getId());
+
+            }
             postBO.save(post);
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -176,7 +188,13 @@ public class PostController {
             if(post.getUsersSaved() == null){
                 post.setUsersSaved(new HashSet<>());
             }
-            post.getUsersSaved().add(principal.getId());
+
+            if(post.getUsersSaved().contains(principal.getId())) {
+                post.getUsersSaved().remove(principal.getId());
+            } else {
+                post.getUsersSaved().add(principal.getId());
+
+            }
             postBO.save(post);
             return new ResponseEntity(HttpStatus.OK);
         }
