@@ -41,11 +41,6 @@ public class HomeController {
         return "pages/info/about";
     }
 
-    @GetMapping("help")
-    public String help(Model model) {
-        return "pages/info/help";
-    }
-
     @GetMapping("contact")
     public String contact(Model model) {
         return "pages/info/contact";
