@@ -47,6 +47,7 @@ public class SearchController {
                     model.addAttribute("postPage", postPage);
                     model.addAttribute("channelBO", channelBO);
                     model.addAttribute("userBO", userBO);
+                    model.addAttribute("postBO", postBO);
                     return "pages/search_res/posts_res";
                 case "channels":
                     Page<ChannelClass> channelPage = channelBO.findByNameContainsPaginated(query, 0, 10);
@@ -78,6 +79,7 @@ public class SearchController {
                     model.addAttribute("postPage", postPageByTags);
                     model.addAttribute("channelBO", channelBO);
                     model.addAttribute("userBO", userBO);
+                    model.addAttribute("postBO", postBO);
                     return "pages/search_res/tags_res";
                 default:
                     return "redirect:/";
@@ -103,6 +105,7 @@ public class SearchController {
         model.addAttribute("postPage", postPage);
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         return "pages/search_res/posts_res";
     }
 
@@ -159,6 +162,7 @@ public class SearchController {
         model.addAttribute("postPage", postPage);
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         return "pages/search_res/tags_res";
     }
 
