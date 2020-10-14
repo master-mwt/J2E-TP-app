@@ -20,14 +20,14 @@
             style="flex: 0 0 50px; background-color: #222;"
           >
             <!-- if auth and post is not upvoted, upvote is enabled-->
-            <a href=""
+            <a th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
                sec:authorize="!isAnonymous()"
                th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                th:id="${'post-' + post.getId() + '-upvote'}" class="upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- if auth and post is upvoted, unupvote is enabled-->
-            <a href=""
+            <a th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
                sec:authorize="!isAnonymous()"
                th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                th:id="${'post-' + post.getId() + '-upvote'}" class="text-warning upvote">
@@ -56,16 +56,16 @@
                   class="my-1 text-light votenumber"
                   th:text="${post.getUpvote() - post.getDownvote()}"></span>
             <!-- if auth and post is not downvoted, downvote is enabled-->
-            <a href="" th:id="${'post-' + post.getId() + '-downvote'}"
+            <a th:href="@{/posts/{id}/downvote(id=${post.getId()})}" th:id="${'post-' + post.getId() + '-downvote'}"
                sec:authorize="!isAnonymous()"
-               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                class="downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
             <!-- if auth and post is downvoted, undownvote is enabled-->
-            <a href="" th:id="${'post-' + post.getId() + '-downvote'}"
+            <a th:href="@{/posts/{id}/downvote(id=${post.getId()})}" th:id="${'post-' + post.getId() + '-downvote'}"
                sec:authorize="!isAnonymous()"
-               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                class="text-warning downvote">
               <i class="fas fa-arrow-down"></i>
             </a>

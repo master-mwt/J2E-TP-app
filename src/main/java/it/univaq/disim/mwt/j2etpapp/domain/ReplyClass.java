@@ -44,4 +44,16 @@ public class ReplyClass implements Serializable {
 
     @Column(name = "users_upvoted")
     private Set<Long> usersUpvoted;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReplyClass replyClass = (ReplyClass) o;
+        if(id != null) {
+            return id.equals(replyClass.id);
+        } else {
+            return false;
+        }
+    }
 }

@@ -17,7 +17,7 @@ import java.util.HashSet;
 
 //TODO: MISSING LOGGING FEATURE IN ALL CLASSES!!
 @RestController
-@RequestMapping("channel")
+@RequestMapping("channels")
 public class ChannelController {
 
     @Autowired
