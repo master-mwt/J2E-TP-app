@@ -104,7 +104,7 @@
                 -->
               <!-- end if -->
               <!-- only if post is mypost -->
-              <a th:href="@{/posts/{id}/delete(id=${post.getId()})}"
+              <a th:if="${post.getUserId().equals(#authentication.getPrincipal().getUser().getId())}" th:href="@{/posts/{id}/delete(id=${post.getId()})}"
                 class="text-decoration-none mr-2 text-danger delete"><i class="fa fa-exclamation-triangle"></i> Delete</a>
             </div>
             <!-- end only if post is mypost -->

@@ -67,7 +67,7 @@
               <a th:href="@{/discover/post/{id}/(id=${reply.getPost().getId()})}" class="text-decoration-none"><i
                   class="fas fa-link mr-2"></i>See the Original Post</a>
     
-              <a th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
+              <a th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId())}" th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
                 class="text-decoration-none mr-2 text-danger replydelete float-right"><i
                   class="fa fa-exclamation-triangle"></i> Delete</a>
     
