@@ -32,6 +32,8 @@ public class DashboardController {
     private UserChannelRoleBO userChannelRoleBO;
     @Autowired
     private RoleBO roleBO;
+    @Autowired
+    private UserBO userBO;
 
     @GetMapping("home")
     public String home(Model model) {
@@ -98,6 +100,8 @@ public class DashboardController {
 
         model.addAttribute("posts", postBO.findByUserId(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -109,6 +113,8 @@ public class DashboardController {
 
         model.addAttribute("posts", postBO.findByUserSaved(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -120,6 +126,8 @@ public class DashboardController {
 
         model.addAttribute("posts", postBO.findByUserHidden(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -131,6 +139,8 @@ public class DashboardController {
 
         model.addAttribute("posts", postBO.findByUserReported(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -142,6 +152,8 @@ public class DashboardController {
 
         model.addAttribute("posts", postBO.findByUserUpvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -153,6 +165,8 @@ public class DashboardController {
 
         model.addAttribute("posts", postBO.findByUserDownvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -164,6 +178,8 @@ public class DashboardController {
 
         model.addAttribute("replies", replyBO.findByUserId(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("replyBO", replyBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/reply_dashboard/list";
@@ -175,6 +191,8 @@ public class DashboardController {
 
         model.addAttribute("replies", replyBO.findByUserUpvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("replyBO", replyBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/reply_dashboard/list";
@@ -186,6 +204,8 @@ public class DashboardController {
 
         model.addAttribute("replies", replyBO.findByUserDownvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("replyBO", replyBO);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/reply_dashboard/list";

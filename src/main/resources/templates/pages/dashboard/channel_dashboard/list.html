@@ -35,7 +35,7 @@
                     class="rounded"
             />
             <h3 class="m-0 ml-3">
-              <a class="text-decoration-none" href="" th:text="${channel.getName()}">channel.name</a>
+              <a class="text-decoration-none" th:href="@{/discover/channel/{id}/(id=${channel.getId()})}" th:text="${channel.getName()}">channel.name</a>
             </h3>
             <h5 class="m-0 ml-auto text-warning" th:text="${userroles.get(channel.getId()).getRole().getName()}">user.channel.role.name</h5>
           </div>

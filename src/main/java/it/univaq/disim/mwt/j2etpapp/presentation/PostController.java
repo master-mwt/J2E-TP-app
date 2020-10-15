@@ -89,9 +89,7 @@ public class PostController {
                 post.setUpvote(post.getUpvote() + 1);
                 postBO.save(post);
             } else {
-                System.out.println(post.getUsersUpvoted());
                 post.getUsersUpvoted().add(principal.getId());
-                System.out.println(post.getUsersUpvoted());
                 post.setUpvote(post.getUpvote() + 1);
                 postBO.save(post);
             }
