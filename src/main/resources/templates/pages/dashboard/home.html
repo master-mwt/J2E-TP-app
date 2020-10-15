@@ -15,14 +15,14 @@
               th:src="@{/images/no_profile_img.jpg}"
               alt="user-profile-image"
               class="rounded border"
-              width="80"
+              width="100"
             />
             <img
               th:unless="${user.getImage() == null}"
               th:src="${user.getImage().getLocation()}"
               alt="user-profile-image"
               class="rounded border"
-              width="80"
+              width="100"
             />
             <div class="d-flex flex-column my-auto ml-4">
               <a href="" class="text-decoration-none">change profile image</a>

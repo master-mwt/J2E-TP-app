@@ -15,7 +15,7 @@
       <li class="nav-header px-0 px-3">USER</li>
       <li class="nav-item">
         <!-- redirect to auth register or to home with posts filtered by channel subscription -->
-        <a href="" class="nav-link">
+        <a th:href="@{/home}" class="nav-link">
           <i class="nav-icon fas fa-user-circle"> </i>
           <p class="">home</p>
         </a>
@@ -41,37 +41,37 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/posts/owned}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>owned</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/posts/saved}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>saved</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/posts/hidden}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>hidden</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/posts/reported}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>reported</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/posts/upvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>upvoted</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/posts/downvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>downvoted</p>
                 </a>
@@ -88,19 +88,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/replies/owned}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>owned</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/replies/upvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>upvoted</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/replies/downvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>downvoted</p>
                 </a>
@@ -117,13 +117,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/channels/owned}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>owned</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a th:href="@{/home/channels/joined}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>joined</p>
                 </a>
