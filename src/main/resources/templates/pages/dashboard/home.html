@@ -42,19 +42,194 @@
           </div>
           <div class="card-footer">
             <div class="float-right">
-              <a role="button" href="" class="btn btn-success mr-1"
-                >show profile data</a
-              >
-              <a role="button" href="" class="btn btn-success"
-                >change password</a
-              >
+              <button class="btn btn-success mr-1"
+                 data-toggle="modal"
+                 data-target="#user-data-modal">
+                update profile data
+              </button>
+              <button class="btn btn-success"
+                 data-toggle="modal"
+                 data-target="#change-password-modal">
+                change password
+              </button>
             </div>
-            <a href="" class="btn btn-primary" role="button"
-              >create a channel</a
-            >
+            <button class="btn btn-primary" role="button"
+                    data-toggle="modal"
+                    data-target="#create-channel-modal">
+              create a channel
+            </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- only logged -->
+    <form action="" method="post" enctype="multipart/form-data">
+      <div
+              class="modal fade"
+              id="create-channel-modal"
+              data-backdrop="static"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="create-channel-modal-label"
+              aria-hidden="true"
+      >
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title ml-auto" id="create-channel-modal-label">
+                create a channel
+              </h5>
+              <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- MODAL CONTENT -->
+              <!-- TODO: REMOVE ARRAY OF IMAGES -->
+              <input
+                      name="images[]"
+                      type="file"
+                      class="form-control-file mb-3"
+                      id="images"
+                      multiple
+              />
+              <input
+                      name="channel-name"
+                      type="text"
+                      class="form-control mb-3"
+                      id="channel-name"
+                      placeholder="Name"
+              />
+              <textarea
+                      name="channel-description"
+                      id="channel-description-textarea"
+                      cols=""
+                      rows=""
+                      class="form-control mb-3"
+                      placeholder="Description"
+              ></textarea>
+              <textarea
+                      name="channel-rules"
+                      id="channel-rules-textarea"
+                      cols=""
+                      rows=""
+                      class="form-control"
+                      placeholder="Rules"
+              ></textarea>
+              <!-- / MODAL CONTENT -->
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary">create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- only logged -->
+    <form action="" method="post" enctype="">
+      <div
+              class="modal fade"
+              id="user-data-modal"
+              data-backdrop="static"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="user-data-modal-label"
+              aria-hidden="true"
+      >
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title ml-auto" id="user-data-modal-label">
+                update profile data
+              </h5>
+              <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- MODAL CONTENT -->
+              <!-- TODO: connettere campi oggetto utente come valori old del form per poi cambiarli -->
+              <input
+                      name="user-name"
+                      type="text"
+                      class="form-control mb-3"
+                      id="user-name"
+                      placeholder="Name"
+              />
+              <!-- / MODAL CONTENT -->
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary">update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- only logged -->
+    <form action="" method="post" enctype="">
+      <div
+              class="modal fade"
+              id="change-password-modal"
+              data-backdrop="static"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="change-password-modal-label"
+              aria-hidden="true"
+      >
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title ml-auto" id="change-password-modal-label">
+                change password
+              </h5>
+              <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- MODAL CONTENT -->
+              <!-- TODO: connettere campi oggetto utente come valori old del form per poi cambiarli -->
+              <input
+                      name="old-password"
+                      type="password"
+                      class="form-control mb-3"
+                      id="old-password"
+                      placeholder="Old password"
+              />
+              <input
+                      name="new-password"
+                      type="password"
+                      class="form-control"
+                      id="new-password"
+                      placeholder="New password"
+              />
+              <!-- / MODAL CONTENT -->
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary">change</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
   </div>
 </html>

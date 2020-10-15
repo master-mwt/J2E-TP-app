@@ -116,6 +116,7 @@ public class DiscoverController {
         Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), 0, 10);
         model.addAttribute("user", user);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("userBO", userBO);
         model.addAttribute("channelBO", channelBO);
         return "pages/discover/user_posts";
@@ -127,6 +128,7 @@ public class DiscoverController {
         Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), page, 10);
         model.addAttribute("user", user);
         model.addAttribute("postPage", postPage);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("userBO", userBO);
         model.addAttribute("channelBO", channelBO);
         return "pages/discover/user_posts";
