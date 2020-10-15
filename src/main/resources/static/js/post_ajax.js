@@ -93,7 +93,7 @@ $(document).ready(function() {
                 sSavePost.toggleClass('text-danger');
                 $('#post-' + post_id + '-save-icon').toggleClass('far').toggleClass('fas');
 
-                let saveText = sSavePost.text();
+                let saveText = sSavePost.text().trim();
                 let children = sSavePost.children();
                 sSavePost.text( saveText === 'Save' ? 'Unsave' : 'Save' );
                 sSavePost.prepend(children);
@@ -126,7 +126,7 @@ $(document).ready(function() {
                 sHidePost.toggleClass('text-danger');
                 $('#post-' + post_id + '-hide-icon').toggleClass('far').toggleClass('fas');
 
-                let hideText = sHidePost.text();
+                let hideText = sHidePost.text().trim();
                 let children = sHidePost.children();
                 sHidePost.text( hideText === 'Hide' ? 'Unhide' : 'Hide' );
                 sHidePost.prepend(children);

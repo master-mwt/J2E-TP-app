@@ -135,7 +135,7 @@
             <!-- ##### POST FOOTER (ACTIONS) ##### -->
             <div class="card-footer border-0 p-1 px-3 text-left mt-1" style="border-bottom-left-radius: 0px">
               <!-- if auth and post unsaved, save is enabled -->
-              <a href=""
+              <a th:href="@{/posts/{id}/save(id=${post.getId()})}"
                  th:id="${'post-' + post.getId() + '-save'}"
                  sec:authorize="!isAnonymous()"
                  th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
@@ -147,13 +147,13 @@
               <a th:id="${'post-' + post.getId() + '-save'}"
                  sec:authorize="!isAnonymous()"
                  th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                 href=""
+                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
                  class="text-decoration-none mr-2 text-danger save">
                 <i th:id="${'post-' + post.getId() + '-save-icon'}" class="fas fa-bookmark mr-1"></i>
                 Unsave
               </a>
               <!-- else (guest), redirect to login -->
-              <a href=""
+              <a
                  class="text-decoration-none mr-2"
                  th:href="@{/login}" sec:authorize="isAnonymous()">
                 <i class="far fa-bookmark mr-1"></i>
@@ -161,7 +161,7 @@
               </a>
               <!-- end if -->
               <!-- if auth and post unhidden, hide is enabled -->
-              <a th:id="${'post-' + post.getId() + '-hide'}" href=""
+              <a th:id="${'post-' + post.getId() + '-hide'}" th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                  sec:authorize="!isAnonymous()"
                  th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                  class="text-decoration-none mr-2 hide">
@@ -169,7 +169,7 @@
                 Hide
               </a>
               <!-- if auth and post hidden, hide is disabled -->
-              <a th:id="${'post-' + post.getId() + '-hide'}" href=""
+              <a th:id="${'post-' + post.getId() + '-hide'}" th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                  sec:authorize="!isAnonymous()"
                  th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                  class="text-decoration-none mr-2 text-danger hide">
@@ -177,7 +177,7 @@
                 Unhide
               </a>
               <!-- else (guest), redirect to login -->
-              <a href="" class="text-decoration-none mr-2" th:href="@{/login}" sec:authorize="isAnonymous()">
+              <a class="text-decoration-none mr-2" th:href="@{/login}" sec:authorize="isAnonymous()">
                 <i class="far fa-eye-slash mr-1"></i>
                 Hide
               </a>
