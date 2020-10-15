@@ -23,8 +23,8 @@
     <!-- sidebar -->
     <div class="sidebar">
       <!-- only_auth -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex" sec:authorize="!isAnonymous()">
-        <div class="image d-block my-auto" th:with="user=${#authentication.getPrincipal().getUser()}">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex" sec:authorize="!isAnonymous()" th:with="user=${#authentication.getPrincipal().getUser()}">
+        <div class="image d-block my-auto">
           <a href="">
             <img
               th:if="${user.getImage() == null}"
@@ -43,7 +43,7 @@
           </a>
         </div>
         <div class="info">
-          <a href="" class="d-block text-truncate">username</a>
+          <a th:href="@{/home}" class="d-block text-truncate" th:text="${user.getUsername()}">username</a>
         </div>
       </div>
       <!-- end only_auth -->
