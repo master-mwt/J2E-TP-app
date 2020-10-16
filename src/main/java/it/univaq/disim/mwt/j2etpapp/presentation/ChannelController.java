@@ -124,6 +124,22 @@ public class ChannelController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
+    @PostMapping("{channelId}/posts/{postId}/unreport")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_post_in_channel')")
+    public ResponseEntity doUnReportPostInChannel(@PathVariable("channelId") Long channelId, @PathVariable("postId") String postId) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        if(principal != null){
+            PostClass post = postBO.findById(postId);
+            if(!post.getChannelId().equals(channelId)){
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            post.setReported(false);
+            postBO.save(post);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+    }
+
     @PostMapping("{channelId}/members/{userId}/report")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
     public ResponseEntity doReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
@@ -140,6 +156,22 @@ public class ChannelController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
+    @PostMapping("{channelId}/members/{userId}/unreport")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
+    public ResponseEntity doUnReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        if(principal != null){
+            ChannelClass channel = channelBO.findById(channelId);
+            if(channel.getReportedUsers() == null){
+                channel.setReportedUsers(new HashSet<>());
+            }
+            channel.getReportedUsers().remove(userBO.findById(userId));
+            channelBO.save(channel);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+    }
+
     @PostMapping("{channelId}/members/{userId}/softban")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
     public ResponseEntity doSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
@@ -150,6 +182,22 @@ public class ChannelController {
                 channel.setSoftBannedUsers(new HashSet<>());
             }
             channel.getSoftBannedUsers().add(userBO.findById(userId));
+            channelBO.save(channel);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("{channelId}/members/{userId}/unsoftban")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
+    public ResponseEntity doUnSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        if(principal != null){
+            ChannelClass channel = channelBO.findById(channelId);
+            if(channel.getSoftBannedUsers() == null){
+                channel.setSoftBannedUsers(new HashSet<>());
+            }
+            channel.getSoftBannedUsers().remove(userBO.findById(userId));
             channelBO.save(channel);
             return new ResponseEntity(HttpStatus.OK);
         }

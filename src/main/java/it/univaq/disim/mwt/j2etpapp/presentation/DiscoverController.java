@@ -34,6 +34,7 @@ public class DiscoverController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("userChannelRoleBO", userChannelRoleBO);
         model.addAttribute("principal", (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null);
         UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId()) : null;
@@ -48,6 +49,7 @@ public class DiscoverController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("userChannelRoleBO", userChannelRoleBO);
         model.addAttribute("principal", (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null);
         UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId()) : null;

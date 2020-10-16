@@ -42,7 +42,7 @@
                 th:text="${user.getUsername()}">member.username</a
               >
             </h4>
-            <a href="" class="ml-auto" style="color: orange">UNBAN USER</a>
+            <a th:href="@{/channels/{channelId}/members/{userId}/unsoftban/(channelId=${channel.getId()}, userId=${user.getId()})}" class="ml-auto" style="color: orange">UNBAN USER</a>
           </div>
         </div>
         <!-- end foreach -->
