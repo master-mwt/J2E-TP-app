@@ -171,7 +171,7 @@
       </div>
       <!-- else -->
       <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px" sec:authorize="isAnonymous()">
-        <a role="button" href="" class="btn btn-success btn-block text-light">Make a Reply</a>
+        <a role="button" th:href="@{/login}" class="btn btn-success btn-block text-light">Make a Reply</a>
       </div>
       <!-- end only logged -->
     
@@ -180,27 +180,47 @@
         <div th:each="reply : ${replyPage.getContent()}" th:id="${'reply-' + reply.getId()}" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
           <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #ddd">
             <!-- if reply not upvoted -->
-            <a th:id="${'reply-' + reply.getId() + '-upvote'}" href="" class="replyupvote"><i
+            <a th:id="${'reply-' + reply.getId() + '-upvote'}"
+               sec:authorize="!isAnonymous()"
+               th:unless="${replyBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(reply)}"
+               th:href="@{/replies/{id}/upvote(id=${reply.getId()})}" class="replyupvote"><i
                 class="fas fa-arrow-up mb-1"></i></a>
             <!-- if reply upvoted -->
-            <a th:id="${'reply-' + reply.getId() + '-upvote'}" href=""
+            <a th:id="${'reply-' + reply.getId() + '-upvote'}"
+               sec:authorize="!isAnonymous()"
+               th:if="${replyBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(reply)}"
+               th:href="@{/replies/{id}/upvote(id=${reply.getId()})}"
               class="text-danger replyupvote"><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- else -->
-            <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""><i class="fas fa-arrow-up mb-1"></i></a>
             <!-- if reply upvoted | downvoted -->
             <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
+                  sec:authorize="!isAnonymous()"
+                  th:if="${replyBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(reply) || replyBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(reply)}"
               class="my-1 text-danger text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
-            <!-- else -->
+            <!-- else auth -->
             <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
+                  sec:authorize="!isAnonymous()"
+                  th:unless="${replyBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(reply) || replyBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(reply)}"
               class="my-1 text-dark text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
+            <!-- else guest -->
+            <span th:id="${'reply-' + reply.getId() + '-votenumber'}"
+                  sec:authorize="isAnonymous()"
+                  class="my-1 text-dark text-bold votenumber" th:text="${reply.getUpvote() - reply.getDownvote()}">upv-dov</span>
             <!-- if reply not downvoted -->
-            <a th:id="${'reply-' + reply.getId() + '-downvote'}" href="" class="replydownvote"><i
+            <a th:id="${'reply-' + reply.getId() + '-downvote'}"
+               sec:authorize="!isAnonymous()"
+               th:unless="${replyBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(reply)}"
+               th:href="@{/replies/{id}/downvote(id=${reply.getId()})}" class="replydownvote"><i
                 class="fas fa-arrow-down"></i></a>
             <!-- if reply downvoted -->
-            <a th:id="${'reply-' + reply.getId() + '-downvote'}" href=""
+            <a th:id="${'reply-' + reply.getId() + '-downvote'}"
+               sec:authorize="!isAnonymous()"
+               th:if="${replyBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(reply)}"
+               th:href="@{/replies/{id}/downvote(id=${reply.getId()})}"
               class="text-danger replydownvote"><i class="fas fa-arrow-down"></i></a>
             <!-- else -->
-            <a href="" class=""><i class="fas fa-arrow-down"></i></a>
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""><i class="fas fa-arrow-down"></i></a>
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
             <div class="card-header text-left border-0 px-3">
@@ -216,7 +236,8 @@
             <div class="card-footer border-0 p-1 px-3 text-left" style="border-bottom-left-radius: 0px">
               <a href="" class="text-decoration-none float-right" data-toggle="collapse"><i
                   class="fas fa-eye mr-2"></i>Edit Reply (optional feature)</a>
-              <a href=""
+              <a th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
+                 sec:authorize="!isAnonymous()"
                 class="text-decoration-none mr-2 text-danger replydelete"><i class="fa fa-exclamation-triangle"></i> Delete
                 Reply</a>
             </div>

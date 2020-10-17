@@ -142,6 +142,8 @@ public class DiscoverController {
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
+        model.addAttribute("replyBO", replyBO);
         model.addAttribute("channelBO", channelBO);
         return "pages/discover/post";
     }
@@ -152,6 +154,8 @@ public class DiscoverController {
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, page, 10));
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
+        model.addAttribute("replyBO", replyBO);
         model.addAttribute("channelBO", channelBO);
         return "pages/discover/post";
     }
