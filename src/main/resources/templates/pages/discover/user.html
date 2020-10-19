@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{commons/exskel}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
     <div class="container p-4" layout:fragment="content">
         <div class="row justify-content-center">
@@ -31,6 +32,15 @@
                         @endif
                         @endif
                         -->
+                        <th:block sec:authorize="hasRole('administrator')" th:unless="${user.getId().equals(#authentication.getPrincipal().getUser().getId())}">
+                            <a
+                                    th:if="${user.isHard_ban()}"
+                                    th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
+                                    class="btn btn-danger float-left" role="button">Remove hardban</a>
+                            <a      th:unless="${user.isHard_ban()}"
+                                    th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
+                                    class="btn btn-danger float-left" role="button">Hardban</a>
+                        </th:block>
                     </div>
                 </div>
             </div>
