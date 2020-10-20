@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{commons/exskel}">
+<body>
+<div class="container p-4" layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-info">
+                <div class="card-header"><h3 class="card-title text-center" th:text="${'Error ' + status}">Error</h3></div>
+                <div class="card-body">
+                    <p th:if="${timestamp}">[[${timestamp}]]</p>
+                    <p th:if="${error}">[[${error}]]</p>
+                    <p th:if="${status}">[[${status}]]</p>
+                    <p th:if="${message}">[[${message}]]</p>
+                    <p th:if="${trace}">[[${trace}]]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
