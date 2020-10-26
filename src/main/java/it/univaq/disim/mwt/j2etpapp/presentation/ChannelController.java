@@ -66,7 +66,7 @@ public class ChannelController {
         return modelAndView;
     }
 
-    @PostMapping("{channelId}/join")
+    @GetMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
     public ResponseEntity doJoin(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
@@ -86,7 +86,7 @@ public class ChannelController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping("{channelId}/leave")
+    @GetMapping("{channelId}/leave")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'leave_channel')")
     public ResponseEntity doLeave(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;

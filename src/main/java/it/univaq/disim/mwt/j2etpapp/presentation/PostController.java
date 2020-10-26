@@ -58,7 +58,7 @@ public class PostController {
         return modelAndView;
     }
 
-    @GetMapping("{postId}/upvote")
+    @PostMapping("{postId}/upvote")
     public ResponseEntity doUpvote(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -98,7 +98,7 @@ public class PostController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("{postId}/downvote")
+    @PostMapping("{postId}/downvote")
     public ResponseEntity doDownvote(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -138,7 +138,7 @@ public class PostController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("{postId}/hide")
+    @PostMapping("{postId}/hide")
     public ResponseEntity doHide(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -159,7 +159,7 @@ public class PostController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("{postId}/report")
+    @PostMapping("{postId}/report")
     public ResponseEntity doReport(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -180,7 +180,7 @@ public class PostController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("{postId}/save")
+    @PostMapping("{postId}/save")
     public ResponseEntity doSave(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){

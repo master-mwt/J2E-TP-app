@@ -15,7 +15,7 @@ $(document).ready(function() {
         let reply_id = hrefarray[hrefarray.length - 2];
 
         $.ajax({
-            method: "GET",
+            method: "POST",
             url: href,
             success: function(data, textStatus, XMLHTTPRequest){
 
@@ -47,7 +47,7 @@ $(document).ready(function() {
         let reply_id = hrefarray[hrefarray.length - 2];
 
         $.ajax({
-            method: "GET",
+            method: "POST",
             url: href,
             success: function(data, textStatus, XMLHTTPRequest){
 

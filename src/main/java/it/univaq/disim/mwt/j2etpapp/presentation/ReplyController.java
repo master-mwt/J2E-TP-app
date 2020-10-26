@@ -58,7 +58,7 @@ public class ReplyController {
         return modelAndView;
     }
 
-    @GetMapping("{replyId}/upvote")
+    @PostMapping("{replyId}/upvote")
     public ResponseEntity doUpvote(@PathVariable("replyId") String replyId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
@@ -98,7 +98,7 @@ public class ReplyController {
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("{replyId}/downvote")
+    @PostMapping("{replyId}/downvote")
     public ResponseEntity doDownvote(@PathVariable("replyId") String replyId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){

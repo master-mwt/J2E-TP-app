@@ -30,15 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO: all missing routes
-        http.headers().disable().csrf().and()
-                .authorizeRequests()
-                // url protection (from strictest to most permissive)
-                .antMatchers("/admin").hasRole("administrator")
-                .antMatchers("/home/**").hasAnyRole("administrator", "logged")
-                .antMatchers("/home").hasAnyRole("administrator", "logged")
-                .antMatchers("/", "/static/**", "/favicon.ico").permitAll()
-                .and().formLogin()
+        // TODO: all missing routes and control if correct
+        http.headers().disable().csrf().disable().formLogin()
                 // login
                 .loginPage("/login")
                 .permitAll()
@@ -55,7 +48,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // logout
                 .logout()
                 .deleteCookies("JSESSIONID")
-                .permitAll();
+                .permitAll().and()
+                .authorizeRequests()
+                // url protection (from strictest to most permissive)
+                .antMatchers("/admin").hasRole("administrator")
+                .antMatchers("/home/**").hasAnyRole("administrator", "logged")
+                .antMatchers("/home").hasAnyRole("administrator", "logged")
+                .antMatchers("/", "/static/**", "/favicon.ico").permitAll();
     }
 
     @Bean

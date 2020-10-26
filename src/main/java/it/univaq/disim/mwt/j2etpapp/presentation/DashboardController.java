@@ -67,12 +67,15 @@ public class DashboardController {
     public String dashboardChannelJoined(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
+        RoleClass creator = roleBO.findByName("creator");
 
         List<ChannelClass> channels = new ArrayList<>();
         Map<Long, UserChannelRole> userRoles = new HashMap<>();
         for (UserChannelRole userChannelRole : userChannelRoles) {
-            channels.add(userChannelRole.getChannel());
-            userRoles.put(userChannelRole.getChannel().getId(), userChannelRole);
+            if(!creator.equals(userChannelRole.getRole())) {
+                channels.add(userChannelRole.getChannel());
+                userRoles.put(userChannelRole.getChannel().getId(), userChannelRole);
+            }
         }
 
         model.addAttribute("channels", channels);

@@ -119,6 +119,15 @@
       </div>
     </div>
 
+    <script th:inline="javascript">
+      $(document).ready(function () {
+        $('.markdown-content').each(function () {
+          let markdown_content = $(this).data('markdown-content');
+          $(this).html(marked(markdown_content));
+        });
+      });
+    </script>
+
     <!-- JScroll func -->
     <!--
     <script type="text/javascript">

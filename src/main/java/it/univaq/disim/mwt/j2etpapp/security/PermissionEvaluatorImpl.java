@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+// TODO: permission error
 @Component
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
@@ -26,6 +27,8 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object object, Object permission) {
         UserDetailsImpl principal = getPrincipal(authentication);
+
+        System.out.println("permission evaluator");
 
         if(principal == null){
             return false;
@@ -52,6 +55,8 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Serializable objectId, String className, Object permission) {
         UserDetailsImpl principal = getPrincipal(authentication);
+
+        System.out.println("permission evaluator");
 
         if(principal == null){
             return false;

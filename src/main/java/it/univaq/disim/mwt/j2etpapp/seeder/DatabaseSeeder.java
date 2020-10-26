@@ -115,9 +115,15 @@ public class DatabaseSeeder {
         create_post.setName("create_post");
         ServiceClass create_channel = new ServiceClass();
         create_channel.setName("create_channel");
+        ServiceClass join_channel = new ServiceClass();
+        join_channel.setName("join_channel");
+        ServiceClass leave_channel = new ServiceClass();
+        leave_channel.setName("leave_channel");
 
         list.add(create_post);
         list.add(create_channel);
+        list.add(join_channel);
+        list.add(leave_channel);
         serviceBO.saveAll(list);
     }
 
@@ -133,8 +139,9 @@ public class DatabaseSeeder {
         administrator.setServices(administratorServices);
 
         Set<ServiceClass> loggedServices = new HashSet<>();
-        loggedServices.add(serviceBO.findByName("create_post"));
         loggedServices.add(serviceBO.findByName("create_channel"));
+        loggedServices.add(serviceBO.findByName("join_channel"));
+        loggedServices.add(serviceBO.findByName("leave_channel"));
         logged.setServices(loggedServices);
 
         list.add(administrator);
@@ -147,19 +154,15 @@ public class DatabaseSeeder {
 
         Set<ServiceClass> creatorServices = new HashSet<>();
         creatorServices.add(serviceBO.findByName("create_post"));
-        creatorServices.add(serviceBO.findByName("create_channel"));
 
         Set<ServiceClass> adminServices = new HashSet<>();
         adminServices.add(serviceBO.findByName("create_post"));
-        adminServices.add(serviceBO.findByName("create_channel"));
 
         Set<ServiceClass> moderatorServices = new HashSet<>();
         moderatorServices.add(serviceBO.findByName("create_post"));
-        moderatorServices.add(serviceBO.findByName("create_channel"));
 
         Set<ServiceClass> memberServices = new HashSet<>();
         memberServices.add(serviceBO.findByName("create_post"));
-        memberServices.add(serviceBO.findByName("create_channel"));
 
         RoleClass creator = new RoleClass();
         creator.setName("creator");
