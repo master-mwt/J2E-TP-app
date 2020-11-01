@@ -111,19 +111,71 @@ public class DatabaseSeeder {
     private void seedServices() {
         ArrayList<ServiceClass> list = new ArrayList<>();
 
+        ServiceClass mod_user_data = new ServiceClass();
+        mod_user_data.setName("mod_user_data");
+
+        ServiceClass view_user_data = new ServiceClass();
+        view_user_data.setName("view_user_data");
+
         ServiceClass create_post = new ServiceClass();
         create_post.setName("create_post");
+
+        ServiceClass delete_post = new ServiceClass();
+        delete_post.setName("delete_post");
+
+        ServiceClass mod_post = new ServiceClass();
+        mod_post.setName("mod_post");
+
+        ServiceClass create_reply = new ServiceClass();
+        create_reply.setName("create_reply");
+
+        ServiceClass delete_reply = new ServiceClass();
+        delete_reply.setName("delete_reply");
+
+        ServiceClass mod_reply = new ServiceClass();
+        mod_reply.setName("mod_reply");
+
         ServiceClass create_channel = new ServiceClass();
         create_channel.setName("create_channel");
+
+        ServiceClass mod_channel_data = new ServiceClass();
+        mod_channel_data.setName("mod_channel_data");
+
         ServiceClass join_channel = new ServiceClass();
         join_channel.setName("join_channel");
+
         ServiceClass leave_channel = new ServiceClass();
         leave_channel.setName("leave_channel");
 
+        ServiceClass delete_channel = new ServiceClass();
+        delete_channel.setName("delete_channel");
+
+        ServiceClass report_user_in_channel = new ServiceClass();
+        report_user_in_channel.setName("report_user_in_channel");
+
+        ServiceClass softban_user_in_channel = new ServiceClass();
+        softban_user_in_channel.setName("softban_user_in_channel");
+
+        ServiceClass hardban_user_from_platform = new ServiceClass();
+        hardban_user_from_platform.setName("hardban_user_from_platform");
+
+        list.add(mod_user_data);
+        list.add(view_user_data);
         list.add(create_post);
+        list.add(delete_post);
+        list.add(mod_post);
+        list.add(create_reply);
+        list.add(delete_reply);
+        list.add(mod_reply);
         list.add(create_channel);
+        list.add(mod_channel_data);
         list.add(join_channel);
         list.add(leave_channel);
+        list.add(delete_channel);
+        list.add(report_user_in_channel);
+        list.add(softban_user_in_channel);
+        list.add(hardban_user_from_platform);
+
         serviceBO.saveAll(list);
     }
 
@@ -141,7 +193,9 @@ public class DatabaseSeeder {
         Set<ServiceClass> loggedServices = new HashSet<>();
         loggedServices.add(serviceBO.findByName("create_channel"));
         loggedServices.add(serviceBO.findByName("join_channel"));
-        loggedServices.add(serviceBO.findByName("leave_channel"));
+        loggedServices.add(serviceBO.findByName("mod_user_data"));
+        loggedServices.add(serviceBO.findByName("view_user_data"));
+
         logged.setServices(loggedServices);
 
         list.add(administrator);
@@ -154,15 +208,46 @@ public class DatabaseSeeder {
 
         Set<ServiceClass> creatorServices = new HashSet<>();
         creatorServices.add(serviceBO.findByName("create_post"));
+        creatorServices.add(serviceBO.findByName("delete_post"));
+        creatorServices.add(serviceBO.findByName("mod_post"));
+        creatorServices.add(serviceBO.findByName("create_reply"));
+        creatorServices.add(serviceBO.findByName("delete_reply"));
+        creatorServices.add(serviceBO.findByName("mod_reply"));
+        creatorServices.add(serviceBO.findByName("mod_channel_data"));
+        creatorServices.add(serviceBO.findByName("delete_channel"));
+        creatorServices.add(serviceBO.findByName("report_user_in_channel"));
+        creatorServices.add(serviceBO.findByName("softban_user_in_channel"));
 
         Set<ServiceClass> adminServices = new HashSet<>();
         adminServices.add(serviceBO.findByName("create_post"));
+        adminServices.add(serviceBO.findByName("delete_post"));
+        adminServices.add(serviceBO.findByName("mod_post"));
+        adminServices.add(serviceBO.findByName("create_reply"));
+        adminServices.add(serviceBO.findByName("delete_reply"));
+        adminServices.add(serviceBO.findByName("mod_reply"));
+        adminServices.add(serviceBO.findByName("mod_channel_data"));
+        adminServices.add(serviceBO.findByName("leave_channel"));
+        adminServices.add(serviceBO.findByName("report_user_in_channel"));
+        adminServices.add(serviceBO.findByName("softban_user_in_channel"));
 
         Set<ServiceClass> moderatorServices = new HashSet<>();
         moderatorServices.add(serviceBO.findByName("create_post"));
+        moderatorServices.add(serviceBO.findByName("delete_post"));
+        moderatorServices.add(serviceBO.findByName("mod_post"));
+        moderatorServices.add(serviceBO.findByName("create_reply"));
+        moderatorServices.add(serviceBO.findByName("delete_reply"));
+        moderatorServices.add(serviceBO.findByName("mod_reply"));
+        moderatorServices.add(serviceBO.findByName("leave_channel"));
+        moderatorServices.add(serviceBO.findByName("report_user_in_channel"));
 
         Set<ServiceClass> memberServices = new HashSet<>();
         memberServices.add(serviceBO.findByName("create_post"));
+        memberServices.add(serviceBO.findByName("delete_post"));
+        memberServices.add(serviceBO.findByName("mod_post"));
+        memberServices.add(serviceBO.findByName("create_reply"));
+        memberServices.add(serviceBO.findByName("delete_reply"));
+        memberServices.add(serviceBO.findByName("mod_reply"));
+        memberServices.add(serviceBO.findByName("leave_channel"));
 
         RoleClass creator = new RoleClass();
         creator.setName("creator");

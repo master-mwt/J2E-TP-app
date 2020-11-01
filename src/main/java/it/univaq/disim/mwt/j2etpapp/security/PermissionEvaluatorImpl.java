@@ -23,12 +23,12 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     private UserBO userBO;
     @Autowired
     private UserChannelRoleBO userChannelRoleBO;
+    @Autowired
+    private ServiceBO serviceBO;
 
     @Override
     public boolean hasPermission(Authentication authentication, Object object, Object permission) {
         UserDetailsImpl principal = getPrincipal(authentication);
-
-        System.out.println("permission evaluator");
 
         if(principal == null){
             return false;
@@ -56,8 +56,6 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     public boolean hasPermission(Authentication authentication, Serializable objectId, String className, Object permission) {
         UserDetailsImpl principal = getPrincipal(authentication);
 
-        System.out.println("permission evaluator");
-
         if(principal == null){
             return false;
         }
@@ -83,12 +81,21 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     // hasPermission implementations for each protected class
     private boolean hasPermissionOnChannel(UserClass currentUser, ChannelClass channel, String permission){
         UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), currentUser.getId());
+        ServiceClass joinChannel = serviceBO.findByName("join_channel");
+
         if(userChannelRole != null) {
+            if(joinChannel.equals(permission)) {
+                return false;
+            }
             RoleClass role = userChannelRole.getRole();
             for (ServiceClass service : role.getServices()) {
                 if(service.getName().equals(permission)) {
                     return true;
                 }
+            }
+        } else {
+            if(joinChannel.getName().equals(permission) && !(channel.getSoftBannedUsers().contains(currentUser))) {
+                return true;
             }
         }
         return false;

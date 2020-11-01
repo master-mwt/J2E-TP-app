@@ -57,7 +57,7 @@ public class ChannelController {
         return modelAndView;
     }
 
-    @DeleteMapping("{channelId}/delete")
+    @DeleteMapping("{channelId}")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'delete_channel')")
     public ModelAndView delete(@PathVariable("channelId") Long channelId) {
         channelBO.deleteById(channelId);
@@ -68,44 +68,34 @@ public class ChannelController {
 
     @GetMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
-    public ResponseEntity doJoin(@PathVariable("channelId") Long channelId) {
+    public ModelAndView doJoin(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            RoleClass member = roleBO.findByName("member");
-            UserChannelRole joinedMember = new UserChannelRole();
-            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
-            userChannelRoleFKs.setUserId(principal.getId());
-            userChannelRoleFKs.setChannelId(channelId);
-            userChannelRoleFKs.setRoleId(member.getId());
+        RoleClass member = roleBO.findByName("member");
+        UserChannelRole joinedMember = new UserChannelRole();
+        UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+        userChannelRoleFKs.setUserId(principal.getId());
+        userChannelRoleFKs.setChannelId(channelId);
+        userChannelRoleFKs.setRoleId(member.getId());
 
-            joinedMember.setUserChannelRoleFKs(userChannelRoleFKs);
+        joinedMember.setUserChannelRoleFKs(userChannelRoleFKs);
 
-            userChannelRoleBO.save(joinedMember);
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        userChannelRoleBO.save(joinedMember);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/discover/channel/" + channelId);
+        return modelAndView;
     }
 
     @GetMapping("{channelId}/leave")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'leave_channel')")
-    public ResponseEntity doLeave(@PathVariable("channelId") Long channelId) {
+    public ModelAndView doLeave(@PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            userChannelRoleBO.delete(userChannelRoleBO.findByChannelIdAndUserId(channelId, principal.getId()));
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
-    }
+        userChannelRoleBO.delete(userChannelRoleBO.findByChannelIdAndUserId(channelId, principal.getId()));
 
-    @DeleteMapping("{channelId}")
-    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'delete_channel')")
-    public ResponseEntity doDelete(@PathVariable("channelId") Long channelId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            channelBO.deleteById(channelId);
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/discover/channel/" + channelId);
+
+        return modelAndView;
     }
 
     @PostMapping("{channelId}/posts/{postId}/report")

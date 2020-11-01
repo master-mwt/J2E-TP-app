@@ -67,4 +67,13 @@ public class UserClass implements Serializable {
 
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private ImageClass image;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserClass userClass = (UserClass) o;
+        return id.equals(userClass.id) &&
+                username.equals(userClass.username);
+    }
 }
