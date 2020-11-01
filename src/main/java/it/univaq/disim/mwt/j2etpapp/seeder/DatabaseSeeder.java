@@ -153,6 +153,9 @@ public class DatabaseSeeder {
         ServiceClass report_user_in_channel = new ServiceClass();
         report_user_in_channel.setName("report_user_in_channel");
 
+        ServiceClass global_unreport_post_in_channel = new ServiceClass();
+        global_unreport_post_in_channel.setName("global_unreport_post_in_channel");
+
         ServiceClass softban_user_in_channel = new ServiceClass();
         softban_user_in_channel.setName("softban_user_in_channel");
 
@@ -173,6 +176,7 @@ public class DatabaseSeeder {
         list.add(leave_channel);
         list.add(delete_channel);
         list.add(report_user_in_channel);
+        list.add(global_unreport_post_in_channel);
         list.add(softban_user_in_channel);
         list.add(hardban_user_from_platform);
 
@@ -215,8 +219,10 @@ public class DatabaseSeeder {
         creatorServices.add(serviceBO.findByName("mod_reply"));
         creatorServices.add(serviceBO.findByName("mod_channel_data"));
         creatorServices.add(serviceBO.findByName("delete_channel"));
+        creatorServices.add(serviceBO.findByName("global_unreport_post_in_channel"));
         creatorServices.add(serviceBO.findByName("report_user_in_channel"));
         creatorServices.add(serviceBO.findByName("softban_user_in_channel"));
+
 
         Set<ServiceClass> adminServices = new HashSet<>();
         adminServices.add(serviceBO.findByName("create_post"));
@@ -227,6 +233,7 @@ public class DatabaseSeeder {
         adminServices.add(serviceBO.findByName("mod_reply"));
         adminServices.add(serviceBO.findByName("mod_channel_data"));
         adminServices.add(serviceBO.findByName("leave_channel"));
+        adminServices.add(serviceBO.findByName("global_unreport_post_in_channel"));
         adminServices.add(serviceBO.findByName("report_user_in_channel"));
         adminServices.add(serviceBO.findByName("softban_user_in_channel"));
 
@@ -238,6 +245,7 @@ public class DatabaseSeeder {
         moderatorServices.add(serviceBO.findByName("delete_reply"));
         moderatorServices.add(serviceBO.findByName("mod_reply"));
         moderatorServices.add(serviceBO.findByName("leave_channel"));
+        moderatorServices.add(serviceBO.findByName("global_unreport_post_in_channel"));
         moderatorServices.add(serviceBO.findByName("report_user_in_channel"));
 
         Set<ServiceClass> memberServices = new HashSet<>();

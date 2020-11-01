@@ -51,11 +51,9 @@ public class ReplyController {
 
     @DeleteMapping("{replyId}/delete")
     @PreAuthorize("hasPermission(#replyId, 'it.univaq.disim.mwt.j2etpapp.domain.ReplyClass', 'delete_reply')")
-    public ModelAndView delete(@PathVariable("replyId") String replyId) {
+    public ResponseEntity delete(@PathVariable("replyId") String replyId) {
         replyBO.deleteById(replyId);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
-        return modelAndView;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{replyId}/upvote")

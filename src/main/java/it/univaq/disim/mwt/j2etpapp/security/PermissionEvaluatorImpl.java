@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-// TODO: permission error
+// TODO: permission correct check
 @Component
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
@@ -25,6 +25,8 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     private UserChannelRoleBO userChannelRoleBO;
     @Autowired
     private ServiceBO serviceBO;
+    @Autowired
+    private RoleBO roleBO;
 
     @Override
     public boolean hasPermission(Authentication authentication, Object object, Object permission) {
@@ -103,10 +105,13 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
     private boolean hasPermissionOnPost(UserClass currentUser, PostClass post, String permission){
         UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(post.getChannelId(), currentUser.getId());
+        RoleClass creator = roleBO.findByName("creator");
+        RoleClass admin = roleBO.findByName("admin");
+
         if(userChannelRole != null) {
             RoleClass role = userChannelRole.getRole();
             for (ServiceClass service : role.getServices()) {
-                if(service.getName().equals(permission) && post.getUserId().equals(currentUser.getId())) {
+                if(service.getName().equals(permission) && (post.getUserId().equals(currentUser.getId()) || creator.equals(role) || admin.equals(role))) {
                     return true;
                 }
             }
@@ -116,10 +121,13 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
     private boolean hasPermissionOnReply(UserClass currentUser, ReplyClass reply, String permission){
         UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(reply.getChannelId(), currentUser.getId());
+        RoleClass creator = roleBO.findByName("creator");
+        RoleClass admin = roleBO.findByName("admin");
+
         if(userChannelRole != null) {
             RoleClass role = userChannelRole.getRole();
             for (ServiceClass service : role.getServices()) {
-                if(service.getName().equals(permission) && reply.getUserId().equals(currentUser.getId())) {
+                if(service.getName().equals(permission) && (reply.getUserId().equals(currentUser.getId())) || creator.equals(role) || admin.equals(role)) {
                     return true;
                 }
             }

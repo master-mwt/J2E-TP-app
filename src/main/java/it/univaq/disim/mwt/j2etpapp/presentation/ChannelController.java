@@ -98,31 +98,16 @@ public class ChannelController {
         return modelAndView;
     }
 
-    @PostMapping("{channelId}/posts/{postId}/report")
-    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_post_in_channel')")
-    public ResponseEntity doReportPostInChannel(@PathVariable("channelId") Long channelId, @PathVariable("postId") String postId) {
+    @PostMapping("{channelId}/posts/{postId}/globalunreport")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'global_unreport_post_in_channel')")
+    public ResponseEntity doGlobalUnReportPostInChannel(@PathVariable("channelId") Long channelId, @PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
             PostClass post = postBO.findById(postId);
             if(!post.getChannelId().equals(channelId)){
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            post.setReported(true);
-            postBO.save(post);
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
-    }
-
-    @PostMapping("{channelId}/posts/{postId}/unreport")
-    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_post_in_channel')")
-    public ResponseEntity doUnReportPostInChannel(@PathVariable("channelId") Long channelId, @PathVariable("postId") String postId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            PostClass post = postBO.findById(postId);
-            if(!post.getChannelId().equals(channelId)){
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            post.getUsersReported().clear();
             post.setReported(false);
             postBO.save(post);
             return new ResponseEntity(HttpStatus.OK);

@@ -51,11 +51,9 @@ public class PostController {
 
     @DeleteMapping("{postId}/delete")
     @PreAuthorize("hasPermission(#postId, 'it.univaq.disim.mwt.j2etpapp.domain.PostClass', 'delete_post')")
-    public ModelAndView delete(@PathVariable("postId") String postId) {
+    public ResponseEntity delete(@PathVariable("postId") String postId) {
         postBO.deleteById(postId);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
-        return modelAndView;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{postId}/upvote")
@@ -172,9 +170,16 @@ public class PostController {
                 post.getUsersReported().remove(principal.getId());
             } else {
                 post.getUsersReported().add(principal.getId());
-
             }
+
+            if(post.getUsersReported().isEmpty()) {
+                post.setReported(false);
+            } else {
+                post.setReported(true);
+            }
+
             postBO.save(post);
+
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
