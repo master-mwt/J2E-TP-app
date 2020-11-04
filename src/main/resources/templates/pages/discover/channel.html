@@ -67,14 +67,18 @@
             </a>
           </div>
           <div class="card-body text-left px-3 py-2">
+            <h5 class="text-muted">Title</h5>
+            <p class="" th:text="${channel.getTitle()}">channel.title</p>
             <h5 class="text-muted">Description</h5>
             <p class="" th:text="${channel.getDescription()}">channel.description</p>
             <h5 class="text-muted">Rules</h5>
             <p class="" th:text="${channel.getRules()}">channel.rules</p>
           </div>
           <!-- if logged & current user is channel member & current user group == 1 -->
-          <div sec:authorize="!isAnonymous()" th:if="${(subscription != null) && ('logged'.equals(principal.getGroup().getName()))}" class="card-footer">
-            <a role="button" href="" class="btn btn-sm btn-info float-right"
+          <div sec:authorize="!isAnonymous()" th:if="${(subscription != null) || ('administrator'.equals(principal.getGroup().getName()))}" class="card-footer">
+            <a role="button"
+               th:href="@{/discover/channel/{id}/members/(id=${channel.getId()})}"
+               class="btn btn-sm btn-info float-right"
               >Members</a
             >
             <!-- if current user role != member -->
@@ -82,14 +86,14 @@
               role="button"
               th:href="@{/discover/channel/{id}/posts/reported/(id=${channel.getId()})}"
               class="btn btn-sm btn-info float-right mr-2"
-              th:unless="${'member'.equals(subscription.getRole().getName())}"
+              th:if="${('administrator'.equals(principal.getGroup().getName())) || !('member'.equals(subscription.getRole().getName()))}"
               >Reported Posts</a>
             <!-- if current user role != member & != moderator -->
             <a
               role="button"
               th:href="@{/discover/channel/{id}/members/banned/(id=${channel.getId()})}"
               class="btn btn-sm btn-info float-right mr-2"
-              th:unless="${'member'.equals(subscription.getRole().getName()) && 'moderator'.equals(subscription.getRole().getName())}"
+              th:if="${('administrator'.equals(principal.getGroup().getName())) || (!'member'.equals(subscription.getRole().getName()) && !'moderator'.equals(subscription.getRole().getName()))}"
               >Banned Users</a
             >
           </div>
