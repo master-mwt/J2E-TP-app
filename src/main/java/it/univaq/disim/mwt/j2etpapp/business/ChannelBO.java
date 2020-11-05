@@ -21,7 +21,11 @@ public interface ChannelBO {
     Long count();
 
     Set<UserClass> getSoftBannedUsers(long channelId);
+    void setSoftBannedUsers(long channelId, Set<UserClass> softBannedUsers);
+    void appendSoftBannedUsers(long channelId, Set<UserClass> softBannedUsers);
     Set<UserClass> getReportedUsers(long channelId);
+    void setReportedUsers(long channelId, Set<UserClass> reportedUsers);
+    void appendReportedUsers(long channelId, Set<UserClass> reportedUsers);
     void joinChannel(long channelId, UserClass user);
     void leaveChannel(long channelId, UserClass user);
     void globalUnreportPost(long channelId, String postId) throws BusinessException;

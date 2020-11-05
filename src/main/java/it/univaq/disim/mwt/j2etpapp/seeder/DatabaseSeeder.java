@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.j2etpapp.seeder;
 import com.github.javafaker.Faker;
 import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
+import lombok.extern.slf4j.Slf4j;
 import net.steppschuh.markdowngenerator.text.emphasis.BoldText;
 import net.steppschuh.markdowngenerator.text.emphasis.ItalicText;
 import net.steppschuh.markdowngenerator.text.heading.Heading;
@@ -22,9 +23,9 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.util.*;
 
-// TODO: Replace println and printStackTrace with log
 // TODO: Roles, Services, Groups rules
 @Component
+@Slf4j
 public class DatabaseSeeder {
 
     // Faker
@@ -71,16 +72,16 @@ public class DatabaseSeeder {
             replyBO.count() == 0 &&
             tagBO.count() == 0
         ){
-            System.out.println("Empty database detected");
+            log.info("Empty database detected");
             doSeed();
         } else {
-            System.out.println("Database already seeded, skipping...");
+            log.info("Database already seeded, skipping...");
         }
     }
 
 
     private void doSeed(){
-        System.out.println("Seeding...");
+        log.info("Seeding...");
         // static tables
         seedServices();
         seedGroups();
@@ -104,7 +105,7 @@ public class DatabaseSeeder {
 
         // generate admins
         seedAdmins();
-        System.out.println("End seeding.");
+        log.info("End seeding.");
     }
 
     // seeders
@@ -335,7 +336,7 @@ public class DatabaseSeeder {
                 imageBO.save(image);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info("seedImages error", e);
         }
     }
 
@@ -439,24 +440,22 @@ public class DatabaseSeeder {
     }
 
     private void seedReportedUsers(Long nUsers){
-        List<UserClass> users = pickRandomElements(userBO.findAll(), nUsers);
+        List<UserClass> users = shuffle(userBO.findAll());
+        RoleClass creator = roleBO.findByName("creator");
         long inserted = 0;
+
         for(UserClass user : users){
-            for(ChannelClass channel : channelBO.findAll()){
-                if(channel.getCreator().getId().equals(user.getId())){
+            for(UserChannelRole userChannelRole : userChannelRoleBO.findByUserId(user.getId())) {
+                if(creator.equals(userChannelRole.getRole())){
                     continue;
                 }
-                Set<UserClass> reportedUsers = null;
-                if(channel.getReportedUsers() != null){
-                    reportedUsers = channel.getReportedUsers();
-                } else {
-                    reportedUsers = new HashSet<>();
-                }
+
+                Set<UserClass> reportedUsers = new HashSet<>();
 
                 reportedUsers.add(user);
-                channel.setReportedUsers(reportedUsers);
 
-                channelBO.save(channel);
+                channelBO.appendReportedUsers(userChannelRole.getChannel().getId(), reportedUsers);
+
                 inserted++;
                 if(inserted >= nUsers){
                     return;
@@ -466,24 +465,22 @@ public class DatabaseSeeder {
     }
 
     private void seedSoftBannedUsers(Long nUsers){
-        List<UserClass> users = pickRandomElements(userBO.findAll(), nUsers);
+        List<UserClass> users = shuffle(userBO.findAll());
+        RoleClass creator = roleBO.findByName("creator");
         long inserted = 0;
+
         for(UserClass user : users){
-            for(ChannelClass channel : channelBO.findAll()){
-                if(channel.getCreator().getId().equals(user.getId())){
+            for(UserChannelRole userChannelRole : userChannelRoleBO.findByUserId(user.getId())) {
+                if(creator.equals(userChannelRole.getRole())){
                     continue;
                 }
-                Set<UserClass> softBannedUsers = null;
-                if(channel.getSoftBannedUsers() != null){
-                    softBannedUsers = channel.getSoftBannedUsers();
-                } else {
-                    softBannedUsers = new HashSet<>();
-                }
+
+                Set<UserClass> softBannedUsers = new HashSet<>();
 
                 softBannedUsers.add(user);
-                channel.setSoftBannedUsers(softBannedUsers);
 
-                channelBO.save(channel);
+                channelBO.appendSoftBannedUsers(userChannelRole.getChannel().getId(), softBannedUsers);
+
                 inserted++;
                 if(inserted >= nUsers){
                     return;

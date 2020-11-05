@@ -93,9 +93,57 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
+    public void setSoftBannedUsers(long channelId, Set<UserClass> softBannedUsers) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        channel.setSoftBannedUsers(softBannedUsers);
+        channelRepository.save(channel);
+
+        for(UserClass softBannedUser : softBannedUsers) {
+            UserChannelRole userToBeSoftbanned = userChannelRoleRepository.findByChannelIdAndUserId(channelId, softBannedUser.getId()).orElse(null);
+            userChannelRoleRepository.delete(userToBeSoftbanned);
+        }
+    }
+
+    @Override
+    public void appendSoftBannedUsers(long channelId, Set<UserClass> softBannedUsers) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        Set<UserClass> alreadySoftBanned = channel.getSoftBannedUsers();
+        if (alreadySoftBanned == null) {
+            alreadySoftBanned = new HashSet<>();
+        }
+        alreadySoftBanned.addAll(softBannedUsers);
+        channel.setSoftBannedUsers(alreadySoftBanned);
+        channelRepository.save(channel);
+
+        for(UserClass softBannedUser : softBannedUsers) {
+            UserChannelRole userToBeSoftbanned = userChannelRoleRepository.findByChannelIdAndUserId(channelId, softBannedUser.getId()).orElse(null);
+            userChannelRoleRepository.delete(userToBeSoftbanned);
+        }
+    }
+
+    @Override
     public Set<UserClass> getReportedUsers(long channelId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         return channel.getReportedUsers();
+    }
+
+    @Override
+    public void setReportedUsers(long channelId, Set<UserClass> reportedUsers) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        channel.setReportedUsers(reportedUsers);
+        channelRepository.save(channel);
+    }
+
+    @Override
+    public void appendReportedUsers(long channelId, Set<UserClass> reportedUsers) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        Set<UserClass> alreadyReported = channel.getReportedUsers();
+        if (alreadyReported == null) {
+            alreadyReported = new HashSet<>();
+        }
+        alreadyReported.addAll(reportedUsers);
+        channel.setReportedUsers(alreadyReported);
+        channelRepository.save(channel);
     }
 
     @Override
