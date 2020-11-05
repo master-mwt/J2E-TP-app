@@ -14,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -87,6 +84,18 @@ public class ChannelBOImpl implements ChannelBO {
     @Override
     public Long count() {
         return channelRepository.count();
+    }
+
+    @Override
+    public Set<UserClass> getSoftBannedUsers(long channelId) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        return channel.getSoftBannedUsers();
+    }
+
+    @Override
+    public Set<UserClass> getReportedUsers(long channelId) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        return channel.getReportedUsers();
     }
 
     @Override

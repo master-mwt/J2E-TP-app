@@ -4,6 +4,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ChannelBO {
 
@@ -19,6 +20,8 @@ public interface ChannelBO {
     void delete(ChannelClass channel);
     Long count();
 
+    Set<UserClass> getSoftBannedUsers(long channelId);
+    Set<UserClass> getReportedUsers(long channelId);
     void joinChannel(long channelId, UserClass user);
     void leaveChannel(long channelId, UserClass user);
     void globalUnreportPost(long channelId, String postId) throws BusinessException;

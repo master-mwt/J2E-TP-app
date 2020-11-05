@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler {
         printWriter.flush();
 
         String errorCause = (ex.getCause() != null) ? ex.getCause().getMessage() : "";
-        model.addAttribute("status", 500);
+        model.addAttribute("status", (ex instanceof AccessDeniedException) ? 403 : 500);
         model.addAttribute("message", errorCause);
         model.addAttribute("trace", stringWriter.toString());
         return "error";

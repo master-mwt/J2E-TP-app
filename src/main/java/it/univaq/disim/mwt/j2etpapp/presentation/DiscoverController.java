@@ -66,6 +66,7 @@ public class DiscoverController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("channelBO", channelBO);
         return "pages/discover/reported_posts";
     }
@@ -78,6 +79,7 @@ public class DiscoverController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
+        model.addAttribute("postBO", postBO);
         model.addAttribute("channelBO", channelBO);
         return "pages/discover/reported_posts";
     }
