@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
 
@@ -18,4 +19,17 @@ public interface ChannelBO {
     void delete(ChannelClass channel);
     Long count();
 
+    void joinChannel(long channelId, UserClass user);
+    void leaveChannel(long channelId, UserClass user);
+    void globalUnreportPost(long channelId, String postId) throws BusinessException;
+    void reportUser(long channelId, long userId);
+    void unReportUser(long channelId, long userId);
+    void softBan(long channelId, long userId);
+    void unSoftBan(long channelId, long userId);
+    void upgradeMemberToModerator(long channelId, long userId);
+    void upgradeModeratorToAdmin(long channelId, long userId);
+    void downgradeModeratorToMember(long channelId, long userId);
+    void upgradeAdminToCreator(long channelId, long userId) throws BusinessException;
+    void downgradeAdminToModerator(long channelId, long userId);
+    void downgradeCreatorToAdmin(long channelId, long userId);
 }

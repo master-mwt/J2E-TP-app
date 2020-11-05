@@ -84,4 +84,15 @@ public class UserBOImpl implements UserBO {
     public Long count() {
         return userRepository.count();
     }
+    
+    @Override
+    public void hardBanToggle(Long userId) {
+        UserClass user = userRepository.findById(userId).orElse(null);
+        if(user.isHard_ban()){
+            user.setHard_ban(false);
+        } else {
+            user.setHard_ban(true);
+        }
+        userRepository.save(user);
+    }
 }

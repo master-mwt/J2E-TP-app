@@ -20,4 +20,5 @@ public interface UserBO {
     void delete(UserClass user);
     Long count();
 
+    void hardBanToggle(Long userId);
 }

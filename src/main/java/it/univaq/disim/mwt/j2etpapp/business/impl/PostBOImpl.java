@@ -1,9 +1,11 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -163,5 +165,133 @@ public class PostBOImpl implements PostBO {
     @Override
     public Long count() {
         return postRepository.count();
+    }
+
+    @Override
+    public AjaxResponse upvote(String postId, UserClass user) {
+        PostClass post = postRepository.findById(postId).orElse(null);
+        boolean upvotedAlready = false;
+        boolean downvotedAlready = false;
+
+        if(post.getUsersUpvoted() == null){
+            post.setUsersUpvoted(new HashSet<>());
+        }
+
+        if(post.getUsersUpvoted().contains(user.getId())) {
+            upvotedAlready = true;
+        }
+
+        if(post.getUsersDownvoted() != null && post.getUsersDownvoted().contains(user.getId())) {
+            downvotedAlready = true;
+        }
+
+        if(upvotedAlready) {
+            post.getUsersUpvoted().remove(user.getId());
+            post.setUpvote(post.getUpvote() - 1);
+            postRepository.save(post);
+        } else if(downvotedAlready) {
+            post.getUsersDownvoted().remove(user.getId());
+            post.setDownvote(post.getDownvote() - 1);
+            post.getUsersUpvoted().add(user.getId());
+            post.setUpvote(post.getUpvote() + 1);
+            postRepository.save(post);
+        } else {
+            post.getUsersUpvoted().add(user.getId());
+            post.setUpvote(post.getUpvote() + 1);
+            postRepository.save(post);
+        }
+
+        return new AjaxResponse(post.getUpvote() - post.getDownvote(), upvotedAlready, downvotedAlready);
+    }
+
+    @Override
+    public AjaxResponse downvote(String postId, UserClass user) {
+        PostClass post = postRepository.findById(postId).orElse(null);
+        boolean upvotedAlready = false;
+        boolean downvotedAlready = false;
+
+        if(post.getUsersDownvoted() == null){
+            post.setUsersDownvoted(new HashSet<>());
+        }
+
+        if(post.getUsersDownvoted().contains(user.getId())) {
+            downvotedAlready = true;
+        }
+
+        if(post.getUsersUpvoted() != null && post.getUsersUpvoted().contains(user.getId())) {
+            upvotedAlready = true;
+        }
+
+        if(downvotedAlready) {
+            post.getUsersDownvoted().remove(user.getId());
+            post.setDownvote(post.getDownvote() - 1);
+            postRepository.save(post);
+        } else if(upvotedAlready) {
+            post.getUsersUpvoted().remove(user.getId());
+            post.setUpvote(post.getUpvote() - 1);
+            post.getUsersDownvoted().add(user.getId());
+            post.setDownvote(post.getDownvote() + 1);
+            postRepository.save(post);
+        } else {
+            post.getUsersDownvoted().add(user.getId());
+            post.setDownvote(post.getDownvote() + 1);
+            postRepository.save(post);
+        }
+
+        return new AjaxResponse(post.getUpvote() - post.getDownvote(), upvotedAlready, downvotedAlready);
+    }
+
+    @Override
+    public void hide(String postId, UserClass user) {
+        PostClass post = postRepository.findById(postId).orElse(null);
+        if(post.getUsersHidden() == null){
+            post.setUsersHidden(new HashSet<>());
+        }
+
+        if(post.getUsersHidden().contains(user.getId())) {
+            post.getUsersHidden().remove(user.getId());
+        } else {
+            post.getUsersHidden().add(user.getId());
+
+        }
+        postRepository.save(post);
+    }
+
+    @Override
+    public void save(String postId, UserClass user) {
+        PostClass post = postRepository.findById(postId).orElse(null);
+        if(post.getUsersSaved() == null){
+            post.setUsersSaved(new HashSet<>());
+        }
+
+        if(post.getUsersSaved().contains(user.getId())) {
+            post.getUsersSaved().remove(user.getId());
+        } else {
+            post.getUsersSaved().add(user.getId());
+
+        }
+        postRepository.save(post);
+    }
+
+    @Override
+    public void report(String postId, UserClass user) {
+        PostClass post = postRepository.findById(postId).orElse(null);
+        if(post.getUsersReported() == null){
+            post.setUsersReported(new HashSet<>());
+        }
+
+        if(post.getUsersReported().contains(user.getId())) {
+            post.getUsersReported().remove(user.getId());
+        } else {
+            post.getUsersReported().add(user.getId());
+        }
+
+        if(post.getUsersReported().isEmpty()) {
+            post.setReported(false);
+        } else {
+            post.setReported(true);
+        }
+
+        postRepository.save(post);
     }
 }

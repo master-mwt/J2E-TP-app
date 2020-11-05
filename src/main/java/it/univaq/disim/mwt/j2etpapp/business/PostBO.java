@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.j2etpapp.business;
 
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
 import java.util.Set;
@@ -38,4 +39,9 @@ public interface PostBO {
     void delete(PostClass post);
     Long count();
 
+    AjaxResponse upvote(String postId, UserClass user);
+    AjaxResponse downvote(String postId, UserClass user);
+    void hide(String postId, UserClass user);
+    void save(String postId, UserClass user);
+    void report(String postId, UserClass user);
 }

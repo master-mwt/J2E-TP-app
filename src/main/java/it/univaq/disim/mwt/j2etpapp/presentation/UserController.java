@@ -52,13 +52,7 @@ public class UserController {
     public ResponseEntity hardBanToggle(@PathVariable("userId") Long userId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            UserClass user = userBO.findById(userId);
-            if(user.isHard_ban()){
-                user.setHard_ban(false);
-            } else {
-                user.setHard_ban(true);
-            }
-            userBO.save(user);
+            userBO.hardBanToggle(userId);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);

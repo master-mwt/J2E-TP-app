@@ -2,6 +2,7 @@ package it.univaq.disim.mwt.j2etpapp.business;
 
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface ReplyBO {
     void delete(ReplyClass reply);
     Long count();
 
+    AjaxResponse upvote(String replyId, UserClass user);
+    AjaxResponse downvote(String replyId, UserClass user);
 }

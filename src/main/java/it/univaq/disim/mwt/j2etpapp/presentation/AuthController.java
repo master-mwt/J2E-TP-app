@@ -69,6 +69,7 @@ public class AuthController {
     }
 
     private void performRegistration(UserClass user) {
+        // TODO: is it okay to keep this here ? (maybe put in controller)
         GroupClass logged = groupBO.findByName("logged");
 
         user.setGroup(logged);

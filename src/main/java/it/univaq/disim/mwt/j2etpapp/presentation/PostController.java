@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 
 @RestController
 @RequestMapping("posts")
@@ -60,38 +59,8 @@ public class PostController {
     public ResponseEntity doUpvote(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            PostClass post = postBO.findById(postId);
-            boolean upvotedAlready = false;
-            boolean downvotedAlready = false;
-
-            if(post.getUsersUpvoted() == null){
-                post.setUsersUpvoted(new HashSet<>());
-            }
-
-            if(post.getUsersUpvoted().contains(principal.getId())) {
-                upvotedAlready = true;
-            }
-
-            if(post.getUsersDownvoted() != null && post.getUsersDownvoted().contains(principal.getId())) {
-                downvotedAlready = true;
-            }
-
-            if(upvotedAlready) {
-                post.getUsersUpvoted().remove(principal.getId());
-                post.setUpvote(post.getUpvote() - 1);
-                postBO.save(post);
-            } else if(downvotedAlready) {
-                post.getUsersDownvoted().remove(principal.getId());
-                post.setDownvote(post.getDownvote() - 1);
-                post.getUsersUpvoted().add(principal.getId());
-                post.setUpvote(post.getUpvote() + 1);
-                postBO.save(post);
-            } else {
-                post.getUsersUpvoted().add(principal.getId());
-                post.setUpvote(post.getUpvote() + 1);
-                postBO.save(post);
-            }
-            return new ResponseEntity<AjaxResponse>(new AjaxResponse(post.getUpvote() - post.getDownvote(), upvotedAlready, downvotedAlready), HttpStatus.OK);
+            AjaxResponse response = postBO.upvote(postId, principal);
+            return new ResponseEntity<AjaxResponse>(response, HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
@@ -100,38 +69,8 @@ public class PostController {
     public ResponseEntity doDownvote(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            PostClass post = postBO.findById(postId);
-            boolean upvotedAlready = false;
-            boolean downvotedAlready = false;
-
-            if(post.getUsersDownvoted() == null){
-                post.setUsersDownvoted(new HashSet<>());
-            }
-
-            if(post.getUsersDownvoted().contains(principal.getId())) {
-                downvotedAlready = true;
-            }
-
-            if(post.getUsersUpvoted() != null && post.getUsersUpvoted().contains(principal.getId())) {
-                upvotedAlready = true;
-            }
-
-            if(downvotedAlready) {
-                post.getUsersDownvoted().remove(principal.getId());
-                post.setDownvote(post.getDownvote() - 1);
-                postBO.save(post);
-            } else if(upvotedAlready) {
-                post.getUsersUpvoted().remove(principal.getId());
-                post.setUpvote(post.getUpvote() - 1);
-                post.getUsersDownvoted().add(principal.getId());
-                post.setDownvote(post.getDownvote() + 1);
-                postBO.save(post);
-            } else {
-                post.getUsersDownvoted().add(principal.getId());
-                post.setDownvote(post.getDownvote() + 1);
-                postBO.save(post);
-            }
-            return new ResponseEntity<AjaxResponse>(new AjaxResponse(post.getUpvote() - post.getDownvote(), upvotedAlready, downvotedAlready), HttpStatus.OK);
+            AjaxResponse response = postBO.downvote(postId, principal);
+            return new ResponseEntity<AjaxResponse>(response, HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
     }
@@ -140,18 +79,7 @@ public class PostController {
     public ResponseEntity doHide(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            PostClass post = postBO.findById(postId);
-            if(post.getUsersHidden() == null){
-                post.setUsersHidden(new HashSet<>());
-            }
-
-            if(post.getUsersHidden().contains(principal.getId())) {
-                post.getUsersHidden().remove(principal.getId());
-            } else {
-                post.getUsersHidden().add(principal.getId());
-
-            }
-            postBO.save(post);
+            postBO.hide(postId, principal);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
@@ -161,25 +89,7 @@ public class PostController {
     public ResponseEntity doReport(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            PostClass post = postBO.findById(postId);
-            if(post.getUsersReported() == null){
-                post.setUsersReported(new HashSet<>());
-            }
-
-            if(post.getUsersReported().contains(principal.getId())) {
-                post.getUsersReported().remove(principal.getId());
-            } else {
-                post.getUsersReported().add(principal.getId());
-            }
-
-            if(post.getUsersReported().isEmpty()) {
-                post.setReported(false);
-            } else {
-                post.setReported(true);
-            }
-
-            postBO.save(post);
-
+            postBO.report(postId, principal);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
@@ -189,18 +99,7 @@ public class PostController {
     public ResponseEntity doSave(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            PostClass post = postBO.findById(postId);
-            if(post.getUsersSaved() == null){
-                post.setUsersSaved(new HashSet<>());
-            }
-
-            if(post.getUsersSaved().contains(principal.getId())) {
-                post.getUsersSaved().remove(principal.getId());
-            } else {
-                post.getUsersSaved().add(principal.getId());
-
-            }
-            postBO.save(post);
+            postBO.save(postId, principal);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);

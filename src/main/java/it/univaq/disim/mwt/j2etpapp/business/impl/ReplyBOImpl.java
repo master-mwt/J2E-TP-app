@@ -1,9 +1,11 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -101,5 +103,79 @@ public class ReplyBOImpl implements ReplyBO {
     @Override
     public Long count() {
         return replyRepository.count();
+    }
+
+    @Override
+    public AjaxResponse upvote(String replyId, UserClass user) {
+        ReplyClass reply = replyRepository.findById(replyId).orElse(null);
+        boolean upvotedAlready = false;
+        boolean downvotedAlready = false;
+
+        if(reply.getUsersUpvoted() == null){
+            reply.setUsersUpvoted(new HashSet<>());
+        }
+
+        if(reply.getUsersUpvoted().contains(user.getId())) {
+            upvotedAlready = true;
+        }
+
+        if(reply.getUsersDownvoted() != null && reply.getUsersDownvoted().contains(user.getId())) {
+            downvotedAlready = true;
+        }
+
+        if(upvotedAlready) {
+            reply.getUsersUpvoted().remove(user.getId());
+            reply.setUpvote(reply.getUpvote() - 1);
+            replyRepository.save(reply);
+        } else if(downvotedAlready) {
+            reply.getUsersDownvoted().remove(user.getId());
+            reply.setDownvote(reply.getDownvote() - 1);
+            reply.getUsersUpvoted().add(user.getId());
+            reply.setUpvote(reply.getUpvote() + 1);
+            replyRepository.save(reply);
+        } else {
+            reply.getUsersUpvoted().add(user.getId());
+            reply.setUpvote(reply.getUpvote() + 1);
+            replyRepository.save(reply);
+        }
+
+        return new AjaxResponse(reply.getUpvote() - reply.getDownvote(), upvotedAlready, downvotedAlready);
+    }
+
+    @Override
+    public AjaxResponse downvote(String replyId, UserClass user) {
+        ReplyClass reply = replyRepository.findById(replyId).orElse(null);
+        boolean upvotedAlready = false;
+        boolean downvotedAlready = false;
+
+        if(reply.getUsersDownvoted() == null){
+            reply.setUsersDownvoted(new HashSet<>());
+        }
+
+        if(reply.getUsersDownvoted().contains(user.getId())) {
+            downvotedAlready = true;
+        }
+
+        if(reply.getUsersUpvoted() != null && reply.getUsersUpvoted().contains(user.getId())) {
+            upvotedAlready = true;
+        }
+
+        if(downvotedAlready) {
+            reply.getUsersDownvoted().remove(user.getId());
+            reply.setDownvote(reply.getDownvote() - 1);
+            replyRepository.save(reply);
+        } else if(upvotedAlready) {
+            reply.getUsersUpvoted().remove(user.getId());
+            reply.setUpvote(reply.getUpvote() - 1);
+            reply.getUsersDownvoted().add(user.getId());
+            reply.setDownvote(reply.getDownvote() + 1);
+            replyRepository.save(reply);
+        } else {
+            reply.getUsersDownvoted().add(user.getId());
+            reply.setDownvote(reply.getDownvote() + 1);
+            replyRepository.save(reply);
+        }
+
+        return new AjaxResponse(reply.getUpvote() - reply.getDownvote(), upvotedAlready, downvotedAlready);
     }
 }
