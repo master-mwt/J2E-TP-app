@@ -101,135 +101,154 @@ public class ChannelController {
     @PostMapping("{channelId}/posts/{postId}/globalunreport")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'global_unreport_post_in_channel')")
     public ResponseEntity doGlobalUnReportPostInChannel(@PathVariable("channelId") Long channelId, @PathVariable("postId") String postId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            PostClass post = postBO.findById(postId);
-            if(!post.getChannelId().equals(channelId)){
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            post.getUsersReported().clear();
-            post.setReported(false);
-            postBO.save(post);
-            return new ResponseEntity(HttpStatus.OK);
+        PostClass post = postBO.findById(postId);
+        if(!post.getChannelId().equals(channelId)){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        post.getUsersReported().clear();
+        post.setReported(false);
+        postBO.save(post);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{channelId}/members/{userId}/report")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
     public ResponseEntity doReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            ChannelClass channel = channelBO.findById(channelId);
-            if(channel.getReportedUsers() == null){
-                channel.setReportedUsers(new HashSet<>());
-            }
-            channel.getReportedUsers().add(userBO.findById(userId));
-            channelBO.save(channel);
-            return new ResponseEntity(HttpStatus.OK);
+        ChannelClass channel = channelBO.findById(channelId);
+        if(channel.getReportedUsers() == null){
+            channel.setReportedUsers(new HashSet<>());
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        channel.getReportedUsers().add(userBO.findById(userId));
+        channelBO.save(channel);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{channelId}/members/{userId}/unreport")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
     public ResponseEntity doUnReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            ChannelClass channel = channelBO.findById(channelId);
-            if(channel.getReportedUsers() == null){
-                channel.setReportedUsers(new HashSet<>());
-            }
-            channel.getReportedUsers().remove(userBO.findById(userId));
-            channelBO.save(channel);
-            return new ResponseEntity(HttpStatus.OK);
+        ChannelClass channel = channelBO.findById(channelId);
+        if(channel.getReportedUsers() == null){
+            channel.setReportedUsers(new HashSet<>());
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        channel.getReportedUsers().remove(userBO.findById(userId));
+        channelBO.save(channel);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{channelId}/members/{userId}/softban")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
     public ResponseEntity doSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            ChannelClass channel = channelBO.findById(channelId);
-            if(channel.getSoftBannedUsers() == null){
-                channel.setSoftBannedUsers(new HashSet<>());
-            }
-            channel.getSoftBannedUsers().add(userBO.findById(userId));
-            channelBO.save(channel);
-            return new ResponseEntity(HttpStatus.OK);
+        ChannelClass channel = channelBO.findById(channelId);
+        if(channel.getSoftBannedUsers() == null){
+            channel.setSoftBannedUsers(new HashSet<>());
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        channel.getSoftBannedUsers().add(userBO.findById(userId));
+        channelBO.save(channel);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{channelId}/members/{userId}/unsoftban")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
     public ResponseEntity doUnSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            ChannelClass channel = channelBO.findById(channelId);
-            if(channel.getSoftBannedUsers() == null){
-                channel.setSoftBannedUsers(new HashSet<>());
+        ChannelClass channel = channelBO.findById(channelId);
+        if(channel.getSoftBannedUsers() == null){
+            channel.setSoftBannedUsers(new HashSet<>());
+        }
+        channel.getSoftBannedUsers().remove(userBO.findById(userId));
+        channelBO.save(channel);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("{channelId}/members/{userId}/upgrade_member")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_member_to_moderator_in_channel')")
+    public ResponseEntity upgradeMemberToModerator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+        RoleClass member = roleBO.findByName("member");
+        RoleClass moderator = roleBO.findByName("moderator");
+
+        UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(member.equals(currentMember.getRole())){
+            currentMember.setRole(moderator);
+            userChannelRoleBO.save(currentMember);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("{channelId}/members/{userId}/upgrade_moderator")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_moderator_to_admin_in_channel')")
+    public ResponseEntity upgradeModeratorToAdmin(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+        RoleClass moderator = roleBO.findByName("moderator");
+        RoleClass admin = roleBO.findByName("admin");
+
+        UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(moderator.equals(currentMember.getRole())){
+            currentMember.setRole(admin);
+            userChannelRoleBO.save(currentMember);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("{channelId}/members/{userId}/downgrade_moderator")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_moderator_to_member_in_channel')")
+    public ResponseEntity downgradeModeratorToMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+        RoleClass member = roleBO.findByName("member");
+        RoleClass moderator = roleBO.findByName("moderator");
+
+        UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(moderator.equals(currentMember.getRole())){
+            currentMember.setRole(member);
+            userChannelRoleBO.save(currentMember);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("{channelId}/members/{userId}/upgrade_admin")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_admin_to_creator_in_channel')")
+    public ResponseEntity upgradeAdminToCreator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+        RoleClass admin = roleBO.findByName("admin");
+        RoleClass creator = roleBO.findByName("creator");
+        ChannelClass channel = channelBO.findById(channelId);
+
+        for(UserChannelRole userChannelRole : userChannelRoleBO.findByChannelId(channelId)) {
+            if(creator.equals(userChannelRole.getRole())) {
+                return new ResponseEntity("Remove creator first", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            channel.getSoftBannedUsers().remove(userBO.findById(userId));
+        }
+
+        UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(admin.equals(currentMember.getRole())){
+            currentMember.setRole(creator);
+            channel.setCreator(userBO.findById(userId));
+            userChannelRoleBO.save(currentMember);
             channelBO.save(channel);
-            return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("{channelId}/members/{userId}/upgrade")
-    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_users_in_channel')")
-    public ResponseEntity upgradeMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        RoleClass member = roleBO.findByName("member");
+    @PostMapping("{channelId}/members/{userId}/downgrade_admin")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_admin_to_moderator_in_channel')")
+    public ResponseEntity downgradeAdminToModerator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
         RoleClass moderator = roleBO.findByName("moderator");
         RoleClass admin = roleBO.findByName("admin");
-        RoleClass creator = roleBO.findByName("creator");
-        if(principal != null){
-            UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
 
-            if(member.equals(currentMember.getRole())){
-                currentMember.setRole(moderator);
-            } else if(moderator.equals(currentMember.getRole())) {
-                currentMember.setRole(admin);
-            } else if(admin.equals(currentMember.getRole())) {
-                // TODO: admin -> creator ?
-            } else {
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
+        UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(admin.equals(currentMember.getRole())){
+            currentMember.setRole(moderator);
             userChannelRoleBO.save(currentMember);
-            return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("{channelId}/members/{userId}/downgrade")
-    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_users_in_channel')")
-    public ResponseEntity downgradeMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        RoleClass member = roleBO.findByName("member");
-        RoleClass moderator = roleBO.findByName("moderator");
+    @PostMapping("{channelId}/members/{userId}/downgrade_creator")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_creator_to_admin_in_channel')")
+    public ResponseEntity downgradeCreatorToAdmin(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
         RoleClass admin = roleBO.findByName("admin");
         RoleClass creator = roleBO.findByName("creator");
-        if(principal != null){
-            UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
 
-            if(moderator.equals(currentMember.getRole())){
-                currentMember.setRole(member);
-            } else if(admin.equals(currentMember.getRole())) {
-                currentMember.setRole(moderator);
-            } else if(creator.equals(currentMember.getRole())) {
-                // TODO: admin <- creator ?
-            } else {
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
+        UserChannelRole currentMember = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(creator.equals(currentMember.getRole())){
+            currentMember.setRole(admin);
             userChannelRoleBO.save(currentMember);
-            return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

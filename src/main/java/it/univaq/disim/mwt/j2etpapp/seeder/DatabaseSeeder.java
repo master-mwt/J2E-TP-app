@@ -162,6 +162,24 @@ public class DatabaseSeeder {
         ServiceClass softban_user_in_channel = new ServiceClass();
         softban_user_in_channel.setName("softban_user_in_channel");
 
+        ServiceClass upgrade_member_to_moderator_in_channel = new ServiceClass();
+        upgrade_member_to_moderator_in_channel.setName("upgrade_member_to_moderator_in_channel");
+
+        ServiceClass upgrade_moderator_to_admin_in_channel = new ServiceClass();
+        upgrade_moderator_to_admin_in_channel.setName("upgrade_moderator_to_admin_in_channel");
+
+        ServiceClass downgrade_moderator_to_member_in_channel = new ServiceClass();
+        downgrade_moderator_to_member_in_channel.setName("downgrade_moderator_to_member_in_channel");
+
+        ServiceClass upgrade_admin_to_creator_in_channel = new ServiceClass();
+        upgrade_admin_to_creator_in_channel.setName("upgrade_admin_to_creator_in_channel");
+
+        ServiceClass downgrade_admin_to_moderator_in_channel = new ServiceClass();
+        downgrade_admin_to_moderator_in_channel.setName("downgrade_admin_to_moderator_in_channel");
+
+        ServiceClass downgrade_creator_to_admin_in_channel = new ServiceClass();
+        downgrade_creator_to_admin_in_channel.setName("downgrade_creator_to_admin_in_channel");
+
         ServiceClass hardban_user_from_platform = new ServiceClass();
         hardban_user_from_platform.setName("hardban_user_from_platform");
 
@@ -181,6 +199,12 @@ public class DatabaseSeeder {
         list.add(delete_channel);
         list.add(report_user_in_channel);
         list.add(global_unreport_post_in_channel);
+        list.add(upgrade_member_to_moderator_in_channel);
+        list.add(upgrade_moderator_to_admin_in_channel);
+        list.add(downgrade_moderator_to_member_in_channel);
+        list.add(upgrade_admin_to_creator_in_channel);
+        list.add(downgrade_admin_to_moderator_in_channel);
+        list.add(downgrade_creator_to_admin_in_channel);
         list.add(softban_user_in_channel);
         list.add(hardban_user_from_platform);
 
@@ -227,6 +251,10 @@ public class DatabaseSeeder {
         creatorServices.add(serviceBO.findByName("report_user_in_channel"));
         creatorServices.add(serviceBO.findByName("softban_user_in_channel"));
         creatorServices.add(serviceBO.findByName("view_channel_members"));
+        creatorServices.add(serviceBO.findByName("upgrade_member_to_moderator_in_channel"));
+        creatorServices.add(serviceBO.findByName("upgrade_moderator_to_admin_in_channel"));
+        creatorServices.add(serviceBO.findByName("downgrade_moderator_to_member_in_channel"));
+        creatorServices.add(serviceBO.findByName("downgrade_admin_to_moderator_in_channel"));
 
         Set<ServiceClass> adminServices = new HashSet<>();
         adminServices.add(serviceBO.findByName("create_post"));
@@ -241,6 +269,8 @@ public class DatabaseSeeder {
         adminServices.add(serviceBO.findByName("report_user_in_channel"));
         adminServices.add(serviceBO.findByName("softban_user_in_channel"));
         adminServices.add(serviceBO.findByName("view_channel_members"));
+        adminServices.add(serviceBO.findByName("upgrade_member_to_moderator_in_channel"));
+        adminServices.add(serviceBO.findByName("downgrade_moderator_to_member_in_channel"));
 
         Set<ServiceClass> moderatorServices = new HashSet<>();
         moderatorServices.add(serviceBO.findByName("create_post"));
