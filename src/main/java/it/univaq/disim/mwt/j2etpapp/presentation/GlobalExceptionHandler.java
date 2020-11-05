@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,12 +11,15 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
-    // TODO: logging !!
+    // TODO: logging in classes !!
     // TODO: adjust error.html
     @ExceptionHandler(Exception.class)
     public String handleException(HttpServletRequest req, Exception ex, Model model) {
+        log.info("Exception Occured:: URL=" + req.getRequestURL() + ", method=" + req.getMethod());
+
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         ex.printStackTrace(printWriter);
