@@ -46,8 +46,9 @@
               JOIN
             </a>
             <!-- if current user is subscribed & current user role == creator -->
-            <div sec:authorize="!isAnonymous()" th:if="${(subscription != null) && ('creator'.equals(subscription.getRole().getName()))}" class="d-flex flex-column ml-auto">
+            <div sec:authorize="!isAnonymous()" th:if="${('administrator'.equals(principal.getGroup().getName())) || ((subscription != null) && ('creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())))}" class="d-flex flex-column ml-auto">
               <button
+                th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName())}"
                 class="btn btn-outline-danger mb-2"
                 data-toggle="modal"
                 data-target="#delete-modal"
@@ -62,7 +63,7 @@
               >
             </div>
             <!-- if current user is subscribed -->
-            <a sec:authorize="!isAnonymous()" th:if="${subscription != null}" th:href="@{/channels/{id}/leave/(id=${channel.getId()})}" class="btn btn btn-outline-warning ml-auto">
+            <a sec:authorize="!isAnonymous()" th:if="${(subscription != null) && (!('creator'.equals(subscription.getRole().getName())))}" th:href="@{/channels/{id}/leave/(id=${channel.getId()})}" class="btn btn btn-outline-warning ml-auto">
               LEAVE
             </a>
           </div>

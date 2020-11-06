@@ -238,6 +238,7 @@
                   class="fas fa-eye mr-2"></i>Edit Reply (optional feature)</a>
               <a th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
                  sec:authorize="!isAnonymous()"
+                 th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId())}"
                 class="text-decoration-none mr-2 text-danger replydelete"><i class="fa fa-exclamation-triangle"></i> Delete
                 Reply</a>
             </div>

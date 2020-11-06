@@ -206,6 +206,9 @@ public class ChannelBOImpl implements ChannelBO {
         }
         channel.getSoftBannedUsers().add(userRepository.findById(userId).orElse(null));
         channelRepository.save(channel);
+
+        UserChannelRole userToBeDeleted = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        userChannelRoleRepository.delete(userToBeDeleted);
     }
 
     @Override

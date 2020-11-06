@@ -76,7 +76,7 @@ $(document).ready(function() {
         e.preventDefault();
         let href = $(this).attr('href');
         let hrefarray = href.split('/');
-        let reply_id = hrefarray[hrefarray.length - 1];
+        let reply_id = hrefarray[hrefarray.length - 2];
 
         if(href.trim() === loginpath){
             window.location.href = loginpath;

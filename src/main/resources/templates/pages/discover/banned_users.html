@@ -48,7 +48,7 @@
         <!-- end foreach -->
         <!-- empty -->
         <th:block th:if="${channel.getSoftBannedUsers() == null || channel.getSoftBannedUsers().isEmpty()}">
-          <img src="@{/images/no_res_2.png}" alt="" class="rounded my-4" width="350px">
+          <img th:src="@{/images/no_res_2.png}" alt="" class="rounded my-4" width="350px">
           <h2 class="text-primary">no results ...</h2>
         </th:block>
       </div>
