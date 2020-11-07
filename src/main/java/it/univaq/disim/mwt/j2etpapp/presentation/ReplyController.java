@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,27 +23,14 @@ public class ReplyController {
     private ReplyBO replyBO;
 
     // TODO: is it ok to keep here this functions
-    @GetMapping("create")
-    public ModelAndView create() {
-        // TODO: create reply
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("reply", new ReplyClass());
-        modelAndView.setViewName("reply/form");
-        return modelAndView;
-    }
-
     @PostMapping("create")
-    public ModelAndView save(@Valid @ModelAttribute("reply") ReplyClass reply, Errors errors) {
-        // TODO: save reply (is ok ?)
+    public ModelAndView save(@Valid @ModelAttribute("reply") ReplyClass reply) {
+        // TODO: save reply (is ok ?) Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        if(errors.hasErrors()) {
-            modelAndView.addObject("errors", errors.getAllErrors());
-            modelAndView.setViewName("reply/form");
-        }
         replyBO.save(reply);
 
-        modelAndView.setViewName("redirect:/reply/view");
+        modelAndView.setViewName("redirect:/discover/post/" + reply.getPost().getId());
         return modelAndView;
     }
 

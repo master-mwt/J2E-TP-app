@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,27 +23,14 @@ public class PostController {
     private PostBO postBO;
 
     // TODO: is it ok to keep here this functions
-    @GetMapping("create")
-    public ModelAndView create() {
-        // TODO: create post
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("post", new PostClass());
-        modelAndView.setViewName("post/form");
-        return modelAndView;
-    }
-
     @PostMapping("create")
-    public ModelAndView save(@Valid @ModelAttribute("post") PostClass post, Errors errors) {
-        // TODO: save post (is ok ?)
+    public ModelAndView save(@Valid @ModelAttribute("post") PostClass post) {
+        // TODO: save post (is ok ?) Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        if(errors.hasErrors()) {
-            modelAndView.addObject("errors", errors.getAllErrors());
-            modelAndView.setViewName("post/form");
-        }
         postBO.save(post);
 
-        modelAndView.setViewName("redirect:/post/view");
+        modelAndView.setViewName("redirect:/discover/post/" + post.getId());
         return modelAndView;
     }
 

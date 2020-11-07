@@ -6,7 +6,6 @@ import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,15 +20,13 @@ public class UserController {
 
     @PostMapping("update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public ModelAndView performUpdate(@Valid @ModelAttribute("user") UserClass user, Errors errors) {
-        // TODO: update user is ok ?
+    public ModelAndView performUpdate(@Valid @ModelAttribute("user") UserClass user) {
+        // TODO: update user is ok ? Errors ?
         ModelAndView modelAndView = new ModelAndView();
-        if(errors.hasErrors()) {
-            modelAndView.addObject(errors.getAllErrors());
-            modelAndView.setViewName("user/update");
-        }
+
         userBO.save(user);
-        modelAndView.addObject(user);
+
+        //modelAndView.addObject(user);
         modelAndView.setViewName("redirect:/home");
 
         return modelAndView;
@@ -55,6 +52,17 @@ public class UserController {
             // old password correct
             userBO.changePassword(principal, newPassword);
         }
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/home");
+
+        return modelAndView;
+    }
+
+    @PostMapping("{userId}/remove_image")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
+    public ModelAndView removeImage(@PathVariable("userId") Long userId) {
+        userBO.removeImage(userId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/home");

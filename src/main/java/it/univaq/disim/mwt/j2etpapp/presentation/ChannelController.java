@@ -8,7 +8,6 @@ import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,14 +22,10 @@ public class ChannelController {
     private ChannelBO channelBO;
 
     @PostMapping("create")
-    public ModelAndView save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors) {
-        // TODO: save channel (is ok ?)
+    public ModelAndView save(@Valid @ModelAttribute("channel") ChannelClass channel) {
+        // TODO: save channel (is ok ?), Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        if(errors.hasErrors()) {
-            modelAndView.addObject("errors", errors.getAllErrors());
-            modelAndView.setViewName("channel/form");
-        }
         channelBO.save(channel);
 
         modelAndView.setViewName("redirect:/discover/channel/" + channel.getId());
@@ -188,6 +183,17 @@ public class ChannelController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/discover/channel/" + channelId + "/members");
+
+        return modelAndView;
+    }
+
+    @PostMapping("{channelId}/remove_image")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_channel_data')")
+    public ModelAndView removeImage(@PathVariable("channelId") Long channelId) {
+        channelBO.removeImage(channelId);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/discover/channel/" + channelId);
 
         return modelAndView;
     }

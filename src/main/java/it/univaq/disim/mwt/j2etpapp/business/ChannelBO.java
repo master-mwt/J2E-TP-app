@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
+import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
@@ -39,4 +40,6 @@ public interface ChannelBO {
     void upgradeAdminToCreator(long channelId, long userId) throws BusinessException;
     void downgradeAdminToModerator(long channelId, long userId);
     void downgradeCreatorToAdmin(long channelId, long userId);
+    void removeImage(long channelId);
+    void saveImage(long channelId, ImageClass image);
 }

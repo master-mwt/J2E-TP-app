@@ -2,7 +2,9 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,8 @@ public class UserBOImpl implements UserBO {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
     public List<UserClass> findAll() {
@@ -112,6 +116,26 @@ public class UserBOImpl implements UserBO {
     @Override
     public void changePassword(UserClass user, String newPassword) {
         user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeImage(long userId) {
+        UserClass user = userRepository.findById(userId).orElse(null);
+        user.setImage(null);
+
+        // TODO: filesystem image delete?
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void saveImage(long userId, ImageClass image) {
+        UserClass user = userRepository.findById(userId).orElse(null);
+        // TODO: filesystem image
+
+        imageRepository.save(image);
+        user.setImage(image);
         userRepository.save(user);
     }
 }

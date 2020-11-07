@@ -58,7 +58,7 @@
               <a role="button" href="" class="btn btn-outline-success mb-2"
                 >CHANGE IMAGE</a
               >
-              <a role="button" href="" class="btn btn-outline-success"
+              <a role="button" th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}" class="btn btn-outline-success"
                 >REMOVE IMAGE</a
               >
             </div>
@@ -378,7 +378,7 @@
     </script>
 
     <!-- only logged -->
-    <form action="" method="post" enctype="multipart/form-data">
+    <form sec:authorize="!isAnonymous()" th:action="@{/posts/create}" method="post" th:object="${post}" enctype="multipart/form-data">
       <div
         class="modal fade"
         id="easymde-modal"
@@ -406,6 +406,7 @@
             <div class="modal-body">
               <!-- MODAL CONTENT -->
               <!-- TODO: VALIDATION AND ERROR CONTROL -->
+              <!--
               <input
                 name="images[]"
                 type="file"
@@ -413,19 +414,27 @@
                 id="images"
                 multiple
               />
+              -->
               <input
                 name="title"
                 type="text"
                 class="form-control mb-3"
                 id="title"
                 placeholder="Title"
+                th:field="*{title}"
               />
+              <input type="hidden" id="channelId" name="channelId" th:value="${channel.getId()}"/>
+              <input type="hidden" id="userId" name="userId" th:value="${#authentication.getPrincipal().getUser().getId()}"/>
+              <input type="hidden" id="reported" name="reported" th:value="false"/>
+              <input type="hidden" id="upvote" name="upvote" th:value="0" />
+              <input type="hidden" id="downvote" name="downvote" th:value="0" />
               <!-- {{ Form::hidden('channel_id', $channel->id) }} -->
               <textarea
                 name="content"
                 id="easymde-area"
                 cols=""
                 rows=""
+                th:field="*{content}"
               ></textarea>
 
               <!-- temp style block -->
@@ -451,7 +460,7 @@
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary">submit</button>
+              <button type="submit" class="btn btn-secondary">submit</button>
             </div>
           </div>
         </div>
@@ -459,7 +468,7 @@
     </form>
 
     <!-- only logged -->
-    <form action="" method="post">
+    <form sec:authorize="!isAnonymous()" th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}" method="delete">
       <!-- @method('delete') -->
       <div
         class="modal fade"
@@ -493,7 +502,7 @@
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary">Delete</button>
+              <button type="submit" class="btn btn-secondary">Delete</button>
             </div>
           </div>
         </div>

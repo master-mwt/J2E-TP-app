@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
+import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserBO {
     void hardBanToggle(Long userId);
     boolean checkOldPassword(UserClass user, String oldPassword);
     void changePassword(UserClass user, String newPassword);
+    void removeImage(long userId);
+    void saveImage(long userId, ImageClass image);
 }

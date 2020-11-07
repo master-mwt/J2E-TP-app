@@ -27,7 +27,7 @@
             />
             <div class="d-flex flex-column my-auto ml-4">
               <a href="" class="text-decoration-none">change profile image</a>
-              <a href="" class="text-decoration-none">remove profile image</a>
+              <a th:href="@{/user/{userId}/remove_image/(userId=${user.getId()})}" class="text-decoration-none">remove profile image</a>
               <h4 class="m-0" th:text="${user.getName() + ' ' + user.getSurname()}">user.name user.surname</h4>
               <h5 class="m-0 text-muted" th:text="${user.getUsername()}">user.username</h5>
             </div>
@@ -93,6 +93,7 @@
             <div class="modal-body">
               <!-- MODAL CONTENT -->
               <!-- TODO: REMOVE ARRAY OF IMAGES -->
+              <!--
               <input
                       name="images[]"
                       type="file"
@@ -100,6 +101,7 @@
                       id="images"
                       multiple
               />
+              -->
               <input
                       name="channel-name"
                       type="text"
@@ -107,6 +109,14 @@
                       id="channel-name"
                       placeholder="Name"
                       th:field="*{name}"
+              />
+              <input
+                      name="channel-title"
+                      type="text"
+                      class="form-control mb-3"
+                      id="channel-title"
+                      placeholder="Title"
+                      th:field="*{title}"
               />
               <textarea
                       name="channel-description"
@@ -126,6 +136,8 @@
                       placeholder="Rules"
                       th:field="*{rules}"
               ></textarea>
+              <!-- TODO: is this correct ? -->
+              <input type="hidden" id="creator" name="creator" th:object="${user}" />
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
@@ -173,6 +185,32 @@
                       id="user-name"
                       placeholder="Name"
                       th:value="${user.getName()}"
+              />
+              <input
+                      th:field="*{surname}"
+                      name="user-surname"
+                      type="text"
+                      class="form-control mb-3"
+                      id="user-surname"
+                      placeholder="Surname"
+                      th:value="${user.getSurname()}"
+              />
+              <input
+                      th:field="*{email}"
+                      name="user-email"
+                      type="email"
+                      class="form-control mb-3"
+                      id="user-email"
+                      placeholder="Email"
+                      th:value="${user.getEmail()}"
+              />
+              <input
+                      th:field="*{birthDate}"
+                      id="user-birthdate"
+                      type="date"
+                      class="form-control mb-3"
+                      name="user-birthdate"
+                      th:value="${user.getBirthDate()}"
               />
               <!-- / MODAL CONTENT -->
             </div>

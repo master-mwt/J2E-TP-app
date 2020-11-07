@@ -1,10 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.*;
-import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
-import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
-import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
-import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +29,7 @@ public class DiscoverController {
     public String discoverChannel(@PathVariable("id") Long id, Model model) {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(id, 0, 10);
+        model.addAttribute("post", new PostClass());
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("userBO", userBO);
@@ -155,6 +153,7 @@ public class DiscoverController {
     @GetMapping("/discover/post/{id}")
     public String discoverPost(@PathVariable("id") String id, Model model) {
         PostClass post = postBO.findById(id);
+        model.addAttribute("reply", new ReplyClass());
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
         model.addAttribute("userBO", userBO);

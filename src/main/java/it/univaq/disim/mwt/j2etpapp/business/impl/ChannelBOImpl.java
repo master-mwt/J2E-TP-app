@@ -4,10 +4,7 @@ import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
-import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
-import it.univaq.disim.mwt.j2etpapp.repository.jpa.RoleRepository;
-import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserChannelRoleRepository;
-import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +27,8 @@ public class ChannelBOImpl implements ChannelBO {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
     public List<ChannelClass> findAll() {
@@ -340,5 +339,25 @@ public class ChannelBOImpl implements ChannelBO {
             userChannelRoleRepository.delete(currentMember);
             userChannelRoleRepository.save(newRole);
         }
+    }
+
+    @Override
+    public void removeImage(long channelId) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        channel.setImage(null);
+
+        // TODO: filesystem image delete?
+
+        channelRepository.save(channel);
+    }
+
+    @Override
+    public void saveImage(long channelId, ImageClass image) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        // TODO: filesystem image
+
+        imageRepository.save(image);
+        channel.setImage(image);
+        channelRepository.save(channel);
     }
 }
