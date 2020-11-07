@@ -190,8 +190,18 @@ public class ChannelController {
         return modelAndView;
     }
 
-    @PostMapping("{channelId}/remove_image")
-    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_channel_data')")
+    @GetMapping("{channelId}/change_image")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
+    public ModelAndView changeImage(@PathVariable("channelId") Long channelId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("channel", channelBO.findById(channelId));
+        modelAndView.setViewName("pages/dashboard/image_upload/channel_img_upl");
+
+        return modelAndView;
+    }
+
+    @GetMapping("{channelId}/remove_image")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
     public ModelAndView removeImage(@PathVariable("channelId") Long channelId) {
         channelBO.removeImage(channelId);
 

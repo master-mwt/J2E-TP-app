@@ -55,7 +55,7 @@
               >
                 DELETE CHANNEL
               </button>
-              <a role="button" href="" class="btn btn-outline-success mb-2"
+              <a role="button" th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}" class="btn btn-outline-success mb-2"
                 >CHANGE IMAGE</a
               >
               <a role="button" th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}" class="btn btn-outline-success"

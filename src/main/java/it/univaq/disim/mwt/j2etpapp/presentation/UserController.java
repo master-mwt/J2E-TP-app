@@ -61,7 +61,16 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("{userId}/remove_image")
+    @GetMapping("{userId}/change_image")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
+    public ModelAndView changeImage(@PathVariable("userId") Long userId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("pages/dashboard/image_upload/profile_img_upl");
+
+        return modelAndView;
+    }
+
+    @GetMapping("{userId}/remove_image")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public ModelAndView removeImage(@PathVariable("userId") Long userId) {
         userBO.removeImage(userId);

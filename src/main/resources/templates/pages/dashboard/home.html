@@ -26,7 +26,7 @@
               width="100"
             />
             <div class="d-flex flex-column my-auto ml-4">
-              <a href="" class="text-decoration-none">change profile image</a>
+              <a th:href="@{/user/{userId}/change_image/(userId=${user.getId()})}" class="text-decoration-none">change profile image</a>
               <a th:href="@{/user/{userId}/remove_image/(userId=${user.getId()})}" class="text-decoration-none">remove profile image</a>
               <h4 class="m-0" th:text="${user.getName() + ' ' + user.getSurname()}">user.name user.surname</h4>
               <h5 class="m-0 text-muted" th:text="${user.getUsername()}">user.username</h5>
