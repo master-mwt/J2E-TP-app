@@ -6,6 +6,7 @@ import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -24,6 +22,8 @@ public class ReplyBOImpl implements ReplyBO {
 
     @Autowired
     private ReplyRepository replyRepository;
+    @Autowired
+    private PostRepository postRepository;
 
     @Override
     public List<ReplyClass> findAll() {
@@ -177,5 +177,22 @@ public class ReplyBOImpl implements ReplyBO {
         }
 
         return new AjaxResponse(reply.getUpvote() - reply.getDownvote(), upvotedAlready, downvotedAlready);
+    }
+
+    @Override
+    public void createReplyInPost(ReplyClass reply, PostClass postContainer) {
+        reply.setPost(postContainer);
+
+        Set<ReplyClass> replies = postContainer.getReplies();
+
+        if(replies == null) {
+            replies = new HashSet<>();
+        }
+
+        replies.add(reply);
+        postContainer.setReplies(replies);
+
+        replyRepository.save(reply);
+        postRepository.save(postContainer);
     }
 }

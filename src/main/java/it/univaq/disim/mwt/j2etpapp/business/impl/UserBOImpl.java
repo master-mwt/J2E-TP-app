@@ -138,4 +138,14 @@ public class UserBOImpl implements UserBO {
         user.setImage(image);
         userRepository.save(user);
     }
+
+    @Override
+    public void updateUserProfile(UserClass user, UserClass newData) {
+        user.setName(newData.getName());
+        user.setSurname(newData.getSurname());
+        user.setEmail(newData.getEmail());
+        user.setBirthDate(newData.getBirthDate());
+
+        userRepository.save(user);
+    }
 }

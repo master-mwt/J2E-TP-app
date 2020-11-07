@@ -26,4 +26,5 @@ public interface UserBO {
     void changePassword(UserClass user, String newPassword);
     void removeImage(long userId);
     void saveImage(long userId, ImageClass image);
+    void updateUserProfile(UserClass user, UserClass newData);
 }

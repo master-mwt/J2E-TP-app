@@ -6,6 +6,7 @@ import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class ChannelBOImpl implements ChannelBO {
     private UserChannelRoleRepository userChannelRoleRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -73,11 +76,33 @@ public class ChannelBOImpl implements ChannelBO {
     @Override
     public void deleteById(Long id) {
         channelRepository.deleteById(id);
+
+        List<PostClass> posts = postRepository.findByChannelId(id).orElse(null);
+        List<ReplyClass> replies = replyRepository.findByChannelId(id).orElse(null);
+
+        if(posts != null && !posts.isEmpty()) {
+            postRepository.deleteAll(posts);
+        }
+
+        if(replies != null && !replies.isEmpty()) {
+            replyRepository.deleteAll(replies);
+        }
     }
 
     @Override
     public void delete(ChannelClass channel) {
         channelRepository.delete(channel);
+
+        List<PostClass> posts = postRepository.findByChannelId(channel.getId()).orElse(null);
+        List<ReplyClass> replies = replyRepository.findByChannelId(channel.getId()).orElse(null);
+
+        if(posts != null && !posts.isEmpty()) {
+            postRepository.deleteAll(posts);
+        }
+
+        if(replies != null && !replies.isEmpty()) {
+            replyRepository.deleteAll(replies);
+        }
     }
 
     @Override
@@ -359,5 +384,24 @@ public class ChannelBOImpl implements ChannelBO {
         imageRepository.save(image);
         channel.setImage(image);
         channelRepository.save(channel);
+    }
+
+    @Override
+    public void createChannel(ChannelClass channel, UserClass creator) {
+        RoleClass creatorRole = roleRepository.findByName("creator").orElse(null);
+
+        channel.setCreator(creator);
+        channelRepository.save(channel);
+
+        UserChannelRole userChannelRole = new UserChannelRole();
+        UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+
+        userChannelRoleFKs.setChannelId(channel.getId());
+        userChannelRoleFKs.setUserId(creator.getId());
+        userChannelRoleFKs.setRoleId(creatorRole.getId());
+
+        userChannelRole.setUserChannelRoleFKs(userChannelRoleFKs);
+
+        userChannelRoleRepository.save(userChannelRole);
     }
 }

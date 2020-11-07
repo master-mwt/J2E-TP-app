@@ -36,7 +36,7 @@ public class UserDetailsImpl implements UserDetails {
         }
         
         for(ServiceClass service : user.getGroup().getServices()){
-            authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + service.getName()));
+            authorities.add(new SimpleGrantedAuthority(service.getName()));
         }
 
         return authorities;

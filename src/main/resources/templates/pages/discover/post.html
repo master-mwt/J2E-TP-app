@@ -299,11 +299,10 @@
               <!-- {{ Form::hidden('channel_id', $post->channel_id->id) }}
               {{ Form::hidden('post_id', $post->id) }} -->
               <input type="hidden" id="userId" name="userId" th:value="${#authentication.getPrincipal().getUser().getId()}"/>
-              <input type="hidden" id="channelId" name="channelId" th:value="${channel.getId()}"/>
+              <input type="hidden" id="channelId" name="channelId" th:value="${post.getChannelId()}"/>
               <input type="hidden" id="upvote" name="upvote" th:value="0" />
               <input type="hidden" id="downvote" name="downvote" th:value="0" />
-              <!-- TODO: is this correct ? -->
-              <input type="hidden" id="post" name="post" th:object="${post}" />
+              <input type="hidden" id="postId" name="postId" th:value="${post.getId()}" />
               <textarea th:field="*{content}" name="content" id="easymde-area-reply" cols="" rows=""></textarea>
             </div>
             <div class="modal-footer">

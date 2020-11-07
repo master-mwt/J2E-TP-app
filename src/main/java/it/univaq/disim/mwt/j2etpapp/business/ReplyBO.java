@@ -27,4 +27,5 @@ public interface ReplyBO {
 
     AjaxResponse upvote(String replyId, UserClass user);
     AjaxResponse downvote(String replyId, UserClass user);
+    void createReplyInPost(ReplyClass reply, PostClass postContainer);
 }

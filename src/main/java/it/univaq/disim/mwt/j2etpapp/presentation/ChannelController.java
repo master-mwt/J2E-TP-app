@@ -22,17 +22,20 @@ public class ChannelController {
     private ChannelBO channelBO;
 
     @PostMapping("create")
+    @PreAuthorize("hasAuthority('create_channel')")
     public ModelAndView save(@Valid @ModelAttribute("channel") ChannelClass channel) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+
         // TODO: save channel (is ok ?), Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        channelBO.save(channel);
+        channelBO.createChannel(channel, principal);
 
         modelAndView.setViewName("redirect:/discover/channel/" + channel.getId());
         return modelAndView;
     }
 
-    @DeleteMapping("{channelId}")
+    @PostMapping("{channelId}")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'delete_channel')")
     public ModelAndView delete(@PathVariable("channelId") Long channelId) {
         channelBO.deleteById(channelId);

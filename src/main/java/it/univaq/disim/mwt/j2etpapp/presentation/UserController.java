@@ -18,13 +18,15 @@ public class UserController {
     @Autowired
     private UserBO userBO;
 
-    @PostMapping("update")
+    @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public ModelAndView performUpdate(@Valid @ModelAttribute("user") UserClass user) {
+    public ModelAndView performUpdate(@Valid @ModelAttribute("user") UserClass newData, @PathVariable("userId") Long userId) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+
         // TODO: update user is ok ? Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        userBO.save(user);
+        userBO.updateUserProfile(principal, newData);
 
         //modelAndView.addObject(user);
         modelAndView.setViewName("redirect:/home");

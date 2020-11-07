@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
+import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
@@ -21,16 +22,18 @@ public class ReplyController {
 
     @Autowired
     private ReplyBO replyBO;
+    @Autowired
+    private PostBO postBO;
 
     // TODO: is it ok to keep here this functions
     @PostMapping("create")
-    public ModelAndView save(@Valid @ModelAttribute("reply") ReplyClass reply) {
+    public ModelAndView save(@Valid @ModelAttribute("reply") ReplyClass reply, @RequestParam("postId") String postId) {
         // TODO: save reply (is ok ?) Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        replyBO.save(reply);
+        replyBO.createReplyInPost(reply, postBO.findById(postId));
 
-        modelAndView.setViewName("redirect:/discover/post/" + reply.getPost().getId());
+        modelAndView.setViewName("redirect:/discover/post/" + postId);
         return modelAndView;
     }
 

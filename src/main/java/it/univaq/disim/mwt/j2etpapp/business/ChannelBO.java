@@ -42,4 +42,5 @@ public interface ChannelBO {
     void downgradeCreatorToAdmin(long channelId, long userId);
     void removeImage(long channelId);
     void saveImage(long channelId, ImageClass image);
+    void createChannel(ChannelClass channel, UserClass creator);
 }

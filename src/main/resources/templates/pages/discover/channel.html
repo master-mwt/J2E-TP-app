@@ -468,7 +468,7 @@
     </form>
 
     <!-- only logged -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}" method="delete">
+    <form sec:authorize="!isAnonymous()" th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}" method="post">
       <!-- @method('delete') -->
       <div
         class="modal fade"
