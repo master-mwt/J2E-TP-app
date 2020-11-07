@@ -4,6 +4,7 @@
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorate="~{commons/exskel}"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
@@ -64,7 +65,7 @@
     </div>
 
     <!-- only logged -->
-    <form action="" method="post" enctype="multipart/form-data">
+    <form sec:authorize="!isAnonymous()" th:action="@{/channels/create}" method="post" th:object="${channel}" enctype="multipart/form-data">
       <div
               class="modal fade"
               id="create-channel-modal"
@@ -105,6 +106,7 @@
                       class="form-control mb-3"
                       id="channel-name"
                       placeholder="Name"
+                      th:field="*{name}"
               />
               <textarea
                       name="channel-description"
@@ -113,6 +115,7 @@
                       rows=""
                       class="form-control mb-3"
                       placeholder="Description"
+                      th:field="*{description}"
               ></textarea>
               <textarea
                       name="channel-rules"
@@ -121,11 +124,12 @@
                       rows=""
                       class="form-control"
                       placeholder="Rules"
+                      th:field="*{rules}"
               ></textarea>
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary">create</button>
+              <button type="submit" class="btn btn-secondary">create</button>
             </div>
           </div>
         </div>
@@ -133,7 +137,7 @@
     </form>
 
     <!-- only logged -->
-    <form action="" method="post" enctype="">
+    <form sec:authorize="!isAnonymous()" th:action="@{/user/{id}/update/(id=${user.getId()})}" th:object="${user}" method="post" enctype="">
       <div
               class="modal fade"
               id="user-data-modal"
@@ -162,16 +166,18 @@
               <!-- MODAL CONTENT -->
               <!-- TODO: connettere campi oggetto utente come valori old del form per poi cambiarli -->
               <input
+                      th:field="*{name}"
                       name="user-name"
                       type="text"
                       class="form-control mb-3"
                       id="user-name"
                       placeholder="Name"
+                      th:value="${user.getName()}"
               />
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary">update</button>
+              <button type="submit" class="btn btn-secondary">update</button>
             </div>
           </div>
         </div>
@@ -179,7 +185,7 @@
     </form>
 
     <!-- only logged -->
-    <form action="" method="post" enctype="">
+    <form sec:authorize="!isAnonymous()" th:action="@{/user/{id}/change_password/(id=${user.getId()})}" method="post" enctype="">
       <div
               class="modal fade"
               id="change-password-modal"
@@ -224,7 +230,7 @@
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button class="btn btn-secondary">change</button>
+              <button type="submit" class="btn btn-secondary">change</button>
             </div>
           </div>
         </div>

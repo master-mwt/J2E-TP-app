@@ -6,6 +6,8 @@ import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,9 @@ import java.util.List;
 @Service
 @Transactional
 public class UserBOImpl implements UserBO {
+
+    // TODO: is it ok to keep encoder here ?
+    private static PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserRepository userRepository;
@@ -93,6 +98,20 @@ public class UserBOImpl implements UserBO {
         } else {
             user.setHard_ban(true);
         }
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean checkOldPassword(UserClass user, String oldPassword) {
+        if(encoder.matches(oldPassword, user.getPassword())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void changePassword(UserClass user, String newPassword) {
+        user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
 }

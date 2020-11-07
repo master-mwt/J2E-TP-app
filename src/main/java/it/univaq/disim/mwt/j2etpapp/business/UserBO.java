@@ -21,4 +21,6 @@ public interface UserBO {
     Long count();
 
     void hardBanToggle(Long userId);
+    boolean checkOldPassword(UserClass user, String oldPassword);
+    void changePassword(UserClass user, String newPassword);
 }

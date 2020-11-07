@@ -4,8 +4,6 @@ import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
@@ -21,18 +19,8 @@ public class UserController {
     @Autowired
     private UserBO userBO;
 
-    @GetMapping("update")
-    public ModelAndView update() {
-        // TODO: update user
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", principal);
-        modelAndView.setViewName("user/update");
-
-        return modelAndView;
-    }
-
     @PostMapping("update")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public ModelAndView performUpdate(@Valid @ModelAttribute("user") UserClass user, Errors errors) {
         // TODO: update user is ok ?
         ModelAndView modelAndView = new ModelAndView();
@@ -49,12 +37,28 @@ public class UserController {
 
     @PostMapping("{userId}/hardban")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'hardban_user_from_platform')")
-    public ResponseEntity hardBanToggle(@PathVariable("userId") Long userId) {
+    public ModelAndView hardBanToggle(@PathVariable("userId") Long userId) {
+        userBO.hardBanToggle(userId);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/home");
+
+        return modelAndView;
+    }
+
+    @PostMapping("{userId}/change_password")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
+    public ModelAndView changePassword (@RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, @PathVariable("userId") Long userId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        if(principal != null){
-            userBO.hardBanToggle(userId);
-            return new ResponseEntity(HttpStatus.OK);
+
+        if(userBO.checkOldPassword(principal, oldPassword)) {
+            // old password correct
+            userBO.changePassword(principal, newPassword);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/home");
+
+        return modelAndView;
     }
 }

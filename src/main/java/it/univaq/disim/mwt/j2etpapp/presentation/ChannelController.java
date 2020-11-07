@@ -22,16 +22,6 @@ public class ChannelController {
     @Autowired
     private ChannelBO channelBO;
 
-    // TODO: is it ok to keep here this functions
-    @GetMapping("create")
-    public ModelAndView create() {
-        // TODO: create channel
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("channel", new ChannelClass());
-        modelAndView.setViewName("channel/form");
-        return modelAndView;
-    }
-
     @PostMapping("create")
     public ModelAndView save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors) {
         // TODO: save channel (is ok ?)
@@ -43,8 +33,7 @@ public class ChannelController {
         }
         channelBO.save(channel);
 
-        modelAndView.addObject("post", channel);
-        modelAndView.setViewName("redirect:/channel/view");
+        modelAndView.setViewName("redirect:/discover/channel/" + channel.getId());
         return modelAndView;
     }
 
