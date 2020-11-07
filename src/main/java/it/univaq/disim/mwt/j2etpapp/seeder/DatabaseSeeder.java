@@ -578,12 +578,14 @@ public class DatabaseSeeder {
 
             post.setUsersHidden(usersHiddenSet);
 
-            Set<Long> usersReportedSet = new HashSet<>();
-            for(UserClass user : pickRandomElements(userBO.findAll(), 2L)){
-                usersReportedSet.add(user.getId());
-            }
+            if(post.isReported()) {
+                Set<Long> usersReportedSet = new HashSet<>();
+                for(UserClass user : pickRandomElements(userBO.findAll(), randomElement(Arrays.asList(1L,2L,3L,4L)))){
+                    usersReportedSet.add(user.getId());
+                }
 
-            post.setUsersReported(usersReportedSet);
+                post.setUsersReported(usersReportedSet);
+            }
 
             Set<Long> usersSavedSet = new HashSet<>();
             for(UserClass user : pickRandomElements(userBO.findAll(), 2L)){
