@@ -122,7 +122,7 @@
                   <!-- if member.role is admin -->
                   <button
                           th:if="${'admin'.equals(member.getRole().getName())}"
-                          onclick=""
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                           class="btn btn-sm btn-outline-light float-right ml-2"
                   >
                     <i class="fas fa-arrow-down mr-2"></i
@@ -132,19 +132,23 @@
                   <!-- if member.role is moderator -->
                   <button
                           th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                           class="btn btn-sm btn-outline-light float-right ml-2"
                   >
                     <i class="fas fa-arrow-down mr-2"></i
                     ><span class="">Downgrade to MEMBER</span>
                   </button>
-                  <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                  <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                          class="btn btn-sm btn-outline-light float-right">
                     <i class="fas fa-arrow-up mr-2"></i>
                     <span class="">Upgrade to ADMIN</span>
                   </button>
 
                   <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                  <button th:if="${'member'.equals(member.getRole().getName())}"
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                          class="btn btn-sm btn-outline-light float-right">
                     <i class="fas fa-arrow-up mr-2"></i>
                     <span class="">Upgrade to MODERATOR</span>
                   </button>
@@ -157,7 +161,7 @@
                   <!-- if member.role is moderator -->
                   <button
                           th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                           class="btn btn-sm btn-outline-light float-right ml-2"
                   >
                     <i class="fas fa-arrow-down mr-2"></i
@@ -165,7 +169,9 @@
                   </button>
 
                   <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                  <button th:if="${'member'.equals(member.getRole().getName())}"
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                          class="btn btn-sm btn-outline-light float-right">
                     <i class="fas fa-arrow-up mr-2"></i>
                     <span class="">Upgrade to MODERATOR</span>
                   </button>
@@ -178,7 +184,7 @@
                   <!-- if member.role is creator -->
                   <button
                           th:if="${'creator'.equals(member.getRole().getName())}"
-                          onclick=""
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_creator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                           class="btn btn-sm btn-outline-light float-right ml-2"
                   >
                     <i class="fas fa-arrow-down mr-2"></i
@@ -188,13 +194,15 @@
                   <!-- if member.role is admin -->
                   <button
                           th:if="${'admin'.equals(member.getRole().getName())}"
-                          onclick=""
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                           class="btn btn-sm btn-outline-light float-right ml-2"
                   >
                     <i class="fas fa-arrow-down mr-2"></i
                     ><span class="">Downgrade to MODERATOR</span>
                   </button>
-                  <button th:if="${'admin'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                  <button th:if="${'admin'.equals(member.getRole().getName())}"
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                          class="btn btn-sm btn-outline-light float-right">
                     <i class="fas fa-arrow-up mr-2"></i>
                     <span class="">Upgrade to CREATOR</span>
                   </button>
@@ -202,19 +210,23 @@
                   <!-- if member.role is moderator -->
                   <button
                           th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                           class="btn btn-sm btn-outline-light float-right ml-2"
                   >
                     <i class="fas fa-arrow-down mr-2"></i
                     ><span class="">Downgrade to MEMBER</span>
                   </button>
-                  <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                  <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                          class="btn btn-sm btn-outline-light float-right">
                     <i class="fas fa-arrow-up mr-2"></i>
                     <span class="">Upgrade to ADMIN</span>
                   </button>
 
                   <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                  <button th:if="${'member'.equals(member.getRole().getName())}"
+                          th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                          class="btn btn-sm btn-outline-light float-right">
                     <i class="fas fa-arrow-up mr-2"></i>
                     <span class="">Upgrade to MODERATOR</span>
                   </button>
@@ -330,114 +342,126 @@
               <!-- end if -->
               <!-- card footer -->
               <div class="card-footer border-0">
-                <!-- if user.role is creator -->
-                <th:block th:if="${'creator'.equals(userRole.getName())}">
-                  <!-- if member.role is admin -->
-                  <button
-                          th:if="${'admin'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MODERATOR</span>
-                  </button>
+              <!-- if user.role is creator -->
+              <th:block th:if="${'creator'.equals(userRole.getName())}">
+                <!-- if member.role is admin -->
+                <button
+                        th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MODERATOR</span>
+                </button>
 
-                  <!-- if member.role is moderator -->
-                  <button
-                          th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MEMBER</span>
-                  </button>
-                  <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to ADMIN</span>
-                  </button>
+                <!-- if member.role is moderator -->
+                <button
+                        th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MEMBER</span>
+                </button>
+                <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to ADMIN</span>
+                </button>
 
-                  <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to MODERATOR</span>
-                  </button>
-                </th:block>
+                <!-- if member.role is member -->
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to MODERATOR</span>
+                </button>
+              </th:block>
+              <!-- else -->
+              <!-- end if -->
+
+              <!-- if user.role is admin -->
+              <th:block th:if="${'admin'.equals(userRole.getName())}">
+                <!-- if member.role is moderator -->
+                <button
+                        th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MEMBER</span>
+                </button>
+
+                <!-- if member.role is member -->
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to MODERATOR</span>
+                </button>
                 <!-- else -->
-                <!-- end if -->
+              </th:block>
+              <!-- end if -->
 
-                <!-- if user.role is admin -->
-                <th:block th:if="${'admin'.equals(userRole.getName())}">
-                  <!-- if member.role is moderator -->
-                  <button
-                          th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MEMBER</span>
-                  </button>
+              <!-- is user.group is 1 -->
+              <th:block th:if="${'administrator'.equals(principal.getGroup().getName())}">
+                <!-- if member.role is creator -->
+                <button
+                        th:if="${'creator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_creator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to ADMIN</span>
+                </button>
 
-                  <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to MODERATOR</span>
-                  </button>
-                  <!-- else -->
-                </th:block>
-                <!-- end if -->
+                <!-- if member.role is admin -->
+                <button
+                        th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MODERATOR</span>
+                </button>
+                <button th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to CREATOR</span>
+                </button>
 
-                <!-- is user.group is 1 -->
-                <th:block th:if="${'administrator'.equals(principal.getGroup().getName())}">
-                  <!-- if member.role is creator -->
-                  <button
-                          th:if="${'creator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to ADMIN</span>
-                  </button>
+                <!-- if member.role is moderator -->
+                <button
+                        th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MEMBER</span>
+                </button>
+                <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to ADMIN</span>
+                </button>
 
-                  <!-- if member.role is admin -->
-                  <button
-                          th:if="${'admin'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MODERATOR</span>
-                  </button>
-                  <button th:if="${'admin'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to CREATOR</span>
-                  </button>
-
-                  <!-- if member.role is moderator -->
-                  <button
-                          th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MEMBER</span>
-                  </button>
-                  <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to ADMIN</span>
-                  </button>
-
-                  <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to MODERATOR</span>
-                  </button>
-                  <!-- else -->
-                </th:block>
-                <!-- end if -->
-
+                <!-- if member.role is member -->
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to MODERATOR</span>
+                </button>
                 <!-- else -->
-                <!-- end if -->
-              </div>
+              </th:block>
+              <!-- end if -->
+
+              <!-- else -->
+              <!-- end if -->
+            </div>
               <!-- end card footer -->
             <!-- end parte interna delle card -->
           </div>
@@ -543,114 +567,126 @@
               <!-- end if -->
               <!-- card footer -->
               <div class="card-footer border-0">
-                <!-- if user.role is creator -->
-                <th:block th:if="${'creator'.equals(userRole.getName())}">
-                  <!-- if member.role is admin -->
-                  <button
-                          th:if="${'admin'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MODERATOR</span>
-                  </button>
+              <!-- if user.role is creator -->
+              <th:block th:if="${'creator'.equals(userRole.getName())}">
+                <!-- if member.role is admin -->
+                <button
+                        th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MODERATOR</span>
+                </button>
 
-                  <!-- if member.role is moderator -->
-                  <button
-                          th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MEMBER</span>
-                  </button>
-                  <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to ADMIN</span>
-                  </button>
+                <!-- if member.role is moderator -->
+                <button
+                        th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MEMBER</span>
+                </button>
+                <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to ADMIN</span>
+                </button>
 
-                  <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to MODERATOR</span>
-                  </button>
-                </th:block>
+                <!-- if member.role is member -->
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to MODERATOR</span>
+                </button>
+              </th:block>
+              <!-- else -->
+              <!-- end if -->
+
+              <!-- if user.role is admin -->
+              <th:block th:if="${'admin'.equals(userRole.getName())}">
+                <!-- if member.role is moderator -->
+                <button
+                        th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MEMBER</span>
+                </button>
+
+                <!-- if member.role is member -->
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to MODERATOR</span>
+                </button>
                 <!-- else -->
-                <!-- end if -->
+              </th:block>
+              <!-- end if -->
 
-                <!-- if user.role is admin -->
-                <th:block th:if="${'admin'.equals(userRole.getName())}">
-                  <!-- if member.role is moderator -->
-                  <button
-                          th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MEMBER</span>
-                  </button>
+              <!-- is user.group is 1 -->
+              <th:block th:if="${'administrator'.equals(principal.getGroup().getName())}">
+                <!-- if member.role is creator -->
+                <button
+                        th:if="${'creator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_creator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to ADMIN</span>
+                </button>
 
-                  <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to MODERATOR</span>
-                  </button>
-                  <!-- else -->
-                </th:block>
-                <!-- end if -->
+                <!-- if member.role is admin -->
+                <button
+                        th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MODERATOR</span>
+                </button>
+                <button th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to CREATOR</span>
+                </button>
 
-                <!-- is user.group is 1 -->
-                <th:block th:if="${'administrator'.equals(principal.getGroup().getName())}">
-                  <!-- if member.role is creator -->
-                  <button
-                          th:if="${'creator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to ADMIN</span>
-                  </button>
+                <!-- if member.role is moderator -->
+                <button
+                        th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right ml-2"
+                >
+                  <i class="fas fa-arrow-down mr-2"></i
+                  ><span class="">Downgrade to MEMBER</span>
+                </button>
+                <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to ADMIN</span>
+                </button>
 
-                  <!-- if member.role is admin -->
-                  <button
-                          th:if="${'admin'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MODERATOR</span>
-                  </button>
-                  <button th:if="${'admin'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to CREATOR</span>
-                  </button>
-
-                  <!-- if member.role is moderator -->
-                  <button
-                          th:if="${'moderator'.equals(member.getRole().getName())}"
-                          onclick=""
-                          class="btn btn-sm btn-outline-light float-right ml-2"
-                  >
-                    <i class="fas fa-arrow-down mr-2"></i
-                    ><span class="">Downgrade to MEMBER</span>
-                  </button>
-                  <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to ADMIN</span>
-                  </button>
-
-                  <!-- if member.role is member -->
-                  <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
-                    <i class="fas fa-arrow-up mr-2"></i>
-                    <span class="">Upgrade to MODERATOR</span>
-                  </button>
-                  <!-- else -->
-                </th:block>
-                <!-- end if -->
-
+                <!-- if member.role is member -->
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
+                  <i class="fas fa-arrow-up mr-2"></i>
+                  <span class="">Upgrade to MODERATOR</span>
+                </button>
                 <!-- else -->
-                <!-- end if -->
-              </div>
+              </th:block>
+              <!-- end if -->
+
+              <!-- else -->
+              <!-- end if -->
+            </div>
               <!-- end card footer -->
             <!-- end parte interna delle card -->
           </div>
@@ -761,7 +797,7 @@
                 <!-- if member.role is admin -->
                 <button
                         th:if="${'admin'.equals(member.getRole().getName())}"
-                        onclick=""
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                         class="btn btn-sm btn-outline-light float-right ml-2"
                 >
                   <i class="fas fa-arrow-down mr-2"></i
@@ -771,19 +807,23 @@
                 <!-- if member.role is moderator -->
                 <button
                         th:if="${'moderator'.equals(member.getRole().getName())}"
-                        onclick=""
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                         class="btn btn-sm btn-outline-light float-right ml-2"
                 >
                   <i class="fas fa-arrow-down mr-2"></i
                   ><span class="">Downgrade to MEMBER</span>
                 </button>
-                <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
                   <i class="fas fa-arrow-up mr-2"></i>
                   <span class="">Upgrade to ADMIN</span>
                 </button>
 
                 <!-- if member.role is member -->
-                <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
                   <i class="fas fa-arrow-up mr-2"></i>
                   <span class="">Upgrade to MODERATOR</span>
                 </button>
@@ -796,7 +836,7 @@
                 <!-- if member.role is moderator -->
                 <button
                         th:if="${'moderator'.equals(member.getRole().getName())}"
-                        onclick=""
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                         class="btn btn-sm btn-outline-light float-right ml-2"
                 >
                   <i class="fas fa-arrow-down mr-2"></i
@@ -804,7 +844,9 @@
                 </button>
 
                 <!-- if member.role is member -->
-                <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
                   <i class="fas fa-arrow-up mr-2"></i>
                   <span class="">Upgrade to MODERATOR</span>
                 </button>
@@ -817,7 +859,7 @@
                 <!-- if member.role is creator -->
                 <button
                         th:if="${'creator'.equals(member.getRole().getName())}"
-                        onclick=""
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_creator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                         class="btn btn-sm btn-outline-light float-right ml-2"
                 >
                   <i class="fas fa-arrow-down mr-2"></i
@@ -827,13 +869,15 @@
                 <!-- if member.role is admin -->
                 <button
                         th:if="${'admin'.equals(member.getRole().getName())}"
-                        onclick=""
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                         class="btn btn-sm btn-outline-light float-right ml-2"
                 >
                   <i class="fas fa-arrow-down mr-2"></i
                   ><span class="">Downgrade to MODERATOR</span>
                 </button>
-                <button th:if="${'admin'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                <button th:if="${'admin'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_admin/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
                   <i class="fas fa-arrow-up mr-2"></i>
                   <span class="">Upgrade to CREATOR</span>
                 </button>
@@ -841,19 +885,23 @@
                 <!-- if member.role is moderator -->
                 <button
                         th:if="${'moderator'.equals(member.getRole().getName())}"
-                        onclick=""
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/downgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
                         class="btn btn-sm btn-outline-light float-right ml-2"
                 >
                   <i class="fas fa-arrow-down mr-2"></i
                   ><span class="">Downgrade to MEMBER</span>
                 </button>
-                <button th:if="${'moderator'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                <button th:if="${'moderator'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_moderator/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
                   <i class="fas fa-arrow-up mr-2"></i>
                   <span class="">Upgrade to ADMIN</span>
                 </button>
 
                 <!-- if member.role is member -->
-                <button th:if="${'member'.equals(member.getRole().getName())}" onclick="" class="btn btn-sm btn-outline-light float-right">
+                <button th:if="${'member'.equals(member.getRole().getName())}"
+                        th:onclick="'location.href=\'' + @{/channels/{channelId}/members/{userId}/upgrade_member/(channelId=${channel.getId()}, userId=${member.getUser().getId()})} + '\''"
+                        class="btn btn-sm btn-outline-light float-right">
                   <i class="fas fa-arrow-up mr-2"></i>
                   <span class="">Upgrade to MODERATOR</span>
                 </button>

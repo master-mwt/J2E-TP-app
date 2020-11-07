@@ -228,8 +228,15 @@ public class ChannelBOImpl implements ChannelBO {
 
         UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
         if(member.equals(currentMember.getRole())){
-            currentMember.setRole(moderator);
-            userChannelRoleRepository.save(currentMember);
+            UserChannelRole newRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+            userChannelRoleFKs.setChannelId(channelId);
+            userChannelRoleFKs.setUserId(userId);
+            userChannelRoleFKs.setRoleId(moderator.getId());
+            newRole.setUserChannelRoleFKs(userChannelRoleFKs);
+
+            userChannelRoleRepository.delete(currentMember);
+            userChannelRoleRepository.save(newRole);
         }
     }
 
@@ -240,8 +247,15 @@ public class ChannelBOImpl implements ChannelBO {
 
         UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
         if(moderator.equals(currentMember.getRole())){
-            currentMember.setRole(admin);
-            userChannelRoleRepository.save(currentMember);
+            UserChannelRole newRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+            userChannelRoleFKs.setChannelId(channelId);
+            userChannelRoleFKs.setUserId(userId);
+            userChannelRoleFKs.setRoleId(admin.getId());
+            newRole.setUserChannelRoleFKs(userChannelRoleFKs);
+
+            userChannelRoleRepository.delete(currentMember);
+            userChannelRoleRepository.save(newRole);
         }
     }
 
@@ -252,8 +266,15 @@ public class ChannelBOImpl implements ChannelBO {
 
         UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
         if(moderator.equals(currentMember.getRole())){
-            currentMember.setRole(member);
-            userChannelRoleRepository.save(currentMember);
+            UserChannelRole newRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+            userChannelRoleFKs.setChannelId(channelId);
+            userChannelRoleFKs.setUserId(userId);
+            userChannelRoleFKs.setRoleId(member.getId());
+            newRole.setUserChannelRoleFKs(userChannelRoleFKs);
+
+            userChannelRoleRepository.delete(currentMember);
+            userChannelRoleRepository.save(newRole);
         }
     }
 
@@ -271,9 +292,16 @@ public class ChannelBOImpl implements ChannelBO {
 
         UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
         if(admin.equals(currentMember.getRole())){
-            currentMember.setRole(creator);
+            UserChannelRole newRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+            userChannelRoleFKs.setChannelId(channelId);
+            userChannelRoleFKs.setUserId(userId);
+            userChannelRoleFKs.setRoleId(creator.getId());
+            newRole.setUserChannelRoleFKs(userChannelRoleFKs);
+            userChannelRoleRepository.delete(currentMember);
+            userChannelRoleRepository.save(newRole);
+
             channel.setCreator(userRepository.findById(userId).orElse(null));
-            userChannelRoleRepository.save(currentMember);
             channelRepository.save(channel);
         }
     }
@@ -285,8 +313,14 @@ public class ChannelBOImpl implements ChannelBO {
 
         UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
         if(admin.equals(currentMember.getRole())){
-            currentMember.setRole(moderator);
-            userChannelRoleRepository.save(currentMember);
+            UserChannelRole newRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+            userChannelRoleFKs.setChannelId(channelId);
+            userChannelRoleFKs.setUserId(userId);
+            userChannelRoleFKs.setRoleId(moderator.getId());
+            newRole.setUserChannelRoleFKs(userChannelRoleFKs);
+            userChannelRoleRepository.delete(currentMember);
+            userChannelRoleRepository.save(newRole);
         }
     }
 
@@ -297,8 +331,14 @@ public class ChannelBOImpl implements ChannelBO {
 
         UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
         if(creator.equals(currentMember.getRole())){
-            currentMember.setRole(admin);
-            userChannelRoleRepository.save(currentMember);
+            UserChannelRole newRole = new UserChannelRole();
+            UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
+            userChannelRoleFKs.setChannelId(channelId);
+            userChannelRoleFKs.setUserId(userId);
+            userChannelRoleFKs.setRoleId(admin.getId());
+            newRole.setUserChannelRoleFKs(userChannelRoleFKs);
+            userChannelRoleRepository.delete(currentMember);
+            userChannelRoleRepository.save(newRole);
         }
     }
 }
