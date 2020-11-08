@@ -4,7 +4,9 @@ import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,8 @@ public class SearchController {
 
     @GetMapping(value = "/search")
     public String search(@PathParam("target") String target, @PathParam("query") String query, Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+
         if(target != null){
             if(query == null || query.equals("")){
                 model.addAttribute("emptySearch", true);
@@ -48,6 +52,7 @@ public class SearchController {
                     model.addAttribute("channelBO", channelBO);
                     model.addAttribute("userBO", userBO);
                     model.addAttribute("postBO", postBO);
+                    model.addAttribute("principal", principal);
                     return "pages/search_res/posts_res";
                 case "channels":
                     Page<ChannelClass> channelPage = channelBO.findByNameContainsPaginated(query, 0, 10);
@@ -80,6 +85,7 @@ public class SearchController {
                     model.addAttribute("channelBO", channelBO);
                     model.addAttribute("userBO", userBO);
                     model.addAttribute("postBO", postBO);
+                    model.addAttribute("principal", principal);
                     return "pages/search_res/tags_res";
                 default:
                     return "redirect:/";
@@ -91,6 +97,8 @@ public class SearchController {
 
     @GetMapping(value = "/search/posts/page/{page}")
     public String postPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+
         if(query == null || query.equals("")){
             model.addAttribute("emptySearch", true);
             return emptySearch();
@@ -106,6 +114,7 @@ public class SearchController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("userBO", userBO);
         model.addAttribute("postBO", postBO);
+        model.addAttribute("principal", principal);
         return "pages/search_res/posts_res";
     }
 
@@ -148,6 +157,8 @@ public class SearchController {
 
     @GetMapping(value = "/search/tags/page/{page}")
     public String tagPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+
         if(query == null || query.equals("")){
             model.addAttribute("emptySearch", true);
             return emptySearch();
@@ -163,6 +174,7 @@ public class SearchController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("userBO", userBO);
         model.addAttribute("postBO", postBO);
+        model.addAttribute("principal", principal);
         return "pages/search_res/tags_res";
     }
 

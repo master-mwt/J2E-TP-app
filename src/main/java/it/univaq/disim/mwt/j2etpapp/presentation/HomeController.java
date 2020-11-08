@@ -65,6 +65,8 @@ public class HomeController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("postBO", postBO);
         model.addAttribute("page", postPage);
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        model.addAttribute("user", principal);
         return "pages/welcome";
     }
 }

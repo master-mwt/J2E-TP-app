@@ -14,6 +14,7 @@
           th:each="post : ${page.getContent()}"
           class="card col-lg-10 mx-auto d-flex flex-row px-0"
           style="max-width: 800px;"
+          th:if="${user == null || !postBO.findByUserHidden(user.getId()).contains(post)}"
         >
         <!-- ##### POST SIDEBAR ##### -->
           <div

@@ -137,6 +137,7 @@
           class="card col-lg-10 mx-auto d-flex flex-row px-0"
           style="max-width: 800px"
           th:each="post : ${postPage.getContent()}"
+          th:if="${principal == null || !postBO.findByUserHidden(principal.getId()).contains(post)}"
         >
           <div
             class="rounded-left py-3 d-flex flex-column"
