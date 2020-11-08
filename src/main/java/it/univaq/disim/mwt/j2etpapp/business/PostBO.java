@@ -41,7 +41,8 @@ public interface PostBO {
 
     AjaxResponse upvote(String postId, UserClass user);
     AjaxResponse downvote(String postId, UserClass user);
-    void hide(String postId, UserClass user);
-    void save(String postId, UserClass user);
-    void report(String postId, UserClass user);
+    void hideToggle(String postId, UserClass user);
+    void saveToggle(String postId, UserClass user);
+    void reportToggle(String postId, UserClass user);
+    void createPostInChannel(PostClass post);
 }

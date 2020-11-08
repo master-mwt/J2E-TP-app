@@ -3,9 +3,10 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
-import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
-import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
-import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.domain.*;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserChannelRoleRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.mongo.NotificationRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,12 @@ public class PostBOImpl implements PostBO {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserChannelRoleRepository userChannelRoleRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
+    @Autowired
+    private ChannelRepository channelRepository;
 
     @Override
     public List<PostClass> findAll() {
@@ -242,7 +249,7 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void hide(String postId, UserClass user) {
+    public void hideToggle(String postId, UserClass user) {
         PostClass post = postRepository.findById(postId).orElse(null);
         if(post.getUsersHidden() == null){
             post.setUsersHidden(new HashSet<>());
@@ -258,7 +265,7 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void save(String postId, UserClass user) {
+    public void saveToggle(String postId, UserClass user) {
         PostClass post = postRepository.findById(postId).orElse(null);
         if(post.getUsersSaved() == null){
             post.setUsersSaved(new HashSet<>());
@@ -274,7 +281,7 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void report(String postId, UserClass user) {
+    public void reportToggle(String postId, UserClass user) {
         PostClass post = postRepository.findById(postId).orElse(null);
         if(post.getUsersReported() == null){
             post.setUsersReported(new HashSet<>());
@@ -293,5 +300,36 @@ public class PostBOImpl implements PostBO {
         }
 
         postRepository.save(post);
+    }
+
+    @Override
+    public void createPostInChannel(PostClass post) {
+        postRepository.save(post);
+
+        // notifications
+        Long channelId = post.getChannelId();
+        Long creatorId = post.getUserId();
+
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+
+        List<UserChannelRole> usersInChannel = userChannelRoleRepository.findByChannelId(channelId).orElse(null);
+
+        if(usersInChannel != null && !(usersInChannel.isEmpty())) {
+            // send notification to all members, creator excluded
+            for(UserChannelRole member : usersInChannel) {
+                if(!creatorId.equals(member.getUser().getId())) {
+                    NotificationClass notification = new NotificationClass();
+                    notification.setUserTargetId(member.getUser().getId());
+                    notification.setChannelId(channelId);
+                    notification.setChannelName(channel.getName());
+                    notification.setPostId(post.getId());
+                    notification.setPostTitle(post.getTitle());
+                    notification.setScope(ChannelClass.class.getName());
+                    notification.setContent("New post in channel " + notification.getChannelName());
+
+                    notificationRepository.save(notification);
+                }
+            }
+        }
     }
 }

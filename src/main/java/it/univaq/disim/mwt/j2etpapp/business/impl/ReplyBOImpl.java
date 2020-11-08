@@ -3,9 +3,9 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
-import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
-import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
-import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.domain.*;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.mongo.NotificationRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,10 @@ public class ReplyBOImpl implements ReplyBO {
     private ReplyRepository replyRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
+    @Autowired
+    private ChannelRepository channelRepository;
 
     @Override
     public List<ReplyClass> findAll() {
@@ -181,11 +185,13 @@ public class ReplyBOImpl implements ReplyBO {
 
     @Override
     public void createReplyInPost(ReplyClass reply, PostClass postContainer) {
+        Long replyCreator = reply.getUserId();
+
         reply.setPost(postContainer);
 
         Set<ReplyClass> replies = postContainer.getReplies();
 
-        if(replies == null) {
+        if(replies == null || replies.isEmpty()) {
             replies = new HashSet<>();
         }
 
@@ -194,5 +200,47 @@ public class ReplyBOImpl implements ReplyBO {
 
         replyRepository.save(reply);
         postRepository.save(postContainer);
+
+        // notifications
+        // send notification to all other replies creators and to post creator
+        Long postCreator = postContainer.getUserId();
+        ChannelClass channel = channelRepository.findById(reply.getChannelId()).orElse(null);
+        List<Long> alreadyNotified = new ArrayList<>();
+
+        if(!replyCreator.equals(postCreator)) {
+            NotificationClass notificationToPostCreator = new NotificationClass();
+            notificationToPostCreator.setUserTargetId(postCreator);
+            notificationToPostCreator.setChannelId(postContainer.getChannelId());
+            notificationToPostCreator.setChannelName(channel.getName());
+            notificationToPostCreator.setPostId(postContainer.getId());
+            notificationToPostCreator.setPostTitle(postContainer.getTitle());
+            notificationToPostCreator.setScope(PostClass.class.getName());
+            notificationToPostCreator.setContent("New reply in your post " + notificationToPostCreator.getPostTitle());
+
+            notificationRepository.save(notificationToPostCreator);
+            alreadyNotified.add(postCreator);
+        }
+
+        if(!replies.isEmpty()) {
+            for(ReplyClass replyClass : replies) {
+                if(replyClass == null) {
+                    continue;
+                }
+
+                if(!replyCreator.equals(replyClass.getUserId()) && (!replyCreator.equals(postCreator)) && (!alreadyNotified.contains(replyClass.getUserId()))) {
+                    NotificationClass notification = new NotificationClass();
+                    notification.setUserTargetId(replyClass.getUserId());
+                    notification.setChannelId(reply.getChannelId());
+                    notification.setChannelName(channel.getName());
+                    notification.setPostId(postContainer.getId());
+                    notification.setPostTitle(postContainer.getTitle());
+                    notification.setScope(PostClass.class.getName());
+                    notification.setContent("New reply in post " + notification.getPostTitle());
+
+                    notificationRepository.save(notification);
+                    alreadyNotified.add(replyClass.getUserId());
+                }
+            }
+        }
     }
 }

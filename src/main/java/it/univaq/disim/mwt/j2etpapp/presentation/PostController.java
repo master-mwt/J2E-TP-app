@@ -28,7 +28,7 @@ public class PostController {
         // TODO: save post (is ok ?) Errors ?
         ModelAndView modelAndView = new ModelAndView();
 
-        postBO.save(post);
+        postBO.createPostInChannel(post);
 
         modelAndView.setViewName("redirect:/discover/post/" + post.getId());
         return modelAndView;
@@ -65,7 +65,7 @@ public class PostController {
     public ResponseEntity doHide(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            postBO.hide(postId, principal);
+            postBO.hideToggle(postId, principal);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
@@ -75,7 +75,7 @@ public class PostController {
     public ResponseEntity doReport(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            postBO.report(postId, principal);
+            postBO.reportToggle(postId, principal);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
@@ -85,7 +85,7 @@ public class PostController {
     public ResponseEntity doSave(@PathVariable("postId") String postId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         if(principal != null){
-            postBO.save(postId, principal);
+            postBO.saveToggle(postId, principal);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
