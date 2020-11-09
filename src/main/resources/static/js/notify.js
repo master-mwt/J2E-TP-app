@@ -91,7 +91,7 @@ function notify(user, entry){
                                     <h3 class="dropdown-item-title">
                                     ${user.username}
                                     </h3>
-                                    <a href="${postpath + entry.postId}" class="text-sm">${entry.content}</a>
+                                    <a id="${entry.id}" href="${postpath + entry.postId}" class="text-sm notification-entry">${entry.content}</a>
                                     <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> ${new Date(entry.created_at).toGMTString()}</p>
                                 </div>
                             </div>`;
@@ -101,6 +101,42 @@ function notify(user, entry){
     // TODO: makeToast
     makeToast('Notification', 'You have new notifications', 4000);
 }
+
+$(document).ready(function() {
+    // delete notification
+    $(document).on('click', '.notification-entry', function(e){
+        let notificationId = $(this).attr('id');
+
+        $.ajax({
+            method: "POST",
+            url: baseUrl + `/notifications/${notificationId}/delete`,
+            success: function(data, textStatus, XMLHTTPRequest){
+            },
+            error: function(XMLHTTPRequest, textStatus, errorThrown){
+            },
+        });
+    });
+    // delete all notifications
+    $(document).on('click', '#notifications-delete-all', function(e){
+        $.ajax({
+            method: "POST",
+            url: baseUrl + `/notifications/delete_all`,
+            success: function(data, textStatus, XMLHTTPRequest){
+                notifications = [];
+                $('#notification-area').empty();
+                $('#notification-count').text('no notifications');
+
+                if(notifications.length){
+                    $('#notification-button').addClass('text-danger');
+                } else {
+                    $('#notification-button').removeClass('text-danger');
+                }
+            },
+            error: function(XMLHTTPRequest, textStatus, errorThrown){
+            },
+        });
+    });
+});
 
 export {
     makeToast,
