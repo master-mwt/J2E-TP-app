@@ -65,6 +65,11 @@
         <div class="container p-4" layout:fragment="content"></div>
       </div>
     </div>
+    <!-- toasts -->
+    <div id="toast-container" class="position-fixed" style="z-index: 1000; right: 0; min-width: 350px;">
+      <!-- bg-danger removed -->
+    </div>
+    <!-- end toasts -->
   <script sec:authorize="!isAnonymous()" th:inline="javascript">
     window.userIsLogged = true;
   </script>

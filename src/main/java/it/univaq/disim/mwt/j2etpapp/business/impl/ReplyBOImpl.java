@@ -210,6 +210,7 @@ public class ReplyBOImpl implements ReplyBO {
         if(!replyCreator.equals(postCreator)) {
             NotificationClass notificationToPostCreator = new NotificationClass();
             notificationToPostCreator.setUserTargetId(postCreator);
+            notificationToPostCreator.setUserCreatedById(replyCreator);
             notificationToPostCreator.setChannelId(postContainer.getChannelId());
             notificationToPostCreator.setChannelName(channel.getName());
             notificationToPostCreator.setPostId(postContainer.getId());
@@ -230,6 +231,7 @@ public class ReplyBOImpl implements ReplyBO {
                 if(!replyCreator.equals(replyClass.getUserId()) && (!replyCreator.equals(postCreator)) && (!alreadyNotified.contains(replyClass.getUserId()))) {
                     NotificationClass notification = new NotificationClass();
                     notification.setUserTargetId(replyClass.getUserId());
+                    notification.setUserCreatedById(replyCreator);
                     notification.setChannelId(reply.getChannelId());
                     notification.setChannelName(channel.getName());
                     notification.setPostId(postContainer.getId());

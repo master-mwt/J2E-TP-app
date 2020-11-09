@@ -34,21 +34,21 @@ function makeToast(title, body, delay){
  */
 let notifications = [];
 let baseUrl = window.location.protocol + "//" + window.location.host + '/j2etpapp';
-let postpath = window.location.protocol + "//" + window.location.host + "/discover/post/";
+let postpath = window.location.protocol + "//" + window.location.host + '/j2etpapp' + "/discover/post/";
 
 // TODO: Notifications
 
 $(document).ready(function() {
     if(window.userIsLogged){
         notification();
-        //setInterval(notification, 10000);
+        setInterval(notification, 10000);
     }
 });
 
 function notification(){
     $.get(baseUrl + '/notifications', function (data) {
         console.log(data);
-        //addNotifications(data);
+        addNotifications(data);
     });
 }
 
@@ -69,48 +69,36 @@ function addNotifications(newNotifications) {
     }
 
     notifications.forEach(function(entry) {
-        getUser(entry.data.user_id, entry);
+        getUser(entry.userCreatedById, entry);
     });
 }
 
 function getUser(user_id, entry){
     $.ajax({
         method: "GET",
-        url: window.location.protocol + "//" + window.location.host + "/discover/user/" + user_id,
+        url: baseUrl + "/user/" + user_id,
         success: function(data, textStatus, XMLHTTPRequest){
-            getImageLocation(data, entry);
+            notify(data, entry);
         },
     });
 }
 
-function getImageLocation(user, entry){
-    if(!user.image_id){
-        notify(user, '/imgs/no_profile_img.jpg', entry);
-    }
-    $.ajax({
-        method: "GET",
-        url: window.location.protocol + "//" + window.location.host + "/images/" + user.image_id,
-        success: function(data, textStatus, XMLHTTPRequest){
-            notify(user, data.location, entry);
-        },
-    });
-}
-
-function notify(user, imageLocation, entry){
+function notify(user, entry){
 
     let notification = `<div class="media">
-                                <img src="${imageLocation}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <img src="${baseUrl + '/' + user.userImage}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                     ${user.username}
                                     </h3>
-                                    <a href="${postpath + entry.data.post_id}?readnotification=${entry.id}" class="text-sm">${entry.data.data}</a>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> ${entry.created_at}</p>
+                                    <a href="${postpath + entry.postId}" class="text-sm">${entry.content}</a>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> ${new Date(entry.created_at).toGMTString()}</p>
                                 </div>
                             </div>`;
 
     $('#notification-area').append(notification);
 
+    // TODO: makeToast
     makeToast('Notification', 'You have new notifications', 4000);
 }
 

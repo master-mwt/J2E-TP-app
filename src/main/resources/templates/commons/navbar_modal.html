@@ -18,9 +18,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header p-2 justify-content-center border-0">
-          <h5 class="m-0" id="notify-count">no notifications</h5>
+          <h5 class="m-0" id="notification-count">no notifications</h5>
         </div>
-        <div id="notify-area" class="modal-body pb-0 px-3 pt-3"></div>
+        <div id="notification-area" class="modal-body pb-0 px-3 pt-3"></div>
         <div class="modal-footer border-0 p-2">
           <button
             class="btn btn-outline-secondary"
@@ -29,8 +29,13 @@
           >
             close
           </button>
-          <button class="btn btn-outline-secondary" type="button" onclick="">
-            dismiss all messages
+          <button id="notifications-delete-all" class="btn btn-outline-secondary"
+                  type="button">
+            delete all messages
+          </button>
+          <button id="notifications-read-all" class="btn btn-outline-secondary"
+                  type="button">
+            read all messages
           </button>
         </div>
       </div>

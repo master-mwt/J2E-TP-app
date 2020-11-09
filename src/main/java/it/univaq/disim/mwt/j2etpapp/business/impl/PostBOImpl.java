@@ -320,6 +320,7 @@ public class PostBOImpl implements PostBO {
                 if(!creatorId.equals(member.getUser().getId())) {
                     NotificationClass notification = new NotificationClass();
                     notification.setUserTargetId(member.getUser().getId());
+                    notification.setUserCreatedById(creatorId);
                     notification.setChannelId(channelId);
                     notification.setChannelName(channel.getName());
                     notification.setPostId(post.getId());

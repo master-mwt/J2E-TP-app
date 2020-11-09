@@ -19,6 +19,7 @@ public class NotificationClass implements Serializable {
     @Id
     private String id;
     private Long userTargetId;
+    private Long userCreatedById;
 
     private String channelName;
     private Long channelId;
