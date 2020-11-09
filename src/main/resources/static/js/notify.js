@@ -33,18 +33,22 @@ function makeToast(title, body, delay){
  * Notifications handling
  */
 let notifications = [];
+let baseUrl = window.location.protocol + "//" + window.location.host + '/j2etpapp';
 let postpath = window.location.protocol + "//" + window.location.host + "/discover/post/";
+
+// TODO: Notifications
 
 $(document).ready(function() {
     if(window.userIsLogged){
         notification();
-        setInterval(notification, 10000);
+        //setInterval(notification, 10000);
     }
 });
 
 function notification(){
-    $.get('/notifications', function (data) {
-        addNotifications(data);
+    $.get(baseUrl + '/notifications', function (data) {
+        console.log(data);
+        //addNotifications(data);
     });
 }
 

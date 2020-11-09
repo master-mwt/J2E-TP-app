@@ -27,6 +27,7 @@ public class NotificationClass implements Serializable {
 
     private String content;
     private String scope;
+    private boolean read = false;
     @CreatedDate
     private Date created_at;
 

@@ -3,6 +3,7 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
   <head>
     <meta charset="utf-8" />
@@ -64,5 +65,8 @@
         <div class="container p-4" layout:fragment="content"></div>
       </div>
     </div>
+  <script sec:authorize="!isAnonymous()" th:inline="javascript">
+    window.userIsLogged = true;
+  </script>
   </body>
 </html>
