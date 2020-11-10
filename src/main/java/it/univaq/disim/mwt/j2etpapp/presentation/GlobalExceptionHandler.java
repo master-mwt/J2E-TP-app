@@ -25,6 +25,9 @@ public class GlobalExceptionHandler {
         ex.printStackTrace(printWriter);
         printWriter.flush();
 
+        // TODO: debug
+        ex.printStackTrace();
+
         String errorCause = (ex.getCause() != null) ? ex.getCause().getMessage() : "";
         model.addAttribute("status", (ex instanceof AccessDeniedException) ? 403 : 500);
         model.addAttribute("message", errorCause);

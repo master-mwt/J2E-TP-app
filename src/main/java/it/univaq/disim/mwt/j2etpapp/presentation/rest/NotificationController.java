@@ -1,11 +1,11 @@
-package it.univaq.disim.mwt.j2etpapp.presentation;
+package it.univaq.disim.mwt.j2etpapp.presentation.rest;
 
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.NotificationBO;
-import it.univaq.disim.mwt.j2etpapp.business.impl.JSONDealer;
 import it.univaq.disim.mwt.j2etpapp.domain.NotificationClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import it.univaq.disim.mwt.j2etpapp.utils.JSONDealer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Version;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -22,7 +24,9 @@ public class PostClass implements Serializable {
 
     @Id
     private String id;
+    @NotBlank(message = "Title is mandatory")
     private String title;
+    @NotBlank(message = "Content is mandatory")
     private String content;
     private Long upvote;
     private Long downvote;
@@ -33,9 +37,11 @@ public class PostClass implements Serializable {
     private Long version;
 
     @Column(name = "user_id")
+    @NotNull
     private Long userId;
 
     @Column(name = "channel_id")
+    @NotNull
     private Long channelId;
 
     private boolean reported;

@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
-import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,6 +25,6 @@ public interface UserBO {
     boolean checkOldPassword(UserClass user, String oldPassword);
     void changePassword(UserClass user, String newPassword);
     void removeImage(long userId);
-    void saveImage(long userId, ImageClass image);
+    void saveImage(long userId, MultipartFile image) throws BusinessException;
     void updateUserProfile(UserClass user, UserClass newData);
 }

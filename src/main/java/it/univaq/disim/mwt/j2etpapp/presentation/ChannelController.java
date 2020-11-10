@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -153,6 +154,17 @@ public class ChannelController {
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
     public String changeImage(@PathVariable("channelId") Long channelId, Model model) {
         model.addAttribute("channel", channelBO.findById(channelId));
+
+        return "pages/dashboard/image_upload/channel_img_upl";
+    }
+
+    @PostMapping("{channelId}/change_image")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
+    public String uploadImage(@PathVariable("channelId") Long channelId, @RequestParam(value = "image", required = true) MultipartFile image, Model model) throws BusinessException {
+        channelBO.saveImage(channelId, image);
+
+        model.addAttribute("channel", channelBO.findById(channelId));
+        model.addAttribute("success", false);
 
         return "pages/dashboard/image_upload/channel_img_upl";
     }

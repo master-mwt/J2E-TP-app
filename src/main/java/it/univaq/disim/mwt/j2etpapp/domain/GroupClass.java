@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -20,9 +22,12 @@ public class GroupClass implements Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 50)
     private String name;
 
     @Column(columnDefinition = "text")
+    @Size(max = 200)
     private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)

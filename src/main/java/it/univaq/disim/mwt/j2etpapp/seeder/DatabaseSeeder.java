@@ -53,6 +53,8 @@ public class DatabaseSeeder {
     private ReplyBO replyBO;
     @Autowired
     private TagBO tagBO;
+    @Autowired
+    private NotificationBO notificationBO;
 
     @Qualifier("webApplicationContext")
     @Autowired
@@ -70,7 +72,8 @@ public class DatabaseSeeder {
             userBO.count() == 0 &&
             postBO.count() == 0 &&
             replyBO.count() == 0 &&
-            tagBO.count() == 0
+            tagBO.count() == 0 &&
+            notificationBO.count() == 0
         ){
             log.info("Empty database detected");
             doSeed();

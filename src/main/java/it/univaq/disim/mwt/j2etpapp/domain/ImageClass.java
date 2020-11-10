@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -24,6 +25,7 @@ public class ImageClass {
     private String size;
 
     @Column(columnDefinition = "text", nullable = false)
+    @NotBlank(message = "Location is mandatory")
     private String location;
 
     @Column(columnDefinition = "text")

@@ -7,6 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -25,18 +28,27 @@ public class UserClass implements Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Email is mandatory")
+    @Email
     private String email;
 
     @Column(nullable = false)
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 30)
     private String name;
 
     @Column(nullable = false)
+    @NotBlank(message = "Surname is mandatory")
+    @Size(max = 30)
     private String surname;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Username is mandatory")
+    @Size(max = 30)
     private String username;
 
     @Column(nullable = false)
+    @NotBlank(message = "Password is mandatory")
     private String password;
     @Transient
     private String matchingPassword;

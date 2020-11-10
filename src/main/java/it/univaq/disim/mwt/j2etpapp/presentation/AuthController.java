@@ -1,9 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import it.univaq.disim.mwt.j2etpapp.business.AuthBO;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
-import it.univaq.disim.mwt.j2etpapp.business.GroupBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserBO;
-import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,9 +22,7 @@ public class AuthController {
     private static PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Autowired
-    private UserBO userBO;
-    @Autowired
-    private GroupBO groupBO;
+    private AuthBO authBO;
 
     @GetMapping("/login")
     public String showLogin(){
@@ -49,6 +45,7 @@ public class AuthController {
             return "pages/auth/register";
         }
 
+        // TODO: automatic error ?
         if(user.getPassword() != null && user.getPassword().length() < 6){
             // error password length
             model.addAttribute("passwordError", "Password must be >= 6");
@@ -62,20 +59,9 @@ public class AuthController {
         }
 
         // registration
-        performRegistration(user);
+        authBO.registerUser(user);
 
         redirectAttributes.addAttribute("registered", true);
         return "redirect:/login";
-    }
-
-    private void performRegistration(UserClass user) {
-        // TODO: is it okay to keep this here ? (maybe put in controller)
-        GroupClass logged = groupBO.findByName("logged");
-
-        user.setGroup(logged);
-        user.setPassword(encoder.encode(user.getPassword()));
-
-        // user creation
-        userBO.save(user);
     }
 }

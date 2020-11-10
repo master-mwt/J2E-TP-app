@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 import javax.persistence.Version;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Getter
@@ -17,6 +18,7 @@ public class TagClass implements Serializable {
 
     @Id
     private String id;
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Version

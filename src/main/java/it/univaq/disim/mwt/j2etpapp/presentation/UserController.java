@@ -2,17 +2,20 @@ package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
-import it.univaq.disim.mwt.j2etpapp.business.impl.JSONDealer;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import it.univaq.disim.mwt.j2etpapp.utils.JSONDealer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +61,17 @@ public class UserController {
     @GetMapping("{userId}/change_image")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public String changeImage(@PathVariable("userId") Long userId) {
+        return "pages/dashboard/image_upload/profile_img_upl";
+    }
+
+    @PostMapping("{userId}/change_image")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
+    public String uploadImage(@PathVariable("userId") Long userId, @RequestParam(value = "image", required = true) MultipartFile image, Model model) throws IOException, BusinessException {
+        userBO.saveImage(userId, image);
+
+        model.addAttribute("user", userBO.findById(userId));
+        model.addAttribute("success", false);
+
         return "pages/dashboard/image_upload/profile_img_upl";
     }
 

@@ -7,11 +7,17 @@ import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
+import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -32,6 +38,8 @@ public class ChannelBOImpl implements ChannelBO {
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private FileDealer fileDealer;
 
     @Override
     public List<ChannelClass> findAll() {
@@ -371,19 +379,28 @@ public class ChannelBOImpl implements ChannelBO {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         channel.setImage(null);
 
-        // TODO: filesystem image delete?
-
         channelRepository.save(channel);
     }
 
     @Override
-    public void saveImage(long channelId, ImageClass image) {
+    public void saveImage(long channelId, MultipartFile image) throws BusinessException {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
-        // TODO: filesystem image
+        try {
+            String path = fileDealer.uploadFile(image);
+            ImageClass imageClass = new ImageClass();
+            imageClass.setLocation(path);
+            imageClass.setType(image.getContentType());
 
-        imageRepository.save(image);
-        channel.setImage(image);
-        channelRepository.save(channel);
+            BufferedImage bimg = ImageIO.read(new File(path));
+            imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
+
+            imageRepository.save(imageClass);
+            channel.setImage(imageClass);
+            channelRepository.save(channel);
+
+        } catch (IOException e) {
+            throw new BusinessException("saveImage", e);
+        }
     }
 
     @Override

@@ -1,0 +1,3 @@
+- cartella channel: conterrà immagini del channel
+
+- cartella user: conterrà immagini dello user

@@ -1,18 +1,25 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
+import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +35,8 @@ public class UserBOImpl implements UserBO {
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private FileDealer fileDealer;
 
     @Override
     public List<UserClass> findAll() {
@@ -124,19 +133,29 @@ public class UserBOImpl implements UserBO {
         UserClass user = userRepository.findById(userId).orElse(null);
         user.setImage(null);
 
-        // TODO: filesystem image delete?
-
         userRepository.save(user);
     }
 
     @Override
-    public void saveImage(long userId, ImageClass image) {
+    public void saveImage(long userId, MultipartFile image) throws BusinessException {
         UserClass user = userRepository.findById(userId).orElse(null);
-        // TODO: filesystem image
 
-        imageRepository.save(image);
-        user.setImage(image);
-        userRepository.save(user);
+        try {
+            String path = fileDealer.uploadFile(image);
+            ImageClass imageClass = new ImageClass();
+            imageClass.setLocation(path);
+            imageClass.setType(image.getContentType());
+
+            BufferedImage bimg = ImageIO.read(new File(path));
+            imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
+
+            imageRepository.save(imageClass);
+            user.setImage(imageClass);
+            userRepository.save(user);
+
+        } catch (IOException e) {
+            throw new BusinessException("saveImage", e);
+        }
     }
 
     @Override

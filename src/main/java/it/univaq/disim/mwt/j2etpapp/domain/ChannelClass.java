@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "channels")
-//TODO: fetchtype eager is better to avoid ?
+
 public class ChannelClass implements Serializable {
 
     @Id
@@ -23,9 +25,12 @@ public class ChannelClass implements Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 30)
     private String name;
 
     @Column()
+    @NotBlank(message = "Title is mandatory")
     private String title;
 
     @Column(columnDefinition = "text")

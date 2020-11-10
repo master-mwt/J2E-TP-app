@@ -36,9 +36,9 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
             return false;
         }
 
-        if("administrator".equals(principal.getUser().getGroup().getName())) {
+        /*if("administrator".equals(principal.getUser().getGroup().getName())) {
             return true;
-        }
+        }*/
 
         // if-else for all permission-protected classes
         if(object instanceof ChannelClass){
@@ -62,9 +62,9 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
             return false;
         }
 
-        if("administrator".equals(principal.getUser().getGroup().getName())) {
+        /*if("administrator".equals(principal.getUser().getGroup().getName())) {
             return true;
-        }
+        }*/
 
         // if-else for all permission-protected classes
         if(ChannelClass.class.getName().equals(className)){

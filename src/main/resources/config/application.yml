@@ -29,3 +29,14 @@ spring:
       database: j2etpapp
       port: 27017
       host: localhost
+  # files
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+###############################################
+############# POSTD PROPERTIES ################
+###############################################
+
+postd:
+  imagesStoragePath: 'src/main/resources/storage/images/'

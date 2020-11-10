@@ -1,4 +1,4 @@
-package it.univaq.disim.mwt.j2etpapp.presentation;
+package it.univaq.disim.mwt.j2etpapp.presentation.rest;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;

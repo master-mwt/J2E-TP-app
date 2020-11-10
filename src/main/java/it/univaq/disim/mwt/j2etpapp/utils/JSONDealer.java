@@ -1,4 +1,4 @@
-package it.univaq.disim.mwt.j2etpapp.business.impl;
+package it.univaq.disim.mwt.j2etpapp.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
