@@ -14,58 +14,68 @@
           style="max-width: 800px"
         >
           <div
-            class="col card-header border-0 px-3 d-flex flex-row"
+            class="col card-header border-0 px-3"
             style="align-items: center"
           >
-            <img
-              th:if="${channel.getImage() == null}"
-              th:src="@{/images/no_channel_img.jpg}"
-              alt=""
-              width="50px"
-              height="50px"
-              class="rounded"
-            />
-            <img
-              th:unless="${channel.getImage() == null}"
-              th:src="@{/{link}/(link=${channel.getImage().getLocation()})}"
-              alt=""
-              width="50px"
-              height="50px"
-              class="rounded"
-            />
-            <h2 class="m-0 ml-3" th:text="${channel.getName()}">channel.name</h2>
-            <!-- if current user is subscribed -->
-            <h5 th:if="${subscription != null}" class="m-0 ml-3 text-muted">
-              Subscribed as
-              <span class="text-uppercase text-warning"
-                th:text="${subscription.getRole().getName()}">channel.member.current_user.role</span
-              >
-            </h5>
-            <!-- if current user is not subscribed & current user group == 1 -->
-            <a sec:authorize="!isAnonymous()" th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName())}" th:href="@{/channels/{id}/join/(id=${channel.getId()})}" class="btn btn btn-outline-light ml-auto">
-              JOIN
-            </a>
+            <div class="d-flex flex-row mb-3">
+              <img
+                      th:if="${channel.getImage() == null}"
+                      th:src="@{/images/no_channel_img.jpg}"
+                      alt=""
+                      width="50px"
+                      height="50px"
+                      class="rounded"
+              />
+              <img
+                      th:unless="${channel.getImage() == null}"
+                      th:src="@{/{link}/(link=${channel.getImage().getLocation()})}"
+                      alt=""
+                      width="50px"
+                      height="50px"
+                      class="rounded"
+              />
+              <h2 class="m-0 ml-3 my-auto" th:text="${channel.getName()}">channel.name</h2>
+              <!-- if current user is subscribed -->
+              <h5 th:if="${subscription != null}" class="m-0 ml-3 text-muted my-auto">
+                Subscribed as
+                <span class="text-uppercase text-warning"
+                      th:text="${subscription.getRole().getName()}">channel.member.current_user.role</span
+                >
+              </h5>
+              <!-- if current user is not subscribed & current user group == 1 -->
+              <a sec:authorize="!isAnonymous()" th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName())}" th:href="@{/channels/{id}/join/(id=${channel.getId()})}" class="btn btn btn-outline-light ml-auto my-auto">
+                JOIN
+              </a>
+            </div>
             <!-- if current user is subscribed & current user role == creator -->
-            <div sec:authorize="!isAnonymous()" th:if="${('administrator'.equals(principal.getGroup().getName())) || ((subscription != null) && ('creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())))}" class="d-flex flex-column ml-auto">
+            <div sec:authorize="!isAnonymous()" th:if="${('administrator'.equals(principal.getGroup().getName())) || ((subscription != null) && ('creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())))}" class="d-flex flex-row justify-content-center">
               <button
                 th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName())}"
-                class="btn btn-outline-danger mb-2"
+                class="btn btn-outline-danger mx-1"
                 data-toggle="modal"
                 data-target="#delete-modal"
               >
                 DELETE CHANNEL
               </button>
-              <a role="button" th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}" class="btn btn-outline-success mb-2"
+              <button
+                      th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
+                      class="btn btn-outline-primary mx-1"
+                      data-toggle="modal"
+                      data-target="#edit-modal"
+              >
+                EDIT CHANNEL DATA
+              </button>
+              <a role="button" th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}" class="btn btn-outline-success mx-1"
                 >CHANGE IMAGE</a
               >
-              <a role="button" th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}" class="btn btn-outline-success"
+              <a role="button" th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}" class="btn btn-outline-success mx-1"
                 >REMOVE IMAGE</a
               >
+              <!-- if current user is subscribed -->
+              <a sec:authorize="!isAnonymous()" th:if="${(subscription != null) && (!('creator'.equals(subscription.getRole().getName())))}" th:href="@{/channels/{id}/leave/(id=${channel.getId()})}" class="btn btn btn-outline-warning mx-1">
+                LEAVE
+              </a>
             </div>
-            <!-- if current user is subscribed -->
-            <a sec:authorize="!isAnonymous()" th:if="${(subscription != null) && (!('creator'.equals(subscription.getRole().getName())))}" th:href="@{/channels/{id}/leave/(id=${channel.getId()})}" class="btn btn btn-outline-warning ml-auto">
-              LEAVE
-            </a>
           </div>
           <div class="card-body text-left px-3 py-2">
             <h5 class="text-muted">Title</h5>
@@ -504,6 +514,78 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-secondary">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- only logged TODO edit form -->
+    <form sec:authorize="!isAnonymous()" th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}" method="post">
+      <div
+              class="modal fade"
+              id="edit-modal"
+              data-backdrop="static"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="edit-modal-label"
+              aria-hidden="true"
+      >
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title ml-auto" id="edit-modal-label">
+                edit channel data
+              </h5>
+              <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- MODAL CONTENT -->
+              <label for="channel-name">name</label>
+              <input
+                      name="channel-name"
+                      type="text"
+                      class="form-control mb-3"
+                      id="channel-name"
+                      placeholder="insert here old channel name text"
+              />
+              <label for="channel-title">title</label>
+              <input
+                      name="channel-title"
+                      type="text"
+                      class="form-control mb-3"
+                      id="channel-title"
+                      placeholder="insert here old channel title text"
+              />
+              <label for="channel-description">description</label>
+              <textarea
+                      name="channel-description"
+                      id="channel-description"
+                      cols=""
+                      rows=""
+                      class="form-control mb-3"
+                      placeholder="insert here old channel description text"
+              ></textarea>
+              <label for="channel-rules">rules</label>
+              <textarea
+                      name="channel-rules"
+                      id="channel-rules"
+                      cols=""
+                      rows=""
+                      class="form-control"
+                      placeholder="insert here old channel rules text"
+              ></textarea>
+              <!-- / MODAL CONTENT -->
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-secondary">Edit</button>
             </div>
           </div>
         </div>

@@ -70,15 +70,14 @@
       <!-- Language Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <!--<i th:classappend="'flag-icon flag-icon-'+ (${#locale.language}=='en' ? 'gb' : ${#locale.language})"></i>-->
-          LANG
+          <i class="fas fa-globe-europe"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right p-0">
           <a href="#" th:href="@{?lang=en}" class="dropdown-item active">
-            <i class="flag-icon flag-icon-gb mr-2"></i> [[#{common.english}]]
+            [[#{common.english}]]
           </a>
           <a href="#" th:href="@{?lang=it}" class="dropdown-item">
-            <i class="flag-icon flag-icon-it mr-2"></i> [[#{common.italian}]]
+            [[#{common.italian}]]
           </a>
         </div>
       </li>

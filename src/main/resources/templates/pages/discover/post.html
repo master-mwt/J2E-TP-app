@@ -234,8 +234,6 @@
               <div class="markdown-content" th:data-markdown-content="${reply.getContent()}"></div>
             </div>
             <div class="card-footer border-0 p-1 px-3 text-left" style="border-bottom-left-radius: 0px">
-              <a href="" class="text-decoration-none float-right" data-toggle="collapse"><i
-                  class="fas fa-eye mr-2"></i>Edit Reply (optional feature)</a>
               <a th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
                  sec:authorize="!isAnonymous()"
                  th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId())}"
