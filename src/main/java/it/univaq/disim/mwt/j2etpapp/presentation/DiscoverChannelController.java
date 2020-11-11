@@ -1,7 +1,10 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.*;
-import it.univaq.disim.mwt.j2etpapp.domain.*;
+import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
+import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class DiscoverController {
+@RequestMapping("discover/channel")
+public class DiscoverChannelController {
 
     @Autowired
     private ChannelBO channelBO;
@@ -22,10 +27,8 @@ public class DiscoverController {
     private PostBO postBO;
     @Autowired
     private UserChannelRoleBO userChannelRoleBO;
-    @Autowired
-    private ReplyBO replyBO;
 
-    @GetMapping("/discover/channel/{id}")
+    @GetMapping("{id}")
     public String discoverChannel(@PathVariable("id") Long id, Model model) {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(id, 0, 10);
@@ -41,7 +44,7 @@ public class DiscoverController {
         return "pages/discover/channel";
     }
 
-    @GetMapping("/discover/channel/{id}/posts/page/{pageId}")
+    @GetMapping("{id}/posts/page/{pageId}")
     public String discoverChannelPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(id, pageId, 10);
@@ -56,7 +59,7 @@ public class DiscoverController {
         return "pages/discover/channel";
     }
 
-    @GetMapping("/discover/channel/{id}/posts/reported")
+    @GetMapping("{id}/posts/reported")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'global_unreport_post_in_channel')")
     public String discoverChannelPostsReported(@PathVariable("id") Long id, Model model) {
         ChannelClass channel = channelBO.findById(id);
@@ -69,7 +72,7 @@ public class DiscoverController {
         return "pages/discover/reported_posts";
     }
 
-    @GetMapping("/discover/channel/{id}/posts/reported/page/{pageId}")
+    @GetMapping("{id}/posts/reported/page/{pageId}")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'global_unreport_post_in_channel')")
     public String discoverChannelPostsReportedPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
         ChannelClass channel = channelBO.findById(id);
@@ -82,7 +85,7 @@ public class DiscoverController {
         return "pages/discover/reported_posts";
     }
 
-    @GetMapping("/discover/channel/{id}/members")
+    @GetMapping("{id}/members")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'view_channel_members')")
     public String discoverChannelMembers(@PathVariable("id") Long id, Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
@@ -97,7 +100,7 @@ public class DiscoverController {
         return "pages/discover/members";
     }
 
-    @GetMapping("/discover/channel/{id}/members/page/{pageId}")
+    @GetMapping("{id}/members/page/{pageId}")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'view_channel_members')")
     public String discoverChannelMembersPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
@@ -112,66 +115,11 @@ public class DiscoverController {
         return "pages/discover/members";
     }
 
-    @GetMapping("/discover/channel/{id}/members/banned")
+    @GetMapping("{id}/members/banned")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
     public String discoverChannelMembersBanned(@PathVariable("id") Long id, Model model) {
         ChannelClass channel = channelBO.findById(id);
         model.addAttribute("channel", channel);
         return "pages/discover/banned_users";
-    }
-
-    @GetMapping("/discover/user/{id}")
-    public String discoverUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userBO.findById(id));
-        return "pages/discover/user";
-    }
-
-    @GetMapping("/discover/user/{id}/posts")
-    public String discoverUserPosts(@PathVariable("id") Long id, Model model) {
-        UserClass user = userBO.findById(id);
-        Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), 0, 10);
-        model.addAttribute("user", user);
-        model.addAttribute("postPage", postPage);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("channelBO", channelBO);
-        return "pages/discover/user_posts";
-    }
-
-    @GetMapping("/discover/user/{id}/posts/page/{pageId}")
-    public String discoverUserPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int page, Model model) {
-        UserClass user = userBO.findById(id);
-        Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), page, 10);
-        model.addAttribute("user", user);
-        model.addAttribute("postPage", postPage);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("channelBO", channelBO);
-        return "pages/discover/user_posts";
-    }
-
-    @GetMapping("/discover/post/{id}")
-    public String discoverPost(@PathVariable("id") String id, Model model) {
-        PostClass post = postBO.findById(id);
-        model.addAttribute("reply", new ReplyClass());
-        model.addAttribute("post", post);
-        model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("replyBO", replyBO);
-        model.addAttribute("channelBO", channelBO);
-        return "pages/discover/post";
-    }
-
-    @GetMapping("/discover/post/{id}/replies/page/{pageId}")
-    public String discoverPostPage(@PathVariable("id") String id, @PathVariable("pageId") int page, Model model) {
-        PostClass post = postBO.findById(id);
-        model.addAttribute("post", post);
-        model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, page, 10));
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("replyBO", replyBO);
-        model.addAttribute("channelBO", channelBO);
-        return "pages/discover/post";
     }
 }

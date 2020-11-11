@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,10 +29,14 @@ public class UserController {
 
     @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, @PathVariable("userId") Long userId) {
+    public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, @PathVariable("userId") Long userId, Model model, Errors errors) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
-        // TODO: update user is ok ? Errors ?
+        if(errors.hasErrors()) {
+            // TODO: trovare un modo per far vedere errori
+            return "";
+        }
+
         userBO.updateUserProfile(principal, newData);
 
         return "redirect:/home";

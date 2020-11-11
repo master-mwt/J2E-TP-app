@@ -358,8 +358,6 @@ public class DatabaseSeeder {
 
             user.setGroup(groupBO.findByName("logged"));
 
-            user.setImage(imageBO.findByCaption("no_profile_img.jpg"));
-
             userBO.save(user);
         }
     }
@@ -374,8 +372,6 @@ public class DatabaseSeeder {
 
             UserClass creator = randomElement(userBO.findAll());
             channel.setCreator(creator);
-
-            channel.setImage(imageBO.findByCaption("no_channel_img.jpg"));
 
             channelBO.save(channel);
         }

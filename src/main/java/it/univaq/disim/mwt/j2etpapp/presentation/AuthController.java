@@ -26,8 +26,6 @@ public class AuthController {
         return "pages/auth/login";
     }
 
-    // TODO: maybe login forgot your password function ?
-
     @GetMapping("/register")
     public String showRegistration(Model model){
         model.addAttribute("user", new UserClass());
@@ -37,8 +35,6 @@ public class AuthController {
     @PostMapping("/register")
     public String performRegistration(@Valid @ModelAttribute("user") UserClass user, @RequestParam("matching-password") String matchingPassword, Errors errors, Model model, RedirectAttributes redirectAttributes) throws BusinessException {
         if(errors.hasErrors()){
-            // errors
-            System.out.println(errors.getAllErrors());
             return "pages/auth/register";
         }
 

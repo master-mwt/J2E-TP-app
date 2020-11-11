@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,10 +26,14 @@ public class ChannelController {
 
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
-    public String save(@Valid @ModelAttribute("channel") ChannelClass channel) {
+    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors, Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
-        // TODO: save channel (is ok ?), Errors ?
+        if(errors.hasErrors()){
+            // TODO: trovare un modo per far vedere errori
+            return "";
+        }
+
         channelBO.createChannel(channel, principal);
 
         return "redirect:/discover/channel/" + channel.getId();

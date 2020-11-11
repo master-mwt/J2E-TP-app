@@ -11,15 +11,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: Esporta tutte le funzioni in tutte le classi controller dentro i business objects !!! (dashboardChannelOwned ha logica business (ciclo for), va in channelBO.findBy...)
 @Controller
+@RequestMapping("home")
 public class DashboardController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class DashboardController {
     @Autowired
     private ImageBO imageBO;
 
-    @GetMapping("home")
+    @GetMapping("")
     public String home(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         model.addAttribute("user", principal);
@@ -46,7 +46,7 @@ public class DashboardController {
         return "pages/dashboard/home";
     }
 
-    @GetMapping("home/channels/owned")
+    @GetMapping("channels/owned")
     public String dashboardChannelOwned(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
@@ -67,7 +67,7 @@ public class DashboardController {
         return "pages/dashboard/channel_dashboard/list";
     }
 
-    @GetMapping("home/channels/joined")
+    @GetMapping("channels/joined")
     public String dashboardChannelJoined(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
@@ -88,20 +88,7 @@ public class DashboardController {
         return "pages/dashboard/channel_dashboard/list";
     }
 
-    @GetMapping("home/channel/{id}/image/upload")
-    public String dashboardImageUploadChannel(@PathVariable("id") Long channelId, Model model) {
-        model.addAttribute("channel", channelBO.findById(channelId));
-        return "pages/dashboard/image_upload/channel_img_upl";
-    }
-
-    @GetMapping("home/profile/image/upload")
-    public String dashboardImageUploadProfile(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        model.addAttribute("user", principal);
-        return "pages/dashboard/image_upload/profile_img_upl";
-    }
-
-    @GetMapping("home/posts/owned")
+    @GetMapping("posts/owned")
     public String dashboardPostOwned(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -114,7 +101,7 @@ public class DashboardController {
         return "pages/dashboard/post_dashboard/list";
     }
 
-    @GetMapping("home/posts/saved")
+    @GetMapping("posts/saved")
     public String dashboardPostSaved(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -127,7 +114,7 @@ public class DashboardController {
         return "pages/dashboard/post_dashboard/list";
     }
 
-    @GetMapping("home/posts/hidden")
+    @GetMapping("posts/hidden")
     public String dashboardPostHidden(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -140,7 +127,7 @@ public class DashboardController {
         return "pages/dashboard/post_dashboard/list";
     }
 
-    @GetMapping("home/posts/reported")
+    @GetMapping("posts/reported")
     public String dashboardPostReported(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -153,7 +140,7 @@ public class DashboardController {
         return "pages/dashboard/post_dashboard/list";
     }
 
-    @GetMapping("home/posts/upvoted")
+    @GetMapping("posts/upvoted")
     public String dashboardPostUpvoted(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -166,7 +153,7 @@ public class DashboardController {
         return "pages/dashboard/post_dashboard/list";
     }
 
-    @GetMapping("home/posts/downvoted")
+    @GetMapping("posts/downvoted")
     public String dashboardPostDownvoted(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -179,7 +166,7 @@ public class DashboardController {
         return "pages/dashboard/post_dashboard/list";
     }
 
-    @GetMapping("home/replies/owned")
+    @GetMapping("replies/owned")
     public String dashboardReplyOwned(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -192,7 +179,7 @@ public class DashboardController {
         return "pages/dashboard/reply_dashboard/list";
     }
 
-    @GetMapping("home/replies/upvoted")
+    @GetMapping("replies/upvoted")
     public String dashboardReplyUpvoted(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
@@ -205,7 +192,7 @@ public class DashboardController {
         return "pages/dashboard/reply_dashboard/list";
     }
 
-    @GetMapping("home/replies/downvoted")
+    @GetMapping("replies/downvoted")
     public String dashboardReplyDownvoted(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 

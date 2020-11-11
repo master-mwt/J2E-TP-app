@@ -25,12 +25,24 @@ public class HomeController {
     private UserBO userBO;
 
     @GetMapping("")
-    public String root(Model model) {
+    public String welcome(Model model) {
         Page<PostClass> postFirstPage = postBO.findAllOrderByCreatedAtDescPaginated(0, 10);
         model.addAttribute("userBO", userBO);
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("postBO", postBO);
         model.addAttribute("page", postFirstPage);
+        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        model.addAttribute("user", principal);
+        return "pages/welcome";
+    }
+
+    @GetMapping("/posts/page/{page}")
+    public String welcomePostPaginated(@PathVariable("page") int page, Model model) {
+        Page<PostClass> postPage = postBO.findAllOrderByCreatedAtDescPaginated(page, 10);
+        model.addAttribute("userBO", userBO);
+        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("postBO", postBO);
+        model.addAttribute("page", postPage);
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         model.addAttribute("user", principal);
         return "pages/welcome";
@@ -44,29 +56,5 @@ public class HomeController {
     @GetMapping("contact")
     public String contact(Model model) {
         return "pages/info/contact";
-    }
-
-    // only for testing
-    @GetMapping("empty")
-    public String empty(Model model) {
-        return "pages/search_res/empty_res";
-    }
-
-    // only for testing
-    @GetMapping("channel")
-    public String channel(Model model) {
-        return "pages/discover/channel";
-    }
-
-    @GetMapping("/posts/page/{page}")
-    public String postPaginated(@PathVariable("page") int page, Model model) {
-        Page<PostClass> postPage = postBO.findAllOrderByCreatedAtDescPaginated(page, 10);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("page", postPage);
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
-        model.addAttribute("user", principal);
-        return "pages/welcome";
     }
 }

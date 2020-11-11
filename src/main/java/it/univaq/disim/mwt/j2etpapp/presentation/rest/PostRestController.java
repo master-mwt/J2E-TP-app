@@ -2,7 +2,6 @@ package it.univaq.disim.mwt.j2etpapp.presentation.rest;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
-import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,28 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("posts")
-public class PostController {
+public class PostRestController {
 
     @Autowired
     private PostBO postBO;
-
-    // TODO: is it ok to keep here this functions
-    @PostMapping("create")
-    public ModelAndView save(@Valid @ModelAttribute("post") PostClass post) {
-        // TODO: save post (is ok ?) Errors ?
-        ModelAndView modelAndView = new ModelAndView();
-
-        postBO.createPostInChannel(post);
-
-        modelAndView.setViewName("redirect:/discover/post/" + post.getId());
-        return modelAndView;
-    }
 
     @DeleteMapping("{postId}/delete")
     @PreAuthorize("hasPermission(#postId, 'it.univaq.disim.mwt.j2etpapp.domain.PostClass', 'delete_post')")

@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("notifications")
-public class NotificationController {
+public class NotificationRestController {
 
     @Autowired
     private NotificationBO notificationBO;
