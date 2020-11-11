@@ -8,13 +8,17 @@
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
       <div class="col-md-12">
-        <h1 class="text-center mt-3 mb-4">contacts</h1>
+        <h1 class="text-center mt-3 mb-4">[[#{common.contact_us}]]</h1>
         <div class="text-center mb-4">
           <p class="mb-1">
-            <a href="mailto:valentino.digiosaffatte@student.univaq.it">valentino.digiosaffatte@student.univaq.it</a>
+            <a href="mailto:valentino.digiosaffatte@student.univaq.it"
+              >valentino.digiosaffatte@student.univaq.it</a
+            >
           </p>
           <p class="m-0">
-            <a href="mailto:riccardoarmando.diprinzio@student.univaq.it">riccardoarmando.diprinzio@student.univaq.it</a>
+            <a href="mailto:riccardoarmando.diprinzio@student.univaq.it"
+              >riccardoarmando.diprinzio@student.univaq.it</a
+            >
           </p>
         </div>
 
@@ -32,11 +36,12 @@
       </div>
     </div>
     <script th:inline="javascript">
-      var mymap = L.map("mapid").setView([42.3675899,13.3515717], 14);
+      var mymap = L.map("mapid").setView([42.3675899, 13.3515717], 14);
       L.tileLayer("https://{s}.tile.osm.org/{z}/{x}/{y}.png", {}).addTo(mymap);
-      L.marker([42.3675899,13.3515717]).addTo(mymap)
-              .bindPopup('University of L\'Aquila')
-              .openPopup();
+      L.marker([42.3675899, 13.3515717])
+        .addTo(mymap)
+        .bindPopup("University of L'Aquila")
+        .openPopup();
     </script>
   </div>
 </html>

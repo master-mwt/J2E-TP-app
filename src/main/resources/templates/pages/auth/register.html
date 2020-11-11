@@ -9,13 +9,13 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">register</div>
+          <div class="card-header">[[#{common.register}]]</div>
 
           <div class="card-body">
             <form method="POST" th:action="@{register}" th:object="${user}">
               <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right"
-                  >name</label
+                  >[[#{common.register.name}]]</label
                 >
                 <div class="col-md-6">
                   <input
@@ -41,7 +41,7 @@
                 <label
                   for="surname"
                   class="col-md-4 col-form-label text-md-right"
-                  >surname</label
+                  >[[#{common.register.surname}]]</label
                 >
                 <div class="col-md-6">
                   <input
@@ -93,7 +93,7 @@
                 <label
                   for="birth_date"
                   class="col-md-4 col-form-label text-md-right"
-                  >birth date</label
+                  >[[#{common.register.birth_date}]]</label
                 >
                 <div class="col-md-6">
                   <input
@@ -117,7 +117,7 @@
 
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right"
-                  >e-mail address</label
+                  >[[#{common.register.email_address}]]</label
                 >
                 <div class="col-md-6">
                   <input
@@ -166,7 +166,7 @@
                 <label
                   for="matching-password"
                   class="col-md-4 col-form-label text-md-right"
-                  >confirm password</label
+                  >[[#{common.register.confirm_password}]]</label
                 >
                 <div class="col-md-6">
                   <input
@@ -182,7 +182,7 @@
               <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
                   <button type="submit" class="btn btn-primary">
-                    register
+                    [[#{common.register}]]
                   </button>
                 </div>
               </div>

@@ -9,16 +9,22 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header">login</div>
+          <div class="card-header">[[#{common.login}]]</div>
           <div class="card-body">
             <!-- session message -->
-            <div th:if="${param.error}" class="alert alert-danger">Invalid username and password</div>
-            <div th:if="${param.logout}" class="alert alert-success">Logout successful</div>
+            <div th:if="${param.error}" class="alert alert-danger">
+              [[#{common.login_invalid_username_password_message}]]
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+              [[#{common.logout_message}]]
+            </div>
             <!-- end session message -->
 
             <form method="POST" th:action="@{/login}">
               <div class="form-group row">
-                <label for="username" class="col-md-4 col-form-label text-md-right"
+                <label
+                  for="username"
+                  class="col-md-4 col-form-label text-md-right"
                   >username</label
                 >
                 <div class="col-md-6">
@@ -73,7 +79,7 @@
                       id="remember"
                     />
                     <label class="form-check-label" for="remember">
-                      remember me
+                      [[#{common.remember_me}]]
                     </label>
                   </div>
                 </div>
@@ -81,7 +87,9 @@
 
               <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
-                  <button type="submit" class="btn btn-primary">login</button>
+                  <button type="submit" class="btn btn-primary">
+                    [[#{common.login}]]
+                  </button>
                 </div>
               </div>
             </form>
