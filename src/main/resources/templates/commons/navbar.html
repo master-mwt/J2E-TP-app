@@ -39,14 +39,58 @@
               -webkit-appearance: none;
             "
           >
-            <option th:if="${'posts'.equals(#httpServletRequest.getParameter('target'))}" value="posts" selected="selected">posts</option>
-            <option th:unless="${'posts'.equals(#httpServletRequest.getParameter('target'))}" value="posts">posts</option>
-            <option th:if="${'channels'.equals(#httpServletRequest.getParameter('target'))}" value="channels" selected="selected">channels</option>
-            <option th:unless="${'channels'.equals(#httpServletRequest.getParameter('target'))}" value="channels">channels</option>
-            <option th:if="${'users'.equals(#httpServletRequest.getParameter('target'))}" value="users" selected="selected">users</option>
-            <option th:unless="${'users'.equals(#httpServletRequest.getParameter('target'))}" value="users">users</option>
-            <option th:if="${'tags'.equals(#httpServletRequest.getParameter('target'))}" value="tags" selected="selected">tags</option>
-            <option th:unless="${'tags'.equals(#httpServletRequest.getParameter('target'))}" value="tags">tags</option>
+            <option
+              th:if="${'posts'.equals(#httpServletRequest.getParameter('target'))}"
+              value="posts"
+              selected="selected"
+            >
+              posts
+            </option>
+            <option
+              th:unless="${'posts'.equals(#httpServletRequest.getParameter('target'))}"
+              value="posts"
+            >
+              posts
+            </option>
+            <option
+              th:if="${'channels'.equals(#httpServletRequest.getParameter('target'))}"
+              value="channels"
+              selected="selected"
+            >
+              channels
+            </option>
+            <option
+              th:unless="${'channels'.equals(#httpServletRequest.getParameter('target'))}"
+              value="channels"
+            >
+              channels
+            </option>
+            <option
+              th:if="${'users'.equals(#httpServletRequest.getParameter('target'))}"
+              value="users"
+              selected="selected"
+            >
+              users
+            </option>
+            <option
+              th:unless="${'users'.equals(#httpServletRequest.getParameter('target'))}"
+              value="users"
+            >
+              users
+            </option>
+            <option
+              th:if="${'tags'.equals(#httpServletRequest.getParameter('target'))}"
+              value="tags"
+              selected="selected"
+            >
+              tags
+            </option>
+            <option
+              th:unless="${'tags'.equals(#httpServletRequest.getParameter('target'))}"
+              value="tags"
+            >
+              tags
+            </option>
           </select>
         </div>
         <input
@@ -69,14 +113,44 @@
     <ul class="navbar-nav ml-auto">
       <!-- Language Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fas fa-globe-europe"></i>
+        <a class="nav-link d-flex flex-row" data-toggle="dropdown" href="#">
+          <i class="fas fa-globe-europe my-auto"></i>
+          <span
+            class="ml-1 my-auto align-middle"
+            th:text="${#locale.language}"
+          ></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right p-0">
-          <a href="#" th:href="@{?lang=en}" class="dropdown-item active">
+          <a
+            href="#"
+            th:if="${#locale.language} == 'en'"
+            th:href="@{?lang=en}"
+            class="dropdown-item active"
+          >
             [[#{common.english}]]
           </a>
-          <a href="#" th:href="@{?lang=it}" class="dropdown-item">
+          <a
+            href="#"
+            th:if="${#locale.language} == 'it'"
+            th:href="@{?lang=en}"
+            class="dropdown-item"
+          >
+            [[#{common.english}]]
+          </a>
+          <a
+            href="#"
+            th:if="${#locale.language} == 'it'"
+            th:href="@{?lang=it}"
+            class="dropdown-item active"
+          >
+            [[#{common.italian}]]
+          </a>
+          <a
+            href="#"
+            th:if="${#locale.language} == 'en'"
+            th:href="@{?lang=it}"
+            class="dropdown-item"
+          >
             [[#{common.italian}]]
           </a>
         </div>
@@ -98,13 +172,13 @@
         <li class="nav-item">
           <!-- login -->
           <a th:href="@{/login}" class="nav-link"
-          ><i class="fas fa-sign-in-alt"></i
+            ><i class="fas fa-sign-in-alt"></i
           ></a>
         </li>
         <li class="nav-item">
           <!-- register -->
           <a th:href="@{/register}" class="nav-link"
-          ><i class="fas fa-user-plus"></i
+            ><i class="fas fa-user-plus"></i
           ></a>
         </li>
       </th:block>
@@ -112,7 +186,11 @@
       <!-- auth only -->
       <li class="nav-item" sec:authorize="!isAnonymous()">
         <!-- logout -->
-        <a href="javascript:void()" class="nav-link" onclick="$('#logout-form').submit();">
+        <a
+          href="javascript:void()"
+          class="nav-link"
+          onclick="$('#logout-form').submit();"
+        >
           <i class="fas fa-sign-out-alt"></i>
         </a>
         <form

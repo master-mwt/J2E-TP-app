@@ -8,19 +8,24 @@
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
       <div class="col-md-12">
-        <h1 class="text-center mt-3 mb-4">about us</h1>
+        <h1 class="text-center mt-3 mb-4">[[#{common.about_us}]]</h1>
         <div class="text-center">
-          <img th:src="@{images/main_logo.png}" alt="Logo" class="img-circle" width="100">
-          <h3 class="mt-2 mb-3 text-muted">kernel panic</h3>
-          <p class="text-muted">
-            kernel panic is a minimal reddit clone, is heavily community-based and completely free. <br>
-            kernel panic provides a small community building service based on categories, channels. <br>
-            it also provides a rich-text post creation service based on categories and tags, associated with channels. <br>
-            it is also possible to generate discussions connected to a post by creating replies and comments. <br>
-            small communities can manage themselves independently through the hierarchy of roles structured in a minimal way within the platform. <br>
-            these and other features, such as the "subscription to a channel" service or the "notification" service, are only available for registered users. <br>
-            guest users will have full free access to all channels and posts on the platform for viewing only.
-          </p>
+          <img
+            th:src="@{images/main_logo.png}"
+            alt="Logo"
+            class="img-circle"
+            width="100"
+          />
+          <h3 class="mt-2 mb-3 text-muted">[[#{common.application_title}]]</h3>
+          <div class="text-muted mt-4">
+            <p class="m-0">[[#{common.info_text_1}]]</p>
+            <p class="m-0">[[#{common.info_text_2}]]</p>
+            <p class="m-0">[[#{common.info_text_3}]]</p>
+            <p class="m-0">[[#{common.info_text_4}]]</p>
+            <p class="m-0">[[#{common.info_text_5}]]</p>
+            <p class="m-0">[[#{common.info_text_6}]]</p>
+            <p class="m-0">[[#{common.info_text_7}]]</p>
+          </div>
         </div>
       </div>
     </div>

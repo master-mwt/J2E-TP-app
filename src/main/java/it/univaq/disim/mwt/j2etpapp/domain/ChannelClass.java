@@ -30,7 +30,6 @@ public class ChannelClass implements Serializable {
     private String name;
 
     @Column()
-    @NotBlank
     private String title;
 
     @Column(columnDefinition = "text")

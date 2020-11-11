@@ -19,36 +19,52 @@
           >
             <div class="d-flex flex-row mb-3">
               <img
-                      th:if="${channel.getImage() == null}"
-                      th:src="@{/images/no_channel_img.jpg}"
-                      alt=""
-                      width="50px"
-                      height="50px"
-                      class="rounded"
+                th:if="${channel.getImage() == null}"
+                th:src="@{/images/no_channel_img.jpg}"
+                alt=""
+                width="50px"
+                height="50px"
+                class="rounded"
               />
               <img
-                      th:unless="${channel.getImage() == null}"
-                      th:src="@{/{link}/(link=${channel.getImage().getLocation()})}"
-                      alt=""
-                      width="50px"
-                      height="50px"
-                      class="rounded"
+                th:unless="${channel.getImage() == null}"
+                th:src="@{/{link}/(link=${channel.getImage().getLocation()})}"
+                alt=""
+                width="50px"
+                height="50px"
+                class="rounded"
               />
-              <h2 class="m-0 ml-3 my-auto" th:text="${channel.getName()}">channel.name</h2>
+              <h2 class="m-0 ml-3 my-auto" th:text="${channel.getName()}">
+                channel.name
+              </h2>
               <!-- if current user is subscribed -->
-              <h5 th:if="${subscription != null}" class="m-0 ml-3 text-muted my-auto">
+              <h5
+                th:if="${subscription != null}"
+                class="m-0 ml-3 text-muted my-auto"
+              >
                 Subscribed as
-                <span class="text-uppercase text-warning"
-                      th:text="${subscription.getRole().getName()}">channel.member.current_user.role</span
+                <span
+                  class="text-uppercase text-warning"
+                  th:text="${subscription.getRole().getName()}"
+                  >channel.member.current_user.role</span
                 >
               </h5>
               <!-- if current user is not subscribed & current user group == 1 -->
-              <a sec:authorize="!isAnonymous()" th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName())}" th:href="@{/channels/{id}/join/(id=${channel.getId()})}" class="btn btn btn-outline-light ml-auto my-auto">
+              <a
+                sec:authorize="!isAnonymous()"
+                th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName())}"
+                th:href="@{/channels/{id}/join/(id=${channel.getId()})}"
+                class="btn btn btn-outline-light ml-auto my-auto"
+              >
                 JOIN
               </a>
             </div>
             <!-- if current user is subscribed & current user role == creator -->
-            <div sec:authorize="!isAnonymous()" th:if="${('administrator'.equals(principal.getGroup().getName())) || ((subscription != null) && ('creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())))}" class="d-flex flex-row justify-content-center">
+            <div
+              sec:authorize="!isAnonymous()"
+              th:if="${('administrator'.equals(principal.getGroup().getName())) || ((subscription != null) && ('creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())))}"
+              class="d-flex flex-row justify-content-center"
+            >
               <button
                 th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName())}"
                 class="btn btn-outline-danger mx-1"
@@ -58,21 +74,32 @@
                 DELETE CHANNEL
               </button>
               <button
-                      th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
-                      class="btn btn-outline-primary mx-1"
-                      data-toggle="modal"
-                      data-target="#edit-modal"
+                th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
+                class="btn btn-outline-primary mx-1"
+                data-toggle="modal"
+                data-target="#edit-modal"
               >
                 EDIT CHANNEL DATA
               </button>
-              <a role="button" th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}" class="btn btn-outline-success mx-1"
+              <a
+                role="button"
+                th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}"
+                class="btn btn-outline-success mx-1"
                 >CHANGE IMAGE</a
               >
-              <a role="button" th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}" class="btn btn-outline-success mx-1"
+              <a
+                role="button"
+                th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}"
+                class="btn btn-outline-success mx-1"
                 >REMOVE IMAGE</a
               >
               <!-- if current user is subscribed -->
-              <a sec:authorize="!isAnonymous()" th:if="${(subscription != null) && (!('creator'.equals(subscription.getRole().getName())))}" th:href="@{/channels/{id}/leave/(id=${channel.getId()})}" class="btn btn btn-outline-warning mx-1">
+              <a
+                sec:authorize="!isAnonymous()"
+                th:if="${(subscription != null) && (!('creator'.equals(subscription.getRole().getName())))}"
+                th:href="@{/channels/{id}/leave/(id=${channel.getId()})}"
+                class="btn btn btn-outline-warning mx-1"
+              >
                 LEAVE
               </a>
             </div>
@@ -81,15 +108,22 @@
             <h5 class="text-muted">Title</h5>
             <p class="" th:text="${channel.getTitle()}">channel.title</p>
             <h5 class="text-muted">Description</h5>
-            <p class="" th:text="${channel.getDescription()}">channel.description</p>
+            <p class="" th:text="${channel.getDescription()}">
+              channel.description
+            </p>
             <h5 class="text-muted">Rules</h5>
             <p class="" th:text="${channel.getRules()}">channel.rules</p>
           </div>
           <!-- if logged & current user is channel member & current user group == 1 -->
-          <div sec:authorize="!isAnonymous()" th:if="${(subscription != null) || ('administrator'.equals(principal.getGroup().getName()))}" class="card-footer">
-            <a role="button"
-               th:href="@{/discover/channel/{id}/members/(id=${channel.getId()})}"
-               class="btn btn-sm btn-info float-right"
+          <div
+            sec:authorize="!isAnonymous()"
+            th:if="${(subscription != null) || ('administrator'.equals(principal.getGroup().getName()))}"
+            class="card-footer"
+          >
+            <a
+              role="button"
+              th:href="@{/discover/channel/{id}/members/(id=${channel.getId()})}"
+              class="btn btn-sm btn-info float-right"
               >Members</a
             >
             <!-- if current user role != member -->
@@ -98,7 +132,8 @@
               th:href="@{/discover/channel/{id}/posts/reported/(id=${channel.getId()})}"
               class="btn btn-sm btn-info float-right mr-2"
               th:if="${('administrator'.equals(principal.getGroup().getName())) || !('member'.equals(subscription.getRole().getName()))}"
-              >Reported Posts</a>
+              >Reported Posts</a
+            >
             <!-- if current user role != member & != moderator -->
             <a
               role="button"
@@ -125,7 +160,11 @@
         </ul>
       </div>
       <!-- if logged -->
-      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px" sec:authorize="!isAnonymous()">
+      <div
+        class="col-md-12 text-center px-0 mb-3"
+        style="max-width: 800px"
+        sec:authorize="!isAnonymous()"
+      >
         <button
           class="btn btn-success btn-block"
           data-toggle="modal"
@@ -135,8 +174,15 @@
         </button>
       </div>
       <!-- else -->
-      <div class="col-md-12 text-center px-0 mb-3" style="max-width: 800px" sec:authorize="isAnonymous()">
-        <a role="button" href="" class="btn btn-success btn-block text-light"
+      <div
+        class="col-md-12 text-center px-0 mb-3"
+        style="max-width: 800px"
+        sec:authorize="isAnonymous()"
+      >
+        <a
+          role="button"
+          th:href="@{/login}"
+          class="btn btn-success btn-block text-light"
           >Make a Post</a
         >
       </div>
@@ -154,15 +200,27 @@
             style="flex: 0 0 50px; background-color: #222"
           >
             <!-- if post not upvoted -->
-            <a th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}" th:id="${'post-' + post.getId() + '-upvote'}" sec:authorize="!isAnonymous()" th:href="@{/posts/{id}/upvote(id=${post.getId()})}" class="upvote"
+            <a
+              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:id="${'post-' + post.getId() + '-upvote'}"
+              sec:authorize="!isAnonymous()"
+              th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
+              class="upvote"
               ><i class="fas fa-arrow-up mb-1"></i
             ></a>
             <!-- if post upvoted -->
-            <a th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}" th:id="${'post-' + post.getId() + '-upvote'}" sec:authorize="!isAnonymous()" th:href="@{/posts/{id}/upvote(id=${post.getId()})}" class="text-warning upvote"
+            <a
+              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:id="${'post-' + post.getId() + '-upvote'}"
+              sec:authorize="!isAnonymous()"
+              th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
+              class="text-warning upvote"
               ><i class="fas fa-arrow-up mb-1"></i
             ></a>
             <!-- else, not logged -->
-            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""><i class="fas fa-arrow-up mb-1"></i></a>
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""
+              ><i class="fas fa-arrow-up mb-1"></i
+            ></a>
             <!-- if post upvoted | post downvoted -->
             <span
               th:id="${'post-' + post.getId() + '-votenumber'}"
@@ -173,26 +231,44 @@
               >upv-dov</span
             >
             <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-light votenumber"
-                  sec:authorize="!isAnonymous()"
-                  th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-              th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              class="my-1 text-light votenumber"
+              sec:authorize="!isAnonymous()"
+              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+              >upv-dov</span
             >
             <!-- else guest, draw text-light info -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}" class="my-1 text-light votenumber"
-                  sec:authorize="isAnonymous()"
-                  th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              class="my-1 text-light votenumber"
+              sec:authorize="isAnonymous()"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+              >upv-dov</span
             >
             <!-- if post not downvoted -->
-            <a th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}" th:id="${'post-' + post.getId() + '-downvote'}" th:href="@{/posts/{id}/downvote(id=${post.getId()})}" sec:authorize="!isAnonymous()" class="downvote"
+            <a
+              th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:id="${'post-' + post.getId() + '-downvote'}"
+              th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
+              sec:authorize="!isAnonymous()"
+              class="downvote"
               ><i class="fas fa-arrow-down"></i
             ></a>
             <!-- if post downvoted -->
-            <a th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}" th:id="${'post-' + post.getId() + '-downvote'}" th:href="@{/posts/{id}/downvote(id=${post.getId()})}" sec:authorize="!isAnonymous()" class="text-warning downvote"
+            <a
+              th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:id="${'post-' + post.getId() + '-downvote'}"
+              th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
+              sec:authorize="!isAnonymous()"
+              class="text-warning downvote"
               ><i class="fas fa-arrow-down"></i
             ></a>
             <!-- else -->
-            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""><i class="fas fa-arrow-down"></i></a>
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""
+              ><i class="fas fa-arrow-down"></i
+            ></a>
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
             <style>
@@ -249,22 +325,42 @@
             <!-- endif -->
 
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1" th:with="user=${userBO.findById(post.getUserId())}, userChannelRole=${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), user.getId())}">
+              <p
+                class="m-0 mb-1"
+                th:with="user=${userBO.findById(post.getUserId())}, userChannelRole=${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), user.getId())}"
+              >
                 <span class="text-muted">Posted by </span>
-                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}" class="text-decoration-none" th:text="${user.getUsername()}">post.username</a>
-                <span class="badge badge-pill badge-secondary ml-1"
-                      th:if="${userChannelRole != null}"
-                      th:text="${userChannelRole.getRole().getName()}">post.user.role</span
+                <a
+                  th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                  class="text-decoration-none"
+                  th:text="${user.getUsername()}"
+                  >post.username</a
+                >
+                <span
+                  class="badge badge-pill badge-secondary ml-1"
+                  th:if="${userChannelRole != null}"
+                  th:text="${userChannelRole.getRole().getName()}"
+                  >post.user.role</span
                 >
               </p>
               <h5 class="m-0">
-                <a th:href="@{/discover/post/{id}/(id=${post.getId()})}" class="text-decoration-none" th:text="${post.getTitle()}">post.title</a>
+                <a
+                  th:href="@{/discover/post/{id}/(id=${post.getId()})}"
+                  class="text-decoration-none"
+                  th:text="${post.getTitle()}"
+                  >post.title</a
+                >
               </h5>
             </div>
             <div class="card-body text-left px-3 py-1">
-              <div class="markdown-content" th:data-markdown-content="${post.getContent()}"></div>
+              <div
+                class="markdown-content"
+                th:data-markdown-content="${post.getContent()}"
+              ></div>
               <!-- foreach tags as tag -->
-              <a th:each="tag : ${post.getTags()}" th:href="@{/search/(target=tags, query=${tag.getName()})}"
+              <a
+                th:each="tag : ${post.getTags()}"
+                th:href="@{/search/(target=tags, query=${tag.getName()})}"
                 ><span
                   class="badge badge-pill"
                   style="font-size: 11px; background-color: #ddd"
@@ -285,8 +381,12 @@
                 sec:authorize="!isAnonymous()"
                 th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                 class="text-decoration-none mr-2 save"
-                ><i th:id="${'post-' + post.getId() + '-save-icon'}" class="far fa-bookmark mr-1"></i
-                >Save</a>
+                ><i
+                  th:id="${'post-' + post.getId() + '-save-icon'}"
+                  class="far fa-bookmark mr-1"
+                ></i
+                >Save</a
+              >
               <!-- if post saved -->
               <a
                 th:id="${'post-' + post.getId() + '-save'}"
@@ -294,11 +394,17 @@
                 sec:authorize="!isAnonymous()"
                 th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                 class="text-decoration-none mr-2 text-danger save"
-                ><i th:id="${'post-' + post.getId() + '-save-icon'}" class="fas fa-bookmark mr-1"></i
+                ><i
+                  th:id="${'post-' + post.getId() + '-save-icon'}"
+                  class="fas fa-bookmark mr-1"
+                ></i
                 >Unsave</a
               >
               <!-- else -->
-              <a th:href="@{/login}" sec:authorize="isAnonymous()" class="text-decoration-none mr-2"
+              <a
+                th:href="@{/login}"
+                sec:authorize="isAnonymous()"
+                class="text-decoration-none mr-2"
                 ><i class="far fa-bookmark mr-1"></i>Save</a
               >
               <!-- if post not hidden -->
@@ -308,8 +414,12 @@
                 sec:authorize="!isAnonymous()"
                 th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                 class="text-decoration-none mr-2 hide"
-                ><i th:id="${'post-' + post.getId() + '-hide-icon'}" class="far fa-eye-slash mr-1"></i
-                >Hide</a>
+                ><i
+                  th:id="${'post-' + post.getId() + '-hide-icon'}"
+                  class="far fa-eye-slash mr-1"
+                ></i
+                >Hide</a
+              >
               <!-- if post hidden -->
               <a
                 th:id="${'post-' + post.getId() + '-hide'}"
@@ -317,10 +427,17 @@
                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                 class="text-decoration-none mr-2 text-danger hide"
                 th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                ><i th:id="${'post-' + post.getId() + '-hide-icon'}" class="fas fa-eye-slash mr-1"></i
-                >Unhide</a>
+                ><i
+                  th:id="${'post-' + post.getId() + '-hide-icon'}"
+                  class="fas fa-eye-slash mr-1"
+                ></i
+                >Unhide</a
+              >
               <!-- else -->
-              <a th:href="@{/login}" sec:authorize="isAnonymous()" class="text-decoration-none mr-2"
+              <a
+                th:href="@{/login}"
+                sec:authorize="isAnonymous()"
+                class="text-decoration-none mr-2"
                 ><i class="far fa-eye-slash mr-1"></i>Hide</a
               >
               <!-- if post not reported -->
@@ -330,8 +447,12 @@
                 sec:authorize="!isAnonymous()"
                 th:unless="${postBO.findByUserReported(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                 class="text-decoration-none mr-2 report"
-                ><i th:id="${'post-' + post.getId() + '-report-icon'}" class="far fa-flag mr-1"></i
-                >Report Post</a>
+                ><i
+                  th:id="${'post-' + post.getId() + '-report-icon'}"
+                  class="far fa-flag mr-1"
+                ></i
+                >Report Post</a
+              >
               <!-- if post reported -->
               <a
                 th:id="${'post-' + post.getId() + '-report'}"
@@ -339,10 +460,17 @@
                 th:if="${postBO.findByUserReported(#authentication.getPrincipal().getUser().getId()).contains(post)}"
                 th:href="@{/posts/{id}/report(id=${post.getId()})}"
                 class="text-decoration-none mr-2 text-danger report"
-                ><i th:id="${'post-' + post.getId() + '-report-icon'}" class="fas fa-flag mr-1"></i
-                >Unreport Post</a>
+                ><i
+                  th:id="${'post-' + post.getId() + '-report-icon'}"
+                  class="fas fa-flag mr-1"
+                ></i
+                >Unreport Post</a
+              >
               <!-- else -->
-              <a th:href="@{/login}" sec:authorize="isAnonymous()" class="text-decoration-none mr-2"
+              <a
+                th:href="@{/login}"
+                sec:authorize="isAnonymous()"
+                class="text-decoration-none mr-2"
                 ><i class="far fa-flag mr-1"></i>Report Post</a
               >
             </div>
@@ -350,8 +478,22 @@
         </div>
         <!-- endforeach -->
         <ul th:if="${postPage.getTotalPages() > 1}" class="pagination">
-          <li class="page-item active"><a class="page-link" href="#" th:href="@{/discover/channel/{id}/posts/page/{pageId}/(id=${channel.getId()}, pageId=${postPage.getNumber()})}" th:text="${postPage.getNumber()}"></a></li>
-          <li class="page-item" th:if="${!postPage.isLast()}"><a class="page-link" href="#" th:href="@{/discover/channel/{id}/posts/page/{pageId}/(id=${channel.getId()}, pageId=${postPage.getNumber()+1})}">Next</a></li>
+          <li class="page-item active">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/discover/channel/{id}/posts/page/{pageId}/(id=${channel.getId()}, pageId=${postPage.getNumber()})}"
+              th:text="${postPage.getNumber()}"
+            ></a>
+          </li>
+          <li class="page-item" th:if="${!postPage.isLast()}">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/discover/channel/{id}/posts/page/{pageId}/(id=${channel.getId()}, pageId=${postPage.getNumber()+1})}"
+              >Next</a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -389,7 +531,13 @@
     </script>
 
     <!-- only logged -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/posts/create}" method="post" th:object="${post}" enctype="multipart/form-data">
+    <form
+      sec:authorize="!isAnonymous()"
+      th:action="@{/posts/create}"
+      method="post"
+      th:object="${post}"
+      enctype="multipart/form-data"
+    >
       <div
         class="modal fade"
         id="easymde-modal"
@@ -434,9 +582,24 @@
                 placeholder="Title"
                 th:field="*{title}"
               />
-              <input type="hidden" id="channelId" name="channelId" th:value="${channel.getId()}"/>
-              <input type="hidden" id="userId" name="userId" th:value="${#authentication.getPrincipal().getUser().getId()}"/>
-              <input type="hidden" id="reported" name="reported" th:value="false"/>
+              <input
+                type="hidden"
+                id="channelId"
+                name="channelId"
+                th:value="${channel.getId()}"
+              />
+              <input
+                type="hidden"
+                id="userId"
+                name="userId"
+                th:value="${#authentication.getPrincipal().getUser().getId()}"
+              />
+              <input
+                type="hidden"
+                id="reported"
+                name="reported"
+                th:value="false"
+              />
               <input type="hidden" id="upvote" name="upvote" th:value="0" />
               <input type="hidden" id="downvote" name="downvote" th:value="0" />
               <!-- {{ Form::hidden('channel_id', $channel->id) }} -->
@@ -479,7 +642,11 @@
     </form>
 
     <!-- only logged -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}" method="post">
+    <form
+      sec:authorize="!isAnonymous()"
+      th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}"
+      method="post"
+    >
       <!-- @method('delete') -->
       <div
         class="modal fade"
@@ -521,15 +688,20 @@
     </form>
 
     <!-- only logged TODO edit form -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/channels/{channelId}/(channelId=${channel.getId()})}" method="post">
+    <form
+      sec:authorize="!isAnonymous()"
+      th:object="${channel}"
+      th:action="@{/channels/{channelId}/update/(channelId=${channel.getId()})}"
+      method="post"
+    >
       <div
-              class="modal fade"
-              id="edit-modal"
-              data-backdrop="static"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="edit-modal-label"
-              aria-hidden="true"
+        class="modal fade"
+        id="edit-modal"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="edit-modal-label"
+        aria-hidden="true"
       >
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
@@ -538,49 +710,47 @@
                 edit channel data
               </h5>
               <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="close"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <!-- MODAL CONTENT -->
-              <label for="channel-name">name</label>
-              <input
-                      name="channel-name"
-                      type="text"
-                      class="form-control mb-3"
-                      id="channel-name"
-                      placeholder="insert here old channel name text"
-              />
               <label for="channel-title">title</label>
               <input
-                      name="channel-title"
-                      type="text"
-                      class="form-control mb-3"
-                      id="channel-title"
-                      placeholder="insert here old channel title text"
+                th:field="*{title}"
+                name="channel-title"
+                type="text"
+                class="form-control mb-3"
+                id="channel-title"
+                placeholder="title"
+                th:value="${channel.getTitle()}"
               />
               <label for="channel-description">description</label>
               <textarea
-                      name="channel-description"
-                      id="channel-description"
-                      cols=""
-                      rows=""
-                      class="form-control mb-3"
-                      placeholder="insert here old channel description text"
+                th:field="*{description}"
+                name="channel-description"
+                id="channel-description"
+                cols=""
+                rows=""
+                class="form-control mb-3"
+                placeholder="description"
+                th:value="${channel.getDescription()}"
               ></textarea>
               <label for="channel-rules">rules</label>
               <textarea
-                      name="channel-rules"
-                      id="channel-rules"
-                      cols=""
-                      rows=""
-                      class="form-control"
-                      placeholder="insert here old channel rules text"
+                th:field="*{rules}"
+                name="channel-rules"
+                id="channel-rules"
+                cols=""
+                rows=""
+                class="form-control"
+                placeholder="rules"
+                th:value="${channel.getRules()}"
               ></textarea>
               <!-- / MODAL CONTENT -->
             </div>
