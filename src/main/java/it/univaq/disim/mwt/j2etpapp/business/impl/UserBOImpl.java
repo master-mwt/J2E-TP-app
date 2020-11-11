@@ -3,14 +3,15 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +29,22 @@ import java.util.List;
 @Transactional
 public class UserBOImpl implements UserBO {
 
-    // TODO: is it ok to keep encoder here ?
-    private static PasswordEncoder encoder = new BCryptPasswordEncoder();
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
     @Autowired
     private FileDealer fileDealer;
+    @Autowired
+    private ApplicationProperties properties;
+
+    private PasswordEncoder passwordEncoder;
+
+    // TODO: is this ok ?
+    @Autowired
+    private void setPasswordEncoder(@Lazy PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public List<UserClass> findAll() {
@@ -116,7 +124,7 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public boolean checkOldPassword(UserClass user, String oldPassword) {
-        if(encoder.matches(oldPassword, user.getPassword())) {
+        if(passwordEncoder.matches(oldPassword, user.getPassword())) {
             return true;
         }
         return false;
@@ -124,7 +132,7 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public void changePassword(UserClass user, String newPassword) {
-        user.setPassword(encoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
 
@@ -141,12 +149,12 @@ public class UserBOImpl implements UserBO {
         UserClass user = userRepository.findById(userId).orElse(null);
 
         try {
-            String path = fileDealer.uploadFile(image);
+            String filename = fileDealer.uploadFile(image);
             ImageClass imageClass = new ImageClass();
-            imageClass.setLocation(path);
+            imageClass.setLocation(properties.getImagesStoragePathRelative() + filename);
             imageClass.setType(image.getContentType());
 
-            BufferedImage bimg = ImageIO.read(new File(path));
+            BufferedImage bimg = ImageIO.read(new File(properties.getImagesStoragePathAbsolute() + filename));
             imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
 
             imageRepository.save(imageClass);

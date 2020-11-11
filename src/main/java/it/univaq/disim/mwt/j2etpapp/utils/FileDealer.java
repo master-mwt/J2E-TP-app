@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Component
@@ -19,18 +21,21 @@ public class FileDealer {
 
     public String uploadFile(MultipartFile image) throws IOException {
         String randomUUID = UUID.randomUUID().toString();
-        String path = properties.getImagesStoragePath() + randomUUID + FilenameUtils.getExtension(image.getOriginalFilename());
+        String filename = randomUUID + '.' + FilenameUtils.getExtension(image.getOriginalFilename());
+        String absolutePath = properties.getImagesStoragePathAbsolute() + filename;
 
-        File file = new File(path);
+        File file = new File(absolutePath);
         FileUtils.touch(file);
 
         FileUtils.writeByteArrayToFile(file, image.getBytes());
 
-        return path;
+        return filename;
     }
 
     public void removeFile(String location) {
-        File file = new File(properties.getImagesStoragePath() + location);
+        Path relativePath = Paths.get(location);
+        String absolutePath = properties.getImagesStoragePathAbsolute() + relativePath.getFileName().toString();
+        File file = new File(absolutePath);
         FileUtils.deleteQuietly(file);
     }
 }

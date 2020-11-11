@@ -14,7 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -27,10 +27,6 @@ import java.util.*;
 @Component
 @Slf4j
 public class DatabaseSeeder {
-
-    // Faker
-    private Faker faker = new Faker();
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // Business classes
     @Autowired
@@ -60,7 +56,12 @@ public class DatabaseSeeder {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    // Faker
+    private Faker faker = new Faker();
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     @EventListener
     public void seed(ContextRefreshedEvent event){
         if( channelBO.count() == 0 &&

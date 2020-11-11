@@ -25,12 +25,12 @@ public class ChannelClass implements Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank
     @Size(max = 30)
     private String name;
 
     @Column()
-    @NotBlank(message = "Title is mandatory")
+    @NotBlank
     private String title;
 
     @Column(columnDefinition = "text")

@@ -60,7 +60,9 @@ public class UserController {
 
     @GetMapping("{userId}/change_image")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String changeImage(@PathVariable("userId") Long userId) {
+    public String changeImage(@PathVariable("userId") Long userId, Model model) {
+        model.addAttribute("user", userBO.findById(userId));
+
         return "pages/dashboard/image_upload/profile_img_upl";
     }
 

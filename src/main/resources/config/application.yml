@@ -8,6 +8,9 @@ spring:
     name: J2ETPApp
   profiles:
     active: dev
+  # i18n
+  messages:
+    basename: i18n/common, i18n/postd
   # JPA
   jpa:
     properties:
@@ -20,6 +23,7 @@ spring:
         hbm2ddl.auto: update
         #format_sql: false
         show_sql: true
+
   # MONGO
   data:
     mongodb:
@@ -39,4 +43,5 @@ spring:
 ###############################################
 
 postd:
-  imagesStoragePath: 'src/main/resources/storage/images/'
+  imagesStoragePathAbsolute: 'src/main/resources/storage/images/'
+  imagesStoragePathRelative: 'storage/images/'

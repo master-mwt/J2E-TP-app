@@ -28,30 +28,28 @@ public class UserClass implements Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Email is mandatory")
+    @NotBlank
     @Email
     private String email;
 
     @Column(nullable = false)
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank
     @Size(max = 30)
     private String name;
 
     @Column(nullable = false)
-    @NotBlank(message = "Surname is mandatory")
+    @NotBlank
     @Size(max = 30)
     private String surname;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Username is mandatory")
+    @NotBlank
     @Size(max = 30)
     private String username;
 
     @Column(nullable = false)
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank
     private String password;
-    @Transient
-    private String matchingPassword;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean hard_ban;

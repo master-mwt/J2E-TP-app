@@ -37,7 +37,7 @@
             </div>
             <!-- end if -->
     
-            <form action="" method="post" enctype="multipart/form-data">
+            <form th:action="@{/user/{id}/change_image/(id=${user.getId()})}" method="post" enctype="multipart/form-data">
               <input type="file" name="image" class="form-control-file">
           </div>
           <div class="card-footer">

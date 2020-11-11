@@ -25,7 +25,7 @@ public class ImageClass {
     private String size;
 
     @Column(columnDefinition = "text", nullable = false)
-    @NotBlank(message = "Location is mandatory")
+    @NotBlank
     private String location;
 
     @Column(columnDefinition = "text")

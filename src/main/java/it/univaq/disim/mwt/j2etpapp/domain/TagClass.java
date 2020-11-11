@@ -18,7 +18,7 @@ public class TagClass implements Serializable {
 
     @Id
     private String id;
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank
     private String name;
 
     @Version

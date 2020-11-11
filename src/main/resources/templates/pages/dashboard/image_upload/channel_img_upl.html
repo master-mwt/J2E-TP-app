@@ -37,7 +37,7 @@
             </div>
             <!-- end if -->
     
-            <form action="" method="post" enctype="multipart/form-data">
+            <form th:action="@{/channels/{id}/change_image/(id=${channel.getId()})}" method="post" enctype="multipart/form-data">
               <!-- {{ Form::hidden('channel_id', $channel->id) }} -->
               <input type="file" name="image" class="form-control-file">
           </div>

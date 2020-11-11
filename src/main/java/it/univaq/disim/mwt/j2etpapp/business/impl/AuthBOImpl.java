@@ -6,7 +6,6 @@ import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.GroupRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +19,15 @@ public class AuthBOImpl implements AuthBO {
     @Autowired
     private UserRepository userRepository;
 
-    private static PasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void registerUser(UserClass user) {
         GroupClass logged = groupRepository.findByName("logged").orElse(null);
 
         user.setGroup(logged);
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // user creation
         userRepository.save(user);

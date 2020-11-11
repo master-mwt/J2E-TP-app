@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
@@ -40,6 +41,8 @@ public class ChannelBOImpl implements ChannelBO {
     private ImageRepository imageRepository;
     @Autowired
     private FileDealer fileDealer;
+    @Autowired
+    private ApplicationProperties properties;
 
     @Override
     public List<ChannelClass> findAll() {
@@ -386,12 +389,12 @@ public class ChannelBOImpl implements ChannelBO {
     public void saveImage(long channelId, MultipartFile image) throws BusinessException {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         try {
-            String path = fileDealer.uploadFile(image);
+            String filename = fileDealer.uploadFile(image);
             ImageClass imageClass = new ImageClass();
-            imageClass.setLocation(path);
+            imageClass.setLocation(properties.getImagesStoragePathRelative() + filename);
             imageClass.setType(image.getContentType());
 
-            BufferedImage bimg = ImageIO.read(new File(path));
+            BufferedImage bimg = ImageIO.read(new File(properties.getImagesStoragePathAbsolute() + filename));
             imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
 
             imageRepository.save(imageClass);

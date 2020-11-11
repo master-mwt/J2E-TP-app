@@ -24,7 +24,7 @@ public class ReplyClass implements Serializable {
 
     @Id
     private String id;
-    @NotBlank(message = "Content is mandatory")
+    @NotBlank
     private String content;
     private Long upvote;
     private Long downvote;

@@ -4,22 +4,19 @@ import it.univaq.disim.mwt.j2etpapp.business.AuthBO;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 public class AuthController {
-
-    private static PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Autowired
     private AuthBO authBO;
@@ -38,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String performRegistration(@Valid @ModelAttribute("user") UserClass user, Errors errors, Model model, RedirectAttributes redirectAttributes) throws BusinessException {
+    public String performRegistration(@Valid @ModelAttribute("user") UserClass user, @RequestParam("matching-password") String matchingPassword, Errors errors, Model model, RedirectAttributes redirectAttributes) throws BusinessException {
         if(errors.hasErrors()){
             // errors
             System.out.println(errors.getAllErrors());
@@ -52,7 +49,7 @@ public class AuthController {
             return "pages/auth/register";
         }
 
-        if(user.getPassword() != null && !user.getPassword().equals(user.getMatchingPassword())){
+        if(user.getPassword() != null && !user.getPassword().equals(matchingPassword)){
             // error password
             model.addAttribute("passwordError", "Password are not matching");
             return "pages/auth/register";

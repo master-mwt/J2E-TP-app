@@ -22,7 +22,7 @@ public class GroupClass implements Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank
     @Size(max = 50)
     private String name;
 
