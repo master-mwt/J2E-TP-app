@@ -3,7 +3,6 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
-import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
@@ -41,8 +40,6 @@ public class ChannelBOImpl implements ChannelBO {
     private ImageRepository imageRepository;
     @Autowired
     private FileDealer fileDealer;
-    @Autowired
-    private ApplicationProperties properties;
 
     @Override
     public List<ChannelClass> findAll() {
@@ -122,13 +119,13 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public Set<UserClass> getSoftBannedUsers(long channelId) {
+    public Set<UserClass> getSoftBannedUsers(Long channelId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         return channel.getSoftBannedUsers();
     }
 
     @Override
-    public void setSoftBannedUsers(long channelId, Set<UserClass> softBannedUsers) {
+    public void setSoftBannedUsers(Long channelId, Set<UserClass> softBannedUsers) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         channel.setSoftBannedUsers(softBannedUsers);
         channelRepository.save(channel);
@@ -140,7 +137,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void appendSoftBannedUsers(long channelId, Set<UserClass> softBannedUsers) {
+    public void appendSoftBannedUsers(Long channelId, Set<UserClass> softBannedUsers) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         Set<UserClass> alreadySoftBanned = channel.getSoftBannedUsers();
         if (alreadySoftBanned == null) {
@@ -157,20 +154,20 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public Set<UserClass> getReportedUsers(long channelId) {
+    public Set<UserClass> getReportedUsers(Long channelId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         return channel.getReportedUsers();
     }
 
     @Override
-    public void setReportedUsers(long channelId, Set<UserClass> reportedUsers) {
+    public void setReportedUsers(Long channelId, Set<UserClass> reportedUsers) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         channel.setReportedUsers(reportedUsers);
         channelRepository.save(channel);
     }
 
     @Override
-    public void appendReportedUsers(long channelId, Set<UserClass> reportedUsers) {
+    public void appendReportedUsers(Long channelId, Set<UserClass> reportedUsers) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         Set<UserClass> alreadyReported = channel.getReportedUsers();
         if (alreadyReported == null) {
@@ -182,7 +179,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void joinChannel(long channelId, UserClass user) {
+    public void joinChannel(Long channelId, UserClass user) {
         RoleClass member = roleRepository.findByName("member").orElse(null);
 
         UserChannelRole joinedMember = new UserChannelRole();
@@ -197,13 +194,13 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void leaveChannel(long channelId, UserClass user) {
+    public void leaveChannel(Long channelId, UserClass user) {
         UserChannelRole memberToDelete = userChannelRoleRepository.findByChannelIdAndUserId(channelId, user.getId()).orElse(null);
         userChannelRoleRepository.delete(memberToDelete);
     }
 
     @Override
-    public void globalUnreportPost(long channelId, String postId) throws BusinessException {
+    public void globalUnreportPost(Long channelId, String postId) throws BusinessException {
         PostClass post = postRepository.findById(postId).orElse(null);
         if(!post.getChannelId().equals(channelId)){
             throw new BusinessException();
@@ -214,7 +211,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void reportUser(long channelId, long userId) {
+    public void reportUser(Long channelId, Long userId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getReportedUsers() == null){
             channel.setReportedUsers(new HashSet<>());
@@ -224,7 +221,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void unReportUser(long channelId, long userId) {
+    public void unReportUser(Long channelId, Long userId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getReportedUsers() == null){
             channel.setReportedUsers(new HashSet<>());
@@ -234,7 +231,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void softBan(long channelId, long userId) {
+    public void softBan(Long channelId, Long userId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getSoftBannedUsers() == null){
             channel.setSoftBannedUsers(new HashSet<>());
@@ -247,7 +244,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void unSoftBan(long channelId, long userId) {
+    public void unSoftBan(Long channelId, Long userId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getSoftBannedUsers() == null){
             channel.setSoftBannedUsers(new HashSet<>());
@@ -257,7 +254,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void upgradeMemberToModerator(long channelId, long userId) {
+    public void upgradeMemberToModerator(Long channelId, Long userId) {
         RoleClass member = roleRepository.findByName("member").orElse(null);
         RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
 
@@ -276,7 +273,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void upgradeModeratorToAdmin(long channelId, long userId) {
+    public void upgradeModeratorToAdmin(Long channelId, Long userId) {
         RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
         RoleClass admin = roleRepository.findByName("admin").orElse(null);
 
@@ -295,7 +292,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void downgradeModeratorToMember(long channelId, long userId) {
+    public void downgradeModeratorToMember(Long channelId, Long userId) {
         RoleClass member = roleRepository.findByName("member").orElse(null);
         RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
 
@@ -314,7 +311,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void upgradeAdminToCreator(long channelId, long userId) throws BusinessException {
+    public void upgradeAdminToCreator(Long channelId, Long userId) throws BusinessException {
         RoleClass admin = roleRepository.findByName("admin").orElse(null);
         RoleClass creator = roleRepository.findByName("creator").orElse(null);
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
@@ -342,7 +339,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void downgradeAdminToModerator(long channelId, long userId) {
+    public void downgradeAdminToModerator(Long channelId, Long userId) {
         RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
         RoleClass admin = roleRepository.findByName("admin").orElse(null);
 
@@ -360,7 +357,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void downgradeCreatorToAdmin(long channelId, long userId) {
+    public void downgradeCreatorToAdmin(Long channelId, Long userId) {
         RoleClass admin = roleRepository.findByName("admin").orElse(null);
         RoleClass creator = roleRepository.findByName("creator").orElse(null);
 
@@ -378,7 +375,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void removeImage(long channelId) {
+    public void removeImage(Long channelId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getImage() != null) {
             imageRepository.delete(channel.getImage());
@@ -390,7 +387,7 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void saveImage(long channelId, MultipartFile image) throws BusinessException {
+    public void saveImage(Long channelId, MultipartFile image) throws BusinessException {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         try {
             String path = fileDealer.uploadFile(image);
@@ -427,5 +424,15 @@ public class ChannelBOImpl implements ChannelBO {
         userChannelRole.setUserChannelRoleFKs(userChannelRoleFKs);
 
         userChannelRoleRepository.save(userChannelRole);
+    }
+
+    @Override
+    public void updateChannel(Long channelId, ChannelClass newData) {
+        ChannelClass savedChannel = channelRepository.findById(channelId).orElse(null);
+        savedChannel.setTitle(newData.getTitle());
+        savedChannel.setDescription(newData.getDescription());
+        savedChannel.setRules(newData.getRules());
+
+        channelRepository.save(savedChannel);
     }
 }

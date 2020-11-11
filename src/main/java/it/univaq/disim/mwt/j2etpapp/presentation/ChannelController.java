@@ -26,7 +26,7 @@ public class ChannelController {
 
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
-    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors, Model model) {
+    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
         if(errors.hasErrors()){
@@ -47,9 +47,23 @@ public class ChannelController {
         return "redirect:/";
     }
 
+    @PostMapping("{channelId}/update")
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
+    public String update(@ModelAttribute("channel") ChannelClass channel, @PathVariable("channelId") Long channelId, Errors errors) {
+
+        if(errors.hasErrors()){
+            // TODO: trovare un modo per far vedere errori
+            return "";
+        }
+
+        channelBO.updateChannel(channelId, channel);
+
+        return "redirect:/discover/channel/" + channelId;
+    }
+
     @GetMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
-    public String doJoin(@PathVariable("channelId") Long channelId) {
+    public String doJoin(@Valid @PathVariable("channelId") Long channelId) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
 
         channelBO.joinChannel(channelId, principal);

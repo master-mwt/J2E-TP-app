@@ -34,6 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // uploaded images are in /storage/**
         registry.addResourceHandler("/storage/**").addResourceLocations("file:storage/");
     }
 }

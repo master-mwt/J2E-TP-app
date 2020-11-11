@@ -3,7 +3,6 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
-import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
@@ -35,8 +34,6 @@ public class UserBOImpl implements UserBO {
     private ImageRepository imageRepository;
     @Autowired
     private FileDealer fileDealer;
-    @Autowired
-    private ApplicationProperties properties;
 
     private PasswordEncoder passwordEncoder;
 
@@ -137,7 +134,7 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void removeImage(long userId) {
+    public void removeImage(Long userId) {
         UserClass user = userRepository.findById(userId).orElse(null);
         if(user.getImage() != null) {
             imageRepository.delete(user.getImage());
@@ -148,7 +145,7 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void saveImage(long userId, MultipartFile image) throws BusinessException {
+    public void saveImage(Long userId, MultipartFile image) throws BusinessException {
         UserClass user = userRepository.findById(userId).orElse(null);
 
         try {
