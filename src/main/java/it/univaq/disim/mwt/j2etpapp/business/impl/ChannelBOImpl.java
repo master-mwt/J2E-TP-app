@@ -380,6 +380,10 @@ public class ChannelBOImpl implements ChannelBO {
     @Override
     public void removeImage(long channelId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        if(channel.getImage() != null) {
+            imageRepository.delete(channel.getImage());
+            fileDealer.removeFile(channel.getImage().getLocation());
+        }
         channel.setImage(null);
 
         channelRepository.save(channel);
@@ -389,12 +393,12 @@ public class ChannelBOImpl implements ChannelBO {
     public void saveImage(long channelId, MultipartFile image) throws BusinessException {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         try {
-            String filename = fileDealer.uploadFile(image);
+            String path = fileDealer.uploadFile(image);
             ImageClass imageClass = new ImageClass();
-            imageClass.setLocation(properties.getImagesStoragePathRelative() + filename);
+            imageClass.setLocation(path);
             imageClass.setType(image.getContentType());
 
-            BufferedImage bimg = ImageIO.read(new File(properties.getImagesStoragePathAbsolute() + filename));
+            BufferedImage bimg = ImageIO.read(new File(path));
             imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
 
             imageRepository.save(imageClass);

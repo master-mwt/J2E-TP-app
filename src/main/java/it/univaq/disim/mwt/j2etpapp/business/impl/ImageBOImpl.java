@@ -1,8 +1,12 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.ImageBO;
+import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +20,10 @@ public class ImageBOImpl implements ImageBO {
 
     @Autowired
     private ImageRepository imageRepository;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ChannelRepository channelRepository;
 
     @Override
     public List<ImageClass> findAll() {
@@ -61,5 +68,17 @@ public class ImageBOImpl implements ImageBO {
     @Override
     public Long count() {
         return imageRepository.count();
+    }
+
+    @Override
+    public ImageClass findUserProfileImage(Long userId) {
+        UserClass user = userRepository.findById(userId).orElse(null);
+        return user.getImage();
+    }
+
+    @Override
+    public ImageClass findChannelImage(Long channelId) {
+        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        return channel.getImage();
     }
 }

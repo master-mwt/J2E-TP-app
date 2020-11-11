@@ -16,4 +16,6 @@ public interface ImageBO {
     void delete(ImageClass image);
     Long count();
 
+    ImageClass findUserProfileImage(Long userId);
+    ImageClass findChannelImage(Long channelId);
 }

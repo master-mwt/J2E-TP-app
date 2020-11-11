@@ -139,8 +139,11 @@ public class UserBOImpl implements UserBO {
     @Override
     public void removeImage(long userId) {
         UserClass user = userRepository.findById(userId).orElse(null);
+        if(user.getImage() != null) {
+            imageRepository.delete(user.getImage());
+            fileDealer.removeFile(user.getImage().getLocation());
+        }
         user.setImage(null);
-
         userRepository.save(user);
     }
 
@@ -149,12 +152,12 @@ public class UserBOImpl implements UserBO {
         UserClass user = userRepository.findById(userId).orElse(null);
 
         try {
-            String filename = fileDealer.uploadFile(image);
+            String path = fileDealer.uploadFile(image);
             ImageClass imageClass = new ImageClass();
-            imageClass.setLocation(properties.getImagesStoragePathRelative() + filename);
+            imageClass.setLocation(path);
             imageClass.setType(image.getContentType());
 
-            BufferedImage bimg = ImageIO.read(new File(properties.getImagesStoragePathAbsolute() + filename));
+            BufferedImage bimg = ImageIO.read(new File(path));
             imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
 
             imageRepository.save(imageClass);

@@ -11,6 +11,5 @@ import javax.validation.Valid;
 @Valid
 @ConfigurationProperties(prefix = "postd")
 public class ApplicationProperties {
-    private String imagesStoragePathAbsolute;
-    private String imagesStoragePathRelative;
+    private String imagesStoragePath;
 }

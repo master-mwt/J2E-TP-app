@@ -34,11 +34,14 @@ public class DashboardController {
     private RoleBO roleBO;
     @Autowired
     private UserBO userBO;
+    @Autowired
+    private ImageBO imageBO;
 
     @GetMapping("home")
     public String home(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         model.addAttribute("user", principal);
+        model.addAttribute("imageBO", imageBO);
         model.addAttribute("channel", new ChannelClass());
         return "pages/dashboard/home";
     }

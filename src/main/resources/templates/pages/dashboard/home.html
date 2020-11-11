@@ -12,15 +12,15 @@
         <div class="card">
           <div class="card-header d-flex flex-row">
             <img
-              th:if="${user.getImage() == null}"
+              th:if="${imageBO.findUserProfileImage(user.getId()) == null}"
               th:src="@{/images/no_profile_img.jpg}"
               alt="user-profile-image"
               class="rounded border"
               width="100"
             />
             <img
-              th:unless="${user.getImage() == null}"
-              th:src="${user.getImage().getLocation()}"
+              th:unless="${imageBO.findUserProfileImage(user.getId()) == null}"
+              th:src="${imageBO.findUserProfileImage(user.getId()).getLocation()}"
               alt="user-profile-image"
               class="rounded border"
               width="100"

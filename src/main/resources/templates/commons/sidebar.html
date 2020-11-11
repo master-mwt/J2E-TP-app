@@ -27,15 +27,7 @@
         <div class="image d-block my-auto">
           <a href="">
             <img
-              th:if="${user.getImage() == null}"
               th:src="@{/images/no_profile_img.jpg}"
-              alt="profile_image"
-              class="img-circle elevation-2"
-              style="width: 32px; height: 32px"
-            />
-            <img
-              th:unless="${user.getImage() == null}"
-              th:src="@{/{link}/(link=${user.getImage().getLocation()})}"
               alt="profile_image"
               class="img-circle elevation-2"
               style="width: 32px; height: 32px"

@@ -43,5 +43,4 @@ spring:
 ###############################################
 
 postd:
-  imagesStoragePathAbsolute: 'src/main/resources/storage/images/'
-  imagesStoragePathRelative: 'storage/images/'
+  imagesStoragePath: 'storage/images/'
