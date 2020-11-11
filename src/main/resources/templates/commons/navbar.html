@@ -44,59 +44,59 @@
               value="posts"
               selected="selected"
             >
-              posts
+              [[#{common.navbar.search_bar.filter.post}]]
             </option>
             <option
               th:unless="${'posts'.equals(#httpServletRequest.getParameter('target'))}"
               value="posts"
             >
-              posts
+              [[#{common.navbar.search_bar.filter.post}]]
             </option>
             <option
               th:if="${'channels'.equals(#httpServletRequest.getParameter('target'))}"
               value="channels"
               selected="selected"
             >
-              channels
+              [[#{common.navbar.search_bar.filter.channel}]]
             </option>
             <option
               th:unless="${'channels'.equals(#httpServletRequest.getParameter('target'))}"
               value="channels"
             >
-              channels
+              [[#{common.navbar.search_bar.filter.channel}]]
             </option>
             <option
               th:if="${'users'.equals(#httpServletRequest.getParameter('target'))}"
               value="users"
               selected="selected"
             >
-              users
+              [[#{common.navbar.search_bar.filter.user}]]
             </option>
             <option
               th:unless="${'users'.equals(#httpServletRequest.getParameter('target'))}"
               value="users"
             >
-              users
+              [[#{common.navbar.search_bar.filter.user}]]
             </option>
             <option
               th:if="${'tags'.equals(#httpServletRequest.getParameter('target'))}"
               value="tags"
               selected="selected"
             >
-              tags
+              [[#{common.navbar.search_bar.filter.tag}]]
             </option>
             <option
               th:unless="${'tags'.equals(#httpServletRequest.getParameter('target'))}"
               value="tags"
             >
-              tags
+              [[#{common.navbar.search_bar.filter.tag}]]
             </option>
           </select>
         </div>
         <input
           type="search"
           class="form-control form-control-navbar rounded"
-          placeholder="search"
+          placeholder="[[#{common.navbar.search_bar.placeholder}]]"
           aria-label="search"
           name="query"
           th:value="${#httpServletRequest.getParameter('query')}"
@@ -127,7 +127,7 @@
             th:href="@{?lang=en}"
             class="dropdown-item active"
           >
-            [[#{common.english}]]
+            [[#{common.lang.english}]]
           </a>
           <a
             href="#"
@@ -135,7 +135,7 @@
             th:href="@{?lang=en}"
             class="dropdown-item"
           >
-            [[#{common.english}]]
+            [[#{common.lang.english}]]
           </a>
           <a
             href="#"
@@ -143,7 +143,7 @@
             th:href="@{?lang=it}"
             class="dropdown-item active"
           >
-            [[#{common.italian}]]
+            [[#{common.lang.italian}]]
           </a>
           <a
             href="#"
@@ -151,7 +151,7 @@
             th:href="@{?lang=it}"
             class="dropdown-item"
           >
-            [[#{common.italian}]]
+            [[#{common.lang.italian}]]
           </a>
         </div>
       </li>

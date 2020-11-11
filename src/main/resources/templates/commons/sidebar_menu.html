@@ -12,21 +12,16 @@
       role="menu"
       data-accordion="false"
     >
-      <li class="nav-header px-0 px-3">USER</li>
-<!--      <li class="nav-item">-->
-        <!-- redirect to auth register or to home with posts filtered by channel subscription -->
-<!--        <a th:href="@{/home}" class="nav-link">-->
-<!--          <i class="nav-icon fas fa-user-circle"> </i>-->
-<!--          <p class="">[[#{menu.profile}]]</p>-->
-<!--        </a>-->
-<!--      </li>-->
+      <li class="nav-header px-0 px-3">
+        [[#{common.sidebar_menu.section.user}]]
+      </li>
 
       <li class="nav-item has-treeview">
         <!-- redirect to auth register or to dashboard -->
         <a href="#" class="nav-link">
           <i class="nav-icon fas fa-home"></i>
           <p>
-            dashboard
+            [[#{common.sidebar_menu.subsection.dashboard}]]
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -35,7 +30,7 @@
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>
-                posts
+                [[#{common.sidebar_menu.subsection.dashboard.posts}]]
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -43,37 +38,49 @@
               <li class="nav-item">
                 <a th:href="@{/home/posts/owned}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>owned</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.owned}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/posts/saved}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>saved</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.saved}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/posts/hidden}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>hidden</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.hidden}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/posts/reported}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>reported</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.reported}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/posts/upvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>upvoted</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.upvoted}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/posts/downvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>downvoted</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.downvoted}]]
+                  </p>
                 </a>
               </li>
             </ul>
@@ -82,7 +89,7 @@
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>
-                replies
+                [[#{common.sidebar_menu.subsection.dashboard.replies}]]
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -90,19 +97,25 @@
               <li class="nav-item">
                 <a th:href="@{/home/replies/owned}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>owned</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.owned}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/replies/upvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>upvoted</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.upvoted}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/replies/downvoted}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>downvoted</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.downvoted}]]
+                  </p>
                 </a>
               </li>
             </ul>
@@ -111,7 +124,7 @@
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>
-                channels
+                [[#{common.sidebar_menu.subsection.dashboard.channels}]]
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -119,13 +132,17 @@
               <li class="nav-item">
                 <a th:href="@{/home/channels/owned}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>owned</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.owned}]]
+                  </p>
                 </a>
               </li>
               <li class="nav-item">
                 <a th:href="@{/home/channels/joined}" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>joined</p>
+                  <p>
+                    [[#{common.sidebar_menu.subsection.dashboard.submenu.joined}]]
+                  </p>
                 </a>
               </li>
             </ul>
@@ -133,17 +150,19 @@
         </ul>
       </li>
 
-      <li class="nav-header px-0 px-3">INFO</li>
+      <li class="nav-header px-0 px-3">
+        [[#{common.sidebar_menu.section.info}]]
+      </li>
       <li class="nav-item">
         <a th:href="@{/about}" class="nav-link">
           <i class="nav-icon fas fa-info"> </i>
-          <p class="">about</p>
+          <p class="">[[#{common.sidebar_menu.subsection.about_us}]]</p>
         </a>
       </li>
       <li class="nav-item">
         <a th:href="@{/contact}" class="nav-link">
           <i class="nav-icon fas fa-address-book"> </i>
-          <p class="">contact us</p>
+          <p class="">[[#{common.sidebar_menu.subsection.contact_us}]]</p>
         </a>
       </li>
     </ul>

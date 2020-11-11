@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <!-- csrf resolved by spring security -->
-    <title>postd</title>
+    <title>[[#{common.main.application_title}]]</title>
 
     <link rel="icon" th:href="@{/images/main_logo.png}" type="image/png" />
 
@@ -66,12 +66,16 @@
       </div>
     </div>
     <!-- toasts -->
-    <div id="toast-container" class="position-fixed" style="z-index: 1000; right: 0; min-width: 350px;">
+    <div
+      id="toast-container"
+      class="position-fixed"
+      style="z-index: 1000; right: 0; min-width: 350px"
+    >
       <!-- bg-danger removed -->
     </div>
     <!-- end toasts -->
-  <script sec:authorize="!isAnonymous()" th:inline="javascript">
-    window.userIsLogged = true;
-  </script>
+    <script sec:authorize="!isAnonymous()" th:inline="javascript">
+      window.userIsLogged = true;
+    </script>
   </body>
 </html>

@@ -18,7 +18,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header p-2 justify-content-center border-0">
-          <h5 class="m-0" id="notification-count">no notifications</h5>
+          <h5 class="m-0" id="notification-count">
+            [[#{common.notification_modal.title}]]
+          </h5>
         </div>
         <div id="notification-area" class="modal-body pb-0 px-3 pt-3"></div>
         <div class="modal-footer border-0 p-2">
@@ -27,11 +29,14 @@
             type="button"
             data-dismiss="modal"
           >
-            close
+            [[#{common.notification_modal.button.close}]]
           </button>
-          <button id="notifications-delete-all" class="btn btn-outline-secondary"
-                  type="button">
-            delete all messages
+          <button
+            id="notifications-delete-all"
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+            [[#{common.notification_modal.button.clear_all}]]
           </button>
         </div>
       </div>
