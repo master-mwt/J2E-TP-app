@@ -24,6 +24,10 @@ public class TagClass implements Serializable {
     @Version
     private Long version;
 
+    public TagClass(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

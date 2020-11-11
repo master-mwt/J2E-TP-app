@@ -793,17 +793,30 @@
     </script>
 
     <!-- tag completion func -->
-    <!-- <script type="text/javascript">
+    <script th:inline="javascript">
+      /*<![CDATA[*/
       $(function () {
-        var availableTags = {!! json_encode($tags_array)!!}
-                function split(val) {
+
+        var serverTags = /*[[${tags}]]*/ ""
+
+        serverTags = JSON.parse(JSON.stringify(serverTags));
+
+        var availableTags = [];
+        for(let tag of serverTags) {
+          availableTags.push(tag.name)
+        }
+
+        console.log(availableTags);
+
+        function split(val) {
           return val.split(/\ \s*/);
         }
-                function extractLast(term) {
+
+        function extractLast(term) {
           return split(term).pop();
         }
 
-                $("#tags-area")
+        $("#tags-area")
           // don't navigate away from the field on tab when selecting an item
           .on("keydown", function (event) {
             if (event.keyCode === $.ui.keyCode.TAB &&
@@ -811,6 +824,7 @@
               event.preventDefault();
             }
           })
+
           .autocomplete({
             appendTo: "#tags-area-container",
             minLength: 0,
@@ -835,7 +849,9 @@
               return false;
             }
           });
-            });
-    </script> -->
+
+      });
+      /*]]>*/
+    </script>
   </div>
 </html>

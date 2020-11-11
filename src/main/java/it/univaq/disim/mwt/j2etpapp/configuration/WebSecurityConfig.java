@@ -54,6 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("administrator")
                 .antMatchers("/home/**").hasAnyRole("administrator", "logged")
                 .antMatchers("/home").hasAnyRole("administrator", "logged")
+                .antMatchers("/notifications/**").hasAnyRole("administrator", "logged")
+                .antMatchers("/notifications").hasAnyRole("administrator", "logged")
                 .antMatchers("/", "/static/**", "/favicon.ico").permitAll();
     }
 

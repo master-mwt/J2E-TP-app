@@ -44,5 +44,5 @@ public interface PostBO {
     void hideToggle(String postId, UserClass user);
     void saveToggle(String postId, UserClass user);
     void reportToggle(String postId, UserClass user);
-    void createPostInChannel(PostClass post);
+    void createPostInChannel(PostClass post, String tagListString);
 }

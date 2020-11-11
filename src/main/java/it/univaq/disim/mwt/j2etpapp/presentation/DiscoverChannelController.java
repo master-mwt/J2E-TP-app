@@ -27,6 +27,8 @@ public class DiscoverChannelController {
     private PostBO postBO;
     @Autowired
     private UserChannelRoleBO userChannelRoleBO;
+    @Autowired
+    private TagBO tagBO;
 
     @GetMapping("{id}")
     public String discoverChannel(@PathVariable("id") Long id, Model model) {
@@ -41,6 +43,7 @@ public class DiscoverChannelController {
         model.addAttribute("principal", (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null);
         UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId()) : null;
         model.addAttribute("subscription", subscription);
+        model.addAttribute("tags", tagBO.findAll());
         return "pages/discover/channel";
     }
 
@@ -56,6 +59,7 @@ public class DiscoverChannelController {
         model.addAttribute("principal", (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null);
         UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId()) : null;
         model.addAttribute("subscription", subscription);
+        model.addAttribute("tags", tagBO.findAll());
         return "pages/discover/channel";
     }
 

@@ -8,6 +8,7 @@ import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserChannelRoleRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.NotificationRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,6 +29,8 @@ public class PostBOImpl implements PostBO {
     private NotificationRepository notificationRepository;
     @Autowired
     private ChannelRepository channelRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public List<PostClass> findAll() {
@@ -303,7 +306,37 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void createPostInChannel(PostClass post) {
+    public void createPostInChannel(PostClass post, String tagListString) {
+        // tags: string -> array
+        String[] tagNames = tagListString.split(" ");
+        List<TagClass> tagList = new ArrayList<>();
+        List<TagClass> newtagList = new ArrayList<>();
+
+        for(String tagName : tagNames) {
+            if(tagName != null && !tagName.equals("")) {
+                tagList.add(new TagClass(tagName));
+            }
+        }
+
+        for(TagClass tag : tagList) {
+            if(tagRepository.findByName(tag.getName()).orElse(null) == null) {
+                newtagList.add(tag);
+            }
+        }
+        // tags: cycle arrays
+        if(!newtagList.isEmpty()) {
+            // add tags to db
+            tagRepository.saveAll(newtagList);
+        }
+
+        // get tags and save to post
+        Set<TagClass> tagsToBeSavedInPost = new HashSet<>();
+        for(TagClass tag : tagList) {
+            tagsToBeSavedInPost.add(tagRepository.findByName(tag.getName()).orElse(null));
+        }
+        // set post tags
+        post.setTags(tagsToBeSavedInPost);
+        // save post
         postRepository.save(post);
 
         // notifications
