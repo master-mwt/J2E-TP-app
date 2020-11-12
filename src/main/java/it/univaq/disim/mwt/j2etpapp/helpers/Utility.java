@@ -5,6 +5,9 @@ import it.univaq.disim.mwt.j2etpapp.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+// TODO: will this class be inserted in all templates ? (decision)
 @Component
 public class Utility {
 
@@ -85,5 +88,9 @@ public class Utility {
 
     public ImageClass findChannelImage(Long channelId) {
         return imageBO.findChannelImage(channelId);
+    }
+
+    public List<ImageClass> findPostImages(String postId) {
+        return postBO.getPostImages(postId);
     }
 }

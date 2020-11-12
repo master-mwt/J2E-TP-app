@@ -65,20 +65,25 @@
                 transition: 0.3s;
               }
             </style>
-    
+
+            <!-- ##### POST CAROUSEL ##### -->
             <!-- if post has images -->
-            <div th:id="${'postcarousel-' + post.getId()}" class="carousel slide overflow-hidden" data-ride="carousel"
+            <div
+                    th:if="${post.getImages() != null && !post.getImages().isEmpty()}"
+                    th:id="${'postcarousel-' + post.getId()}" class="carousel slide overflow-hidden" data-ride="carousel"
               style="max-width:800px;">
               <div class="carousel-inner bg-secondary rounded-right">
                 <!-- foreach images as image -->
-                <!-- if first loop -->
-                <div class="carousel-item active">
-                  <img src="" class="d-block mx-auto w-100 h-auto">
-                </div>
-                <!-- else -->
-                <div class="carousel-item">
-                  <img src="" class="d-block mx-auto w-100 h-auto">
-                </div>
+                <th:block th:each="image : ${postBO.getPostImages(post.getId())}">
+                  <!-- if first loop -->
+                  <div th:if="${image.isFirst()}" class="carousel-item active">
+                    <img th:src="@{/{image}/(image=${image.getLocation()})}" class="d-block mx-auto w-100 h-auto">
+                  </div>
+                  <!-- else -->
+                  <div th:unless="${image.isFirst()}" class="carousel-item">
+                    <img th:src="@{/{image}/(image=${image.getLocation()})}" class="d-block mx-auto w-100 h-auto">
+                  </div>
+                </th:block>
                 <!-- endforeach -->
               </div>
               <a th:href="${'#postcarousel-' + post.getId()}" class="carousel-control-prev" role="button" data-slide="prev">
