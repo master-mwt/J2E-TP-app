@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -39,5 +40,10 @@ public class GroupClass implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         GroupClass that = (GroupClass) o;
         return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

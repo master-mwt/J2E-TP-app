@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 // TODO: Validation in all domain classes
@@ -84,5 +85,10 @@ public class UserClass implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         UserClass userClass = (UserClass) o;
         return username.equals(userClass.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 }

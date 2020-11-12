@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -34,5 +35,10 @@ public class TagClass implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         TagClass tagClass = (TagClass) o;
         return name.equals(tagClass.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

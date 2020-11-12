@@ -25,7 +25,6 @@ public class PermissionChecker {
             return false;
         }
 
-        // TODO: PERMISSION CHECK !!!!!!!!!!!!!!! (softbanned)
         if("administrator".equals(currentUser.getGroup().getName())) {
             for (ServiceClass service : currentUser.getGroup().getServices()) {
                 if(service.getName().equals(permission)) {

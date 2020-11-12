@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -42,5 +43,10 @@ public class RoleClass implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         RoleClass roleClass = (RoleClass) o;
         return name.equals(roleClass.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
