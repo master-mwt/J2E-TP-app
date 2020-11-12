@@ -230,8 +230,7 @@
               sec:authorize="!isAnonymous()"
               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
               th:text="${post.getUpvote() - post.getDownvote()}"
-              >upv-dov</span
-            >
+            ></span>
             <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
             <span
               th:id="${'post-' + post.getId() + '-votenumber'}"
@@ -239,16 +238,14 @@
               sec:authorize="!isAnonymous()"
               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
               th:text="${post.getUpvote() - post.getDownvote()}"
-              >upv-dov</span
-            >
+            ></span>
             <!-- else guest, draw text-light info -->
             <span
               th:id="${'post-' + post.getId() + '-votenumber'}"
               class="my-1 text-light votenumber"
               sec:authorize="isAnonymous()"
               th:text="${post.getUpvote() - post.getDownvote()}"
-              >upv-dov</span
-            >
+            ></span>
             <!-- if post not downvoted -->
             <a
               th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
@@ -797,14 +794,13 @@
     <script th:inline="javascript">
       /*<![CDATA[*/
       $(function () {
-
-        var serverTags = /*[[${tags}]]*/ ""
+        var serverTags = /*[[${tags}]]*/ "";
 
         serverTags = JSON.parse(JSON.stringify(serverTags));
 
         var availableTags = [];
-        for(let tag of serverTags) {
-          availableTags.push(tag.name)
+        for (let tag of serverTags) {
+          availableTags.push(tag.name);
         }
 
         console.log(availableTags);
@@ -820,8 +816,10 @@
         $("#tags-area")
           // don't navigate away from the field on tab when selecting an item
           .on("keydown", function (event) {
-            if (event.keyCode === $.ui.keyCode.TAB &&
-              $(this).autocomplete("instance").menu.active) {
+            if (
+              event.keyCode === $.ui.keyCode.TAB &&
+              $(this).autocomplete("instance").menu.active
+            ) {
               event.preventDefault();
             }
           })
@@ -831,8 +829,12 @@
             minLength: 0,
             source: function (request, response) {
               // delegate back to autocomplete, but extract the last term
-              response($.ui.autocomplete.filter(
-                availableTags, extractLast(request.term)));
+              response(
+                $.ui.autocomplete.filter(
+                  availableTags,
+                  extractLast(request.term)
+                )
+              );
             },
             focus: function () {
               // prevent value inserted on focus
@@ -848,9 +850,8 @@
               terms.push("");
               this.value = terms.join(" ");
               return false;
-            }
+            },
           });
-
       });
       /*]]>*/
     </script>

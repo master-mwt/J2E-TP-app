@@ -26,10 +26,10 @@
             <!-- end if -->
             <!-- if post upvoted | downvoted -->
             <span th:id="${'post-' + post.getId() + '-votenumber'}" th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-              class="my-1 text-warning votenumber" th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span>
+              class="my-1 text-warning votenumber" th:text="${post.getUpvote() - post.getDownvote()}"></span>
             <!-- else -->
             <span th:id="${'post-' + post.getId() + '-votenumber'}" th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-              class="my-1 text-light votenumber" th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span>
+              class="my-1 text-light votenumber" th:text="${post.getUpvote() - post.getDownvote()}"></span>
             <!-- end if -->
             <!-- if post not downvoted -->
             <a th:id="${'post-' + post.getId() + '-downvote'}" th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}" th:href="@{/posts/{id}/downvote(id=${post.getId()})}" class="downvote"><i
