@@ -10,24 +10,35 @@
     <div class="row justify-content-center">
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- foreach posts as post -->
-        <div th:each="post : ${postPage.getContent()}"
-             th:if="${principal == null || !postBO.findByUserHidden(principal.getId()).contains(post)}"
-             class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
-
+        <div
+          th:each="post : ${postPage.getContent()}"
+          th:if="${principal == null || !postBO.findByUserHidden(principal.getId()).contains(post)}"
+          class="card col-lg-10 mx-auto d-flex flex-row px-0"
+          style="max-width: 800px"
+        >
           <!-- ##### POST SIDEBAR ##### -->
-          <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #222">
+          <div
+            class="rounded-left py-3 d-flex flex-column"
+            style="flex: 0 0 50px; background-color: #222"
+          >
             <!-- if auth and post not upvoted, upvote is enabled -->
-            <a th:id="${'post-' + post.getId() + '-upvote'}" th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
-               sec:authorize="!isAnonymous()"
-               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               class="upvote" >
+            <a
+              th:id="${'post-' + post.getId() + '-upvote'}"
+              th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
+              sec:authorize="!isAnonymous()"
+              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="upvote"
+            >
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- if auth and post upvoted, upvote is disabled -->
-            <a th:id="${'post-' + post.getId() + '-upvote'}" th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
-               sec:authorize="!isAnonymous()"
-               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               class="text-warning upvote">
+            <a
+              th:id="${'post-' + post.getId() + '-upvote'}"
+              th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
+              sec:authorize="!isAnonymous()"
+              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="text-warning upvote"
+            >
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- else (guest), redirect to login -->
@@ -35,109 +46,203 @@
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- if auth and post is upvoted or downvoted, draw text-warning info -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}"
-                  sec:authorize="!isAnonymous()"
-                  th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                  class="my-1 text-warning votenumber" th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span>
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              sec:authorize="!isAnonymous()"
+              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="my-1 text-warning votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+            ></span>
             <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}"
-                  sec:authorize="!isAnonymous()"
-                  th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                  class="my-1 text-light votenumber" th:text="${post.getUpvote() - post.getDownvote()}">upv-dov</span>
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              sec:authorize="!isAnonymous()"
+              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="my-1 text-light votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+            ></span>
             <!-- else guest, draw text-light info -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}"
-                  sec:authorize="isAnonymous()"
-                  class="my-1 text-light votenumber"
-                  th:text="${post.getUpvote() - post.getDownvote()}">
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              sec:authorize="isAnonymous()"
+              class="my-1 text-light votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+            >
             </span>
             <!-- if auth and post is not downvoted, downvote is enabled -->
-            <a th:id="${'post-' + post.getId() + '-downvote'}" th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
-               sec:authorize="!isAnonymous()"
-               th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               class="downvote"><i class="fas fa-arrow-down"></i></a>
+            <a
+              th:id="${'post-' + post.getId() + '-downvote'}"
+              th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
+              sec:authorize="!isAnonymous()"
+              th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="downvote"
+              ><i class="fas fa-arrow-down"></i
+            ></a>
             <!-- if auth and post is downvoted, undownvote is disabled -->
-            <a th:id="${'post-' + post.getId() + '-downvote'}" th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
-               sec:authorize="!isAnonymous()"
-               th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               class="text-warning downvote"><i class="fas fa-arrow-down"></i></a>
+            <a
+              th:id="${'post-' + post.getId() + '-downvote'}"
+              th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
+              sec:authorize="!isAnonymous()"
+              th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="text-warning downvote"
+              ><i class="fas fa-arrow-down"></i
+            ></a>
             <!-- else (guest), redirect to login -->
-            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""><i class="fas fa-arrow-down"></i></a>
+            <a th:href="@{/login}" sec:authorize="isAnonymous()" class=""
+              ><i class="fas fa-arrow-down"></i
+            ></a>
           </div>
 
           <!-- ##### POST HEADER-BODY ##### -->
           <div class="col p-0 d-flex flex-column overflow-auto">
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
-                <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
-                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}">post.channel_name &#183</b></a> <span
-                  class="text-muted">Posted by </span>
-                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
-                  class="text-decoration-none" th:text="${user.getUsername()}">post.username</a>
+              <p
+                class="m-0 mb-1"
+                th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}"
+              >
+                <a
+                  th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                  class="text-decoration-none"
+                  ><b th:utext="${channel.getName() + ' &#183'}"></b
+                ></a>
+                <span class="text-muted"
+                  >[[#{content.search.tag.posted_by}]]</span
+                >
+                <a
+                  th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                  class="text-decoration-none"
+                  th:text="${user.getUsername()}"
+                ></a>
               </p>
-              <h5 class="m-0 mb-1"><a th:href="@{/discover/post/{id}/(id=${post.getId()})}"
-                  class="text-decoration-none" th:text="${post.getTitle()}">post.title</a></h5>
+              <h5 class="m-0 mb-1">
+                <a
+                  th:href="@{/discover/post/{id}/(id=${post.getId()})}"
+                  class="text-decoration-none"
+                  th:text="${post.getTitle()}"
+                ></a>
+              </h5>
             </div>
-            <a th:href="${'#content-collapse-' + post.getId()}" role="button"
-              class="text-decoration-none px-3 py-2 btn btn-sm btn-block btn-outline-secondary" data-toggle="collapse"><i
-                class="fas fa-eye mr-2"></i>See Post Content</a>
-    
+            <a
+              th:href="${'#content-collapse-' + post.getId()}"
+              role="button"
+              class="text-decoration-none px-3 py-2 btn btn-sm btn-block btn-outline-secondary"
+              data-toggle="collapse"
+              ><i class="fas fa-eye mr-2"></i
+              >[[#{content.search.tag.see_post_content}]]</a
+            >
+
             <div class="card-body text-left px-3 py-1 mb-1">
-              <div class="collapse" th:id="${'content-collapse-' + post.getId()}">
-                <div class="markdown-content" th:data-markdown-content="${post.getContent()}"></div>
+              <div
+                class="collapse"
+                th:id="${'content-collapse-' + post.getId()}"
+              >
+                <div
+                  class="markdown-content"
+                  th:data-markdown-content="${post.getContent()}"
+                ></div>
               </div>
               <!-- foreach post.tags as tag -->
               <th:block th:each="tag : ${post.getTags()}">
                 <!-- if tag.tag-id.name == var query -->
-                <a th:if="${tag.getName().contains(#httpServletRequest.getParameter('query'))}" th:href="@{/search/(target=tags, query=${tag.getName()})}"><span class="badge badge-pill mt-2"
-                       style="font-size: 11px; background-color: #ffa07a" th:text="${tag.getName()}">tag.tag-id.name</span></a>
+                <a
+                  th:if="${tag.getName().contains(#httpServletRequest.getParameter('query'))}"
+                  th:href="@{/search/(target=tags, query=${tag.getName()})}"
+                  ><span
+                    class="badge badge-pill mt-2"
+                    style="font-size: 11px; background-color: #ffa07a"
+                    th:text="${tag.getName()}"
+                  ></span
+                ></a>
                 <!-- else -->
-                <a th:if="${!tag.getName().contains(#httpServletRequest.getParameter('query'))}" th:href="@{/search/(target=tags, query=${tag.getName()})}"><span class="badge badge-pill mt-2"
-                      style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}">tag.tag-id.name</span></a>
+                <a
+                  th:if="${!tag.getName().contains(#httpServletRequest.getParameter('query'))}"
+                  th:href="@{/search/(target=tags, query=${tag.getName()})}"
+                  ><span
+                    class="badge badge-pill mt-2"
+                    style="font-size: 11px; background-color: #ddd"
+                    th:text="${tag.getName()}"
+                  ></span
+                ></a>
               </th:block>
               <!-- endforeach -->
             </div>
 
             <!-- ##### POST FOOTER (ACTIONS) ##### -->
-            <div class="card-footer border-0 p-1 px-3 text-left" style="border-bottom-left-radius: 0px">
+            <div
+              class="card-footer border-0 p-1 px-3 text-left"
+              style="border-bottom-left-radius: 0px"
+            >
               <!-- if auth and post unsaved, save is enabled -->
-              <a th:id="${'post-' + post.getId() + '-save'}" th:href="@{/posts/{id}/save(id=${post.getId()})}"
-                 sec:authorize="!isAnonymous()"
-                 th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                 class="text-decoration-none mr-2 save">
-                <i th:id="${'post-' + post.getId() + '-save-icon'}" class="far fa-bookmark mr-1"></i>
+              <a
+                th:id="${'post-' + post.getId() + '-save'}"
+                th:href="@{/posts/{id}/save(id=${post.getId()})}"
+                sec:authorize="!isAnonymous()"
+                th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 save"
+              >
+                <i
+                  th:id="${'post-' + post.getId() + '-save-icon'}"
+                  class="far fa-bookmark mr-1"
+                ></i>
                 Save
               </a>
               <!-- if auth and post saved, save is disabled -->
-              <a th:id="${'post-' + post.getId() + '-save'}" th:href="@{/posts/{id}/save(id=${post.getId()})}"
-                 sec:authorize="!isAnonymous()"
-                 th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                 class="text-decoration-none mr-2 text-danger save">
-                <i th:id="${'post-' + post.getId() + '-save-icon'}" class="fas fa-bookmark mr-1"></i>
+              <a
+                th:id="${'post-' + post.getId() + '-save'}"
+                th:href="@{/posts/{id}/save(id=${post.getId()})}"
+                sec:authorize="!isAnonymous()"
+                th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 text-danger save"
+              >
+                <i
+                  th:id="${'post-' + post.getId() + '-save-icon'}"
+                  class="fas fa-bookmark mr-1"
+                ></i>
                 Unsave
               </a>
               <!-- else (guest), redirect to login -->
-              <a class="text-decoration-none mr-2" th:href="@{/login}" sec:authorize="isAnonymous()">
+              <a
+                class="text-decoration-none mr-2"
+                th:href="@{/login}"
+                sec:authorize="isAnonymous()"
+              >
                 <i class="far fa-bookmark mr-1"></i>
                 Save
               </a>
               <!-- if auth and post unhidden, hide is enabled -->
-              <a th:id="${'post-' + post.getId() + '-hide'}" th:href="@{/posts/{id}/hide(id=${post.getId()})}"
-                 sec:authorize="!isAnonymous()"
-                 th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                 class="text-decoration-none mr-2 hide">
-                <i th:id="${'post-' + post.getId() + '-hide-icon'}" class="far fa-eye-slash mr-1"></i>
+              <a
+                th:id="${'post-' + post.getId() + '-hide'}"
+                th:href="@{/posts/{id}/hide(id=${post.getId()})}"
+                sec:authorize="!isAnonymous()"
+                th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 hide"
+              >
+                <i
+                  th:id="${'post-' + post.getId() + '-hide-icon'}"
+                  class="far fa-eye-slash mr-1"
+                ></i>
                 Hide
               </a>
               <!-- if auth and post hidden, hide is disabled -->
-              <a th:id="${'post-' + post.getId() + '-hide'}" th:href="@{/posts/{id}/hide(id=${post.getId()})}"
-                 sec:authorize="!isAnonymous()"
-                 th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                 class="text-decoration-none mr-2 text-danger hide">
-                <i th:id="${'post-' + post.getId() + '-hide-icon'}" class="fas fa-eye-slash mr-1"></i>
+              <a
+                th:id="${'post-' + post.getId() + '-hide'}"
+                th:href="@{/posts/{id}/hide(id=${post.getId()})}"
+                sec:authorize="!isAnonymous()"
+                th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 text-danger hide"
+              >
+                <i
+                  th:id="${'post-' + post.getId() + '-hide-icon'}"
+                  class="fas fa-eye-slash mr-1"
+                ></i>
                 Unhide
               </a>
               <!-- else (guest), redirect to login -->
-              <a class="text-decoration-none mr-2" th:href="@{/login}" sec:authorize="isAnonymous()">
+              <a
+                class="text-decoration-none mr-2"
+                th:href="@{/login}"
+                sec:authorize="isAnonymous()"
+              >
                 <i class="far fa-eye-slash mr-1"></i>
                 Hide
               </a>
@@ -146,38 +251,53 @@
         </div>
         <!-- endforeach -->
         <ul th:if="${postPage.getTotalPages() > 1}" class="pagination">
-          <li class="page-item active"><a class="page-link" href="#" th:href="@{/search/tags/page/{id}/(id=${postPage.getNumber()}, query=${#httpServletRequest.getParameter('query')})}" th:text="${postPage.getNumber()}"></a></li>
-          <li class="page-item" th:if="${!postPage.isLast()}"><a class="page-link" href="#" th:href="@{/search/tags/page/{id}/(id=${postPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}">Next</a></li>
+          <li class="page-item active">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/search/tags/page/{id}/(id=${postPage.getNumber()}, query=${#httpServletRequest.getParameter('query')})}"
+              th:text="${postPage.getNumber()}"
+            ></a>
+          </li>
+          <li class="page-item" th:if="${!postPage.isLast()}">
+            <a
+              class="page-link"
+              href="#"
+              th:href="@{/search/tags/page/{id}/(id=${postPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}"
+              >Next</a
+            >
+          </li>
         </ul>
       </div>
     </div>
     <!-- JScroll func -->
     <script type="text/javascript">
-      $('ul.pagination').hide();
+      $("ul.pagination").hide();
       $(function () {
-        $('document').ready(function () {
-          $('.markdown-content').each(function () {
-            let markdown_content = $(this).data('markdown-content');
+        $("document").ready(function () {
+          $(".markdown-content").each(function () {
+            let markdown_content = $(this).data("markdown-content");
             $(this).html(marked(markdown_content));
           });
-          $('.infinite-scroll').jscroll({
+          $(".infinite-scroll").jscroll({
             debug: true,
             autoTrigger: true,
-            loadingHtml: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            loadingHtml:
+              '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
             padding: 0,
-            nextSelector: '.pagination li.active + li a',
-            contentSelector: 'div.infinite-scroll',
+            nextSelector: ".pagination li.active + li a",
+            contentSelector: "div.infinite-scroll",
             callback: function () {
-              $('ul.pagination').remove();
+              $("ul.pagination").remove();
               // Marked markdown parser func
               // maybe remove document ready
               $(document).ready(function () {
-                $('.markdown-content').each(function () {
-                  let markdown_content = $(this).data('markdown-content');
+                $(".markdown-content").each(function () {
+                  let markdown_content = $(this).data("markdown-content");
                   $(this).html(marked(markdown_content));
                 });
               });
-            }
+            },
           });
         });
       });

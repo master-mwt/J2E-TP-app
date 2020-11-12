@@ -40,8 +40,7 @@
                 class="text-decoration-none"
                 th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
                 th:text="${channel.getName()}"
-                >channel name</a
-              >
+              ></a>
             </h3>
 
             <!-- if !is_null($channel->member) -->
@@ -50,9 +49,7 @@
               th:if="${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()) != null}"
               class="m-0 ml-auto text-warning"
               th:text="${roleBO.findById(userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()).getRole().getId()).getName()}"
-            >
-              channel member role name
-            </h5>
+            ></h5>
             <!-- endif -->
           </div>
         </div>
@@ -72,7 +69,8 @@
               class="page-link"
               href="#"
               th:href="@{/search/channels/page/{id}/(id=${channelPage.getNumber()+1}, query=${#httpServletRequest.getParameter('query')})}"
-              >Next</a>
+              >Next</a
+            >
           </li>
         </ul>
       </div>

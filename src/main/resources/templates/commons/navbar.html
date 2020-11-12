@@ -96,7 +96,7 @@
         <input
           type="search"
           class="form-control form-control-navbar rounded"
-          placeholder="[[#{common.navbar.search_bar.placeholder}]]"
+          th:placeholder="#{common.navbar.search_bar.placeholder}"
           aria-label="search"
           name="query"
           th:value="${#httpServletRequest.getParameter('query')}"
