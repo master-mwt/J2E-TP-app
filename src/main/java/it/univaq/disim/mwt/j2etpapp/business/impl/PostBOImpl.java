@@ -360,6 +360,28 @@ public class PostBOImpl implements PostBO {
         createPostAux(post, tagListString);
     }
 
+    @Override
+    public List<ImageClass> getPostImages(String postId) {
+        PostClass post = postRepository.findById(postId).orElse(null);
+        long i = 0;
+
+        List<ImageClass> images = new ArrayList<>();
+
+        if(post.getImages() != null && !post.getImages().isEmpty()) {
+            for(Long imageId : post.getImages()) {
+                ImageClass image = imageRepository.findById(imageId).orElse(null);
+                if(image != null) {
+                    if(i == 0) {
+                        image.setFirst(true);
+                    }
+                    images.add(image);
+                    i++;
+                }
+            }
+        }
+        return images;
+    }
+
 
     private void createPostAux(PostClass post, String tagListString) {
         // tags: string -> array

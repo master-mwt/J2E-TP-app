@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.business;
 
+import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
@@ -47,4 +48,5 @@ public interface PostBO {
     void reportToggle(String postId, UserClass user);
     void createPostInChannel(PostClass post, String tagListString);
     void createPostInChannel(PostClass post, String tagListString, MultipartFile[] images) throws BusinessException;
+    List<ImageClass> getPostImages(String postId);
 }

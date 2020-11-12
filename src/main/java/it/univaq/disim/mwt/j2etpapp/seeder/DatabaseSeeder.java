@@ -552,9 +552,9 @@ public class DatabaseSeeder {
                 userChannelRoleBO.save(userChannelRole);
             }
 
-            Set<Long> images = new HashSet<>();
+            /*Set<Long> images = new HashSet<>();
             images.add(imageBO.findByCaption("post_default.png").getId());
-            post.setImages(images);
+            post.setImages(images);*/
 
             Set<TagClass> tags = new HashSet<>(pickRandomElements(tagBO.findAll(), faker.random().nextInt(0, 3).longValue()));
             post.setTags(tags);

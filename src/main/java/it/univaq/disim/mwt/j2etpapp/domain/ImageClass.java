@@ -28,6 +28,9 @@ public class ImageClass {
     @NotBlank
     private String location;
 
+    @Transient
+    private boolean first;
+
     @Column(columnDefinition = "text")
     private String caption;
 }
