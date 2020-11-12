@@ -62,7 +62,7 @@
             <!-- if current user is subscribed & current user role == creator -->
             <div
               sec:authorize="!isAnonymous()"
-              th:if="${('administrator'.equals(principal.getGroup().getName())) || ((subscription != null) && ('creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())))}"
+              th:if="${(subscription != null) || ('administrator'.equals(principal.getGroup().getName()))}"
               class="d-flex flex-row justify-content-center"
             >
               <button
@@ -83,12 +83,14 @@
               </button>
               <a
                 role="button"
+                th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
                 th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}"
                 class="btn btn-outline-success mx-1"
                 >CHANGE IMAGE</a
               >
               <a
                 role="button"
+                th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
                 th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}"
                 class="btn btn-outline-success mx-1"
                 >REMOVE IMAGE</a

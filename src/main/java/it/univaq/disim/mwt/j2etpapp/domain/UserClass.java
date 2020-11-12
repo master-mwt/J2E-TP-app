@@ -83,7 +83,6 @@ public class UserClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserClass userClass = (UserClass) o;
-        return id.equals(userClass.id) &&
-                username.equals(userClass.username);
+        return username.equals(userClass.username);
     }
 }

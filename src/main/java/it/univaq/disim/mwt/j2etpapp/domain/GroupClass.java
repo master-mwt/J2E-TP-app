@@ -32,4 +32,12 @@ public class GroupClass implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<ServiceClass> services;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GroupClass that = (GroupClass) o;
+        return name.equals(that.name);
+    }
 }

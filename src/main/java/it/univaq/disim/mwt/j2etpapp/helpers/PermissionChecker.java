@@ -25,6 +25,16 @@ public class PermissionChecker {
             return false;
         }
 
+        // TODO: PERMISSION CHECK !!!!!!!!!!!!!!! (softbanned)
+        if("administrator".equals(currentUser.getGroup().getName())) {
+            for (ServiceClass service : currentUser.getGroup().getServices()) {
+                if(service.getName().equals(permission)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), currentUser.getId());
         ServiceClass joinChannel = serviceBO.findByName("join_channel");
 
@@ -51,6 +61,15 @@ public class PermissionChecker {
             return false;
         }
 
+        if("administrator".equals(currentUser.getGroup().getName())) {
+            for (ServiceClass service : currentUser.getGroup().getServices()) {
+                if(service.getName().equals(permission)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(post.getChannelId(), currentUser.getId());
         RoleClass creator = roleBO.findByName("creator");
         RoleClass admin = roleBO.findByName("admin");
@@ -69,6 +88,15 @@ public class PermissionChecker {
 
     public boolean hasPermissionOnReply(UserClass currentUser, ReplyClass reply, String permission){
         if(currentUser == null || reply == null || permission == null) {
+            return false;
+        }
+
+        if("administrator".equals(currentUser.getGroup().getName())) {
+            for (ServiceClass service : currentUser.getGroup().getServices()) {
+                if(service.getName().equals(permission)) {
+                    return true;
+                }
+            }
             return false;
         }
 

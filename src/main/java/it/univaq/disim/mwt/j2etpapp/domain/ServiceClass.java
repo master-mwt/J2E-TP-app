@@ -41,7 +41,6 @@ public class ServiceClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ServiceClass that = (ServiceClass) o;
-        return id.equals(that.id) &&
-                name.equals(that.name);
+        return name.equals(that.name);
     }
 }
