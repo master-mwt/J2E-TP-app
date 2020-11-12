@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.j2etpapp.business;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.TagClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -45,4 +46,5 @@ public interface PostBO {
     void saveToggle(String postId, UserClass user);
     void reportToggle(String postId, UserClass user);
     void createPostInChannel(PostClass post, String tagListString);
+    void createPostInChannel(PostClass post, String tagListString, MultipartFile[] images) throws BusinessException;
 }

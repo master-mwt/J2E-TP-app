@@ -52,7 +52,7 @@
               <!-- if current user is not subscribed & current user group == 1 -->
               <a
                 sec:authorize="!isAnonymous()"
-                th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName())}"
+                th:if="${(subscription == null) && 'logged'.equals(principal.getGroup().getName()) && (!channel.getSoftBannedUsers().contains(principal))}"
                 th:href="@{/channels/{id}/join/(id=${channel.getId()})}"
                 class="btn btn btn-outline-light ml-auto my-auto"
               >
@@ -567,15 +567,13 @@
             <div class="modal-body">
               <!-- MODAL CONTENT -->
               <!-- TODO: VALIDATION AND ERROR CONTROL -->
-              <!--
               <input
-                name="images[]"
+                name="files"
                 type="file"
                 class="form-control-file mb-3"
-                id="images"
-                multiple
+                id="files"
+                th:multiple="multiple"
               />
-              -->
               <input
                 name="title"
                 type="text"

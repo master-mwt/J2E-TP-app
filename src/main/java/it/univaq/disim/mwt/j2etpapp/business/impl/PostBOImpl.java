@@ -1,20 +1,28 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ChannelRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserChannelRoleRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.NotificationRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
+import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -31,6 +39,11 @@ public class PostBOImpl implements PostBO {
     private ChannelRepository channelRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
+    private FileDealer fileDealer;
 
     @Override
     public List<PostClass> findAll() {
@@ -307,6 +320,48 @@ public class PostBOImpl implements PostBO {
 
     @Override
     public void createPostInChannel(PostClass post, String tagListString) {
+        createPostAux(post, tagListString);
+    }
+
+    @Override
+    public void createPostInChannel(PostClass post, String tagListString, MultipartFile[] images) throws BusinessException {
+        // image upload
+        Set<Long> imagesId = post.getImages();
+        if(imagesId == null) {
+            imagesId = new HashSet<>();
+        }
+
+        if(images != null) {
+            try {
+                for(MultipartFile image : images) {
+                    if(!"".equals(image.getOriginalFilename())) {
+                        String path = fileDealer.uploadFile(image);
+                        ImageClass imageClass = new ImageClass();
+                        imageClass.setLocation(path);
+                        imageClass.setType(image.getContentType());
+
+                        BufferedImage bimg = ImageIO.read(new File(path));
+                        imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
+
+                        imageRepository.save(imageClass);
+
+                        imagesId.add(imageClass.getId());
+                    }
+                }
+                if(!imagesId.isEmpty()) {
+                    post.setImages(imagesId);
+                }
+            } catch (IOException e) {
+                throw new BusinessException("createPostInChannel save image", e);
+            }
+        }
+
+        // create post
+        createPostAux(post, tagListString);
+    }
+
+
+    private void createPostAux(PostClass post, String tagListString) {
         // tags: string -> array
         String[] tagNames = tagListString.split(" ");
         List<TagClass> tagList = new ArrayList<>();
