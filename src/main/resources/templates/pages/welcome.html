@@ -118,19 +118,19 @@
             <div class="card-header text-left border-0 px-3">
               <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
                 <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
-                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}">channel_name &#183</b></a> <span class="text-muted">Posted by
+                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}"></b></a> <span class="text-muted">[[#{content.welcome.post.posted_by}]]
                 </span>
                 <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
-                  class="text-decoration-none" th:text="${user.getUsername()}">username</a>
+                  class="text-decoration-none" th:text="${user.getUsername()}"></a>
               </p>
               <h5 class="m-0"><a th:href="@{/discover/post/{id}/(id=${post.getId()})}"
-                  class="text-decoration-none" th:text="${post.getTitle()}">post_title</a></h5>
+                  class="text-decoration-none" th:text="${post.getTitle()}"></a></h5>
             </div>
             <div class="card-body text-left px-3 py-1">
               <div class="markdown-content" th:data-markdown-content="${post.getContent()}"></div>
               <!-- for post tags -->
               <a th:href="@{/search/(target=tags, query=${tag.getName()})}" th:each="tag : ${post.getTags()}"><span class="badge badge-pill"
-                                 style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}">tag_name</span></a>
+                                 style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}"></span></a>
               <!-- end for -->
             </div>
 
