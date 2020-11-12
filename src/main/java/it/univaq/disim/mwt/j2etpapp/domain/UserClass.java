@@ -53,6 +53,7 @@ public class UserClass implements Serializable {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean hard_ban;
 
+    // TODO: hardban, upgrade/downgrade administrator bug: birth date change
     @Column(name = "birth_date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;

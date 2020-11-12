@@ -88,11 +88,23 @@ public class PermissionChecker {
     }
 
     public boolean hasPermissionOnUser(UserClass currentUser, UserClass user, String permission){
+        ServiceClass hardban_user_from_platform = serviceBO.findByName("hardban_user_from_platform");
+        ServiceClass upgrade_user_to_administrator = serviceBO.findByName("upgrade_user_to_administrator");
+        ServiceClass downgrade_user_to_logged = serviceBO.findByName("downgrade_user_to_logged");
+
         if(currentUser == null || user == null || permission == null) {
             return false;
         }
 
         for (ServiceClass service : currentUser.getGroup().getServices()) {
+            if(service.getName().equals(permission) && service.getName().equals(hardban_user_from_platform.getName())) {
+                return true;
+            } else if(service.getName().equals(permission) && service.getName().equals(upgrade_user_to_administrator.getName())) {
+                return true;
+            } else if(service.getName().equals(permission) && service.getName().equals(downgrade_user_to_logged.getName())) {
+                return true;
+            }
+
             if(service.getName().equals(permission) && currentUser.getId().equals(user.getId())) {
                 return true;
             }

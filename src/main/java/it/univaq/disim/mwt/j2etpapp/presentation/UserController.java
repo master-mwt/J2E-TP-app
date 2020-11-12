@@ -42,12 +42,28 @@ public class UserController {
         return "redirect:/home";
     }
 
-    @PostMapping("{userId}/hardban")
+    @GetMapping("{userId}/hardban")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'hardban_user_from_platform')")
     public String hardBanToggle(@PathVariable("userId") Long userId) {
         userBO.hardBanToggle(userId);
 
-        return "redirect:/home";
+        return "redirect:/discover/user/" + userId;
+    }
+
+    @GetMapping("{userId}/upgrade_to_administrator")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'upgrade_user_to_administrator')")
+    public String upgradeToAdministrator(@PathVariable("userId") Long userId) {
+        userBO.upgradeToAdministrator(userId);
+
+        return "redirect:/discover/user/" + userId;
+    }
+
+    @GetMapping("{userId}/downgrade_to_logged")
+    @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'downgrade_user_to_logged')")
+    public String downgradeToLogged(@PathVariable("userId") Long userId) {
+        userBO.downgradeToLogged(userId);
+
+        return "redirect:/discover/user/" + userId;
     }
 
     @PostMapping("{userId}/change_password")

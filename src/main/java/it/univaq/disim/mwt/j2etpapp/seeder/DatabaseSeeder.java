@@ -188,6 +188,12 @@ public class DatabaseSeeder {
         ServiceClass hardban_user_from_platform = new ServiceClass();
         hardban_user_from_platform.setName("hardban_user_from_platform");
 
+        ServiceClass upgrade_user_to_administrator = new ServiceClass();
+        upgrade_user_to_administrator.setName("upgrade_user_to_administrator");
+
+        ServiceClass downgrade_user_to_logged = new ServiceClass();
+        downgrade_user_to_logged.setName("downgrade_user_to_logged");
+
         list.add(mod_user_data);
         list.add(view_user_data);
         list.add(create_post);
@@ -212,6 +218,8 @@ public class DatabaseSeeder {
         list.add(downgrade_creator_to_admin_in_channel);
         list.add(softban_user_in_channel);
         list.add(hardban_user_from_platform);
+        list.add(upgrade_user_to_administrator);
+        list.add(downgrade_user_to_logged);
 
         serviceBO.saveAll(list);
     }

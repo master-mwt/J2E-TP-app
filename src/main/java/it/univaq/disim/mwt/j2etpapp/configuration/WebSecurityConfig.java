@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // url protection (from strictest to most permissive)
                 .antMatchers("/admin").hasRole("administrator")
+                .antMatchers("/admin/**").hasRole("administrator")
                 .antMatchers("/home/**").hasAnyRole("administrator", "logged")
                 .antMatchers("/home").hasAnyRole("administrator", "logged")
                 .antMatchers("/notifications/**").hasAnyRole("administrator", "logged")

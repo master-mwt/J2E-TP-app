@@ -3,8 +3,10 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.repository.jpa.GroupRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
@@ -32,6 +34,9 @@ public class UserBOImpl implements UserBO {
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private GroupRepository groupRepository;
+
     @Autowired
     private FileDealer fileDealer;
 
@@ -117,6 +122,28 @@ public class UserBOImpl implements UserBO {
             user.setHard_ban(true);
         }
         userRepository.save(user);
+    }
+
+    @Override
+    public void upgradeToAdministrator(Long userId) {
+        UserClass user = userRepository.findById(userId).orElse(null);
+        GroupClass administrator = groupRepository.findByName("administrator").orElse(null);
+
+        if(user != null) {
+            user.setGroup(administrator);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void downgradeToLogged(Long userId) {
+        UserClass user = userRepository.findById(userId).orElse(null);
+        GroupClass logged = groupRepository.findByName("logged").orElse(null);
+
+        if(user != null) {
+            user.setGroup(logged);
+            userRepository.save(user);
+        }
     }
 
     @Override
