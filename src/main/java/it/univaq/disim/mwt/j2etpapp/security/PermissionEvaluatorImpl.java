@@ -1,7 +1,14 @@
 package it.univaq.disim.mwt.j2etpapp.security;
 
-import it.univaq.disim.mwt.j2etpapp.business.*;
-import it.univaq.disim.mwt.j2etpapp.domain.*;
+import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
+import it.univaq.disim.mwt.j2etpapp.business.PostBO;
+import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
+import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
+import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
+import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.utils.PermissionChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -21,12 +28,9 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     private ReplyBO replyBO;
     @Autowired
     private UserBO userBO;
+
     @Autowired
-    private UserChannelRoleBO userChannelRoleBO;
-    @Autowired
-    private ServiceBO serviceBO;
-    @Autowired
-    private RoleBO roleBO;
+    private PermissionChecker permissionChecker;
 
     @Override
     public boolean hasPermission(Authentication authentication, Object object, Object permission) {
@@ -55,7 +59,7 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, Serializable objectId, String className, Object permission) {
+    public boolean hasPermission(Authentication authentication, Serializable objectId, String objectClassName, Object permission) {
         UserDetailsImpl principal = getPrincipal(authentication);
 
         if(principal == null){
@@ -67,13 +71,13 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
         }*/
 
         // if-else for all permission-protected classes
-        if(ChannelClass.class.getName().equals(className)){
+        if(ChannelClass.class.getName().equals(objectClassName)){
             return hasPermissionOnChannel(principal.getUser(), channelBO.findById((Long) objectId), (String) permission);
-        } else if(PostClass.class.getName().equals(className)) {
+        } else if(PostClass.class.getName().equals(objectClassName)) {
             return hasPermissionOnPost(principal.getUser(), postBO.findById((String) objectId), (String) permission);
-        } else if(ReplyClass.class.getName().equals(className)) {
+        } else if(ReplyClass.class.getName().equals(objectClassName)) {
             return hasPermissionOnReply(principal.getUser(), replyBO.findById((String) objectId), (String) permission);
-        } else if(UserClass.class.getName().equals(className)) {
+        } else if(UserClass.class.getName().equals(objectClassName)) {
             return hasPermissionOnUser(principal.getUser(), userBO.findById((Long) objectId), (String) permission);
         }
 
@@ -82,70 +86,23 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     
     // hasPermission implementations for each protected class
     private boolean hasPermissionOnChannel(UserClass currentUser, ChannelClass channel, String permission){
-        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), currentUser.getId());
-        ServiceClass joinChannel = serviceBO.findByName("join_channel");
-
-        if(userChannelRole != null) {
-            if(joinChannel.equals(permission)) {
-                return false;
-            }
-            RoleClass role = userChannelRole.getRole();
-            for (ServiceClass service : role.getServices()) {
-                if(service.getName().equals(permission)) {
-                    return true;
-                }
-            }
-        } else {
-            if(joinChannel.getName().equals(permission) && !(channel.getSoftBannedUsers().contains(currentUser))) {
-                return true;
-            }
-        }
-        return false;
+        return permissionChecker.hasPermissionOnChannel(currentUser, channel, permission);
     }
 
     private boolean hasPermissionOnPost(UserClass currentUser, PostClass post, String permission){
-        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(post.getChannelId(), currentUser.getId());
-        RoleClass creator = roleBO.findByName("creator");
-        RoleClass admin = roleBO.findByName("admin");
-        RoleClass moderator = roleBO.findByName("moderator");
-
-        if(userChannelRole != null) {
-            RoleClass role = userChannelRole.getRole();
-            for (ServiceClass service : role.getServices()) {
-                if(service.getName().equals(permission) && (post.getUserId().equals(currentUser.getId()) || creator.equals(role) || admin.equals(role) || moderator.equals(role))) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return permissionChecker.hasPermissionOnPost(currentUser, post, permission);
     }
 
     private boolean hasPermissionOnReply(UserClass currentUser, ReplyClass reply, String permission){
-        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(reply.getChannelId(), currentUser.getId());
-        RoleClass creator = roleBO.findByName("creator");
-        RoleClass admin = roleBO.findByName("admin");
-
-        if(userChannelRole != null) {
-            RoleClass role = userChannelRole.getRole();
-            for (ServiceClass service : role.getServices()) {
-                if(service.getName().equals(permission) && (reply.getUserId().equals(currentUser.getId())) || creator.equals(role) || admin.equals(role)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return permissionChecker.hasPermissionOnReply(currentUser, reply, permission);
     }
 
     private boolean hasPermissionOnUser(UserClass currentUser, UserClass user, String permission){
-        for (ServiceClass service : currentUser.getGroup().getServices()) {
-            if(service.getName().equals(permission) && currentUser.getId().equals(user.getId())) {
-                return true;
-            }
-        }
-        return false;
+        return permissionChecker.hasPermissionOnUser(currentUser, user, permission);
     }
 
 
+    // get principal
     private UserDetailsImpl getPrincipal(Authentication authentication){
         if(authentication.getPrincipal() instanceof UserDetailsImpl){
             return (UserDetailsImpl) authentication.getPrincipal();

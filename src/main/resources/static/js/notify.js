@@ -24,7 +24,10 @@ function makeToast(title, body, delay){
                  </div>`;
 
     $('#toast-container').append(toast);
+    // TODO: Toast not showing
+    console.log('toast appended');
     $(document).find('#toast' + toastId).toast('show');
+    console.log('toast fired');
     toastId++;
 }
 

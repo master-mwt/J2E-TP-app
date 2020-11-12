@@ -34,12 +34,10 @@ public class UserClass implements Serializable {
 
     @Column(nullable = false)
     @NotBlank
-    @Size(max = 30)
     private String name;
 
     @Column(nullable = false)
     @NotBlank
-    @Size(max = 30)
     private String surname;
 
     @Column(unique = true, nullable = false)
@@ -49,6 +47,7 @@ public class UserClass implements Serializable {
 
     @Column(nullable = false)
     @NotBlank
+    @Size(min = 6)
     private String password;
 
     @Column(nullable = false, columnDefinition = "boolean default false")

@@ -109,7 +109,8 @@
                       id="channel-name"
                       placeholder="Name"
                       th:field="*{name}"
-                      required
+                      th:maxlength="30"
+                      th:required="required"
               />
               <input
                       name="channel-title"
@@ -184,6 +185,7 @@
                       id="user-name"
                       placeholder="Name"
                       th:value="${user.getName()}"
+                      th:required="required"
               />
               <input
                       th:field="*{surname}"
@@ -193,6 +195,7 @@
                       id="user-surname"
                       placeholder="Surname"
                       th:value="${user.getSurname()}"
+                      th:required="required"
               />
               <input
                       th:field="*{email}"
@@ -202,6 +205,7 @@
                       id="user-email"
                       placeholder="Email"
                       th:value="${user.getEmail()}"
+                      th:required="required"
               />
               <input
                       th:field="*{birthDate}"
@@ -210,6 +214,7 @@
                       class="form-control mb-3"
                       name="user-birthdate"
                       th:value="${user.getBirthDate()}"
+                      th:required="required"
               />
               <input type="hidden" id="password" name="password" th:value="${user.getPassword()}" />
               <input type="hidden" id="username" name="username" th:value="${user.getUsername()}" />
@@ -258,7 +263,8 @@
                       class="form-control mb-3"
                       id="old-password"
                       placeholder="Old password"
-                      required
+                      th:required="required"
+                      th:minlength="6"
               />
               <input
                       name="new-password"
@@ -266,7 +272,8 @@
                       class="form-control"
                       id="new-password"
                       placeholder="New password"
-                      required
+                      th:required="required"
+                      th:minlength="6"
               />
               <!-- / MODAL CONTENT -->
             </div>
