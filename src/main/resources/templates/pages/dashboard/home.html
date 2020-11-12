@@ -26,38 +26,63 @@
               width="100"
             />
             <div class="d-flex flex-column my-auto ml-4">
-              <a th:href="@{/user/{userId}/change_image/(userId=${user.getId()})}" class="text-decoration-none">change profile image</a>
-              <a th:href="@{/user/{userId}/remove_image/(userId=${user.getId()})}" class="text-decoration-none">remove profile image</a>
-              <h4 class="m-0" th:text="${user.getName() + ' ' + user.getSurname()}">user.name user.surname</h4>
-              <h5 class="m-0 text-muted" th:text="${user.getUsername()}">user.username</h5>
+              <a
+                th:href="@{/user/{userId}/change_image/(userId=${user.getId()})}"
+                class="text-decoration-none"
+                >[[#{content.dashboard.home.change_profile_image}]]</a
+              >
+              <a
+                th:href="@{/user/{userId}/remove_image/(userId=${user.getId()})}"
+                class="text-decoration-none"
+                >[[#{content.dashboard.home.remove_profile_image}]]</a
+              >
+              <h4
+                class="m-0"
+                th:text="${user.getName() + ' ' + user.getSurname()}"
+              ></h4>
+              <h5 class="m-0 text-muted" th:text="${user.getUsername()}"></h5>
             </div>
           </div>
           <div class="card-body">
             <h5 class="m-0 mb-2">
-              <b>email</b><span class="ml-4 text-muted" th:text="${user.getEmail()}">user.email</span>
+              <b>email</b
+              ><span
+                class="ml-4 text-muted"
+                th:text="${user.getEmail()}"
+              ></span>
             </h5>
             <h5 class="m-0">
-              <b>birth date</b
-              ><span class="ml-4 text-muted" th:text="${user.getBirthDate()}">user.birth_date</span>
+              <b>[[#{content.dashboard.home.label.birth_date}]]</b
+              ><span
+                class="ml-4 text-muted"
+                th:text="${user.getBirthDate()}"
+              ></span>
             </h5>
           </div>
           <div class="card-footer">
             <div class="float-right">
-              <button class="btn btn-success mr-1"
-                 data-toggle="modal"
-                 data-target="#user-data-modal">
-                update profile data
+              <button
+                class="btn btn-success mr-1"
+                data-toggle="modal"
+                data-target="#user-data-modal"
+              >
+                [[#{content.dashboard.home.button.update_profile_data}]]
               </button>
-              <button class="btn btn-success"
-                 data-toggle="modal"
-                 data-target="#change-password-modal">
-                change password
+              <button
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#change-password-modal"
+              >
+                [[#{content.dashboard.home.button.change_password}]]
               </button>
             </div>
-            <button class="btn btn-primary" role="button"
-                    data-toggle="modal"
-                    data-target="#create-channel-modal">
-              create a channel
+            <button
+              class="btn btn-primary"
+              role="button"
+              data-toggle="modal"
+              data-target="#create-channel-modal"
+            >
+              [[#{content.dashboard.home.button.change_password}]]
             </button>
           </div>
         </div>
@@ -65,83 +90,80 @@
     </div>
 
     <!-- only logged -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/channels/create}" method="post" th:object="${channel}" enctype="multipart/form-data">
+    <form
+      sec:authorize="!isAnonymous()"
+      th:action="@{/channels/create}"
+      method="post"
+      th:object="${channel}"
+      enctype="multipart/form-data"
+    >
       <div
-              class="modal fade"
-              id="create-channel-modal"
-              data-backdrop="static"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="create-channel-modal-label"
-              aria-hidden="true"
+        class="modal fade"
+        id="create-channel-modal"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="create-channel-modal-label"
+        aria-hidden="true"
       >
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="create-channel-modal-label">
-                create a channel
+                [[#{content.dashboard.create_channel.modal.title}]]
               </h5>
               <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="close"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <!-- MODAL CONTENT -->
-              <!-- TODO: REMOVE ARRAY OF IMAGES -->
-              <!--
               <input
-                      name="images[]"
-                      type="file"
-                      class="form-control-file mb-3"
-                      id="images"
-                      multiple
-              />
-              -->
-              <input
-                      name="channel-name"
-                      type="text"
-                      class="form-control mb-3"
-                      id="channel-name"
-                      placeholder="Name"
-                      th:field="*{name}"
-                      th:maxlength="30"
-                      th:required="required"
+                name="channel-name"
+                type="text"
+                class="form-control mb-3"
+                id="channel-name"
+                th:placeholder="#{content.dashboard.create_channel.modal.label.name}"
+                th:field="*{name}"
+                th:maxlength="30"
+                th:required="required"
               />
               <input
-                      name="channel-title"
-                      type="text"
-                      class="form-control mb-3"
-                      id="channel-title"
-                      placeholder="Title"
-                      th:field="*{title}"
+                name="channel-title"
+                type="text"
+                class="form-control mb-3"
+                id="channel-title"
+                th:placeholder="#{content.dashboard.create_channel.modal.label.title}"
+                th:field="*{title}"
               />
               <textarea
-                      name="channel-description"
-                      id="channel-description-textarea"
-                      cols=""
-                      rows=""
-                      class="form-control mb-3"
-                      placeholder="Description"
-                      th:field="*{description}"
+                name="channel-description"
+                id="channel-description-textarea"
+                cols=""
+                rows=""
+                class="form-control mb-3"
+                th:placeholder="#{content.dashboard.create_channel.modal.label.description}"
+                th:field="*{description}"
               ></textarea>
               <textarea
-                      name="channel-rules"
-                      id="channel-rules-textarea"
-                      cols=""
-                      rows=""
-                      class="form-control"
-                      placeholder="Rules"
-                      th:field="*{rules}"
+                name="channel-rules"
+                id="channel-rules-textarea"
+                cols=""
+                rows=""
+                class="form-control"
+                th:placeholder="#{content.dashboard.create_channel.modal.label.rules}"
+                th:field="*{rules}"
               ></textarea>
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-secondary">create</button>
+              <button type="submit" class="btn btn-secondary">
+                [[#{content.dashboard.create_channel.modal.button.create}]]
+              </button>
             </div>
           </div>
         </div>
@@ -149,79 +171,106 @@
     </form>
 
     <!-- only logged -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/user/{id}/update/(id=${user.getId()})}" th:object="${user}" method="post" enctype="">
+    <form
+      sec:authorize="!isAnonymous()"
+      th:action="@{/user/{id}/update/(id=${user.getId()})}"
+      th:object="${user}"
+      method="post"
+      enctype=""
+    >
       <div
-              class="modal fade"
-              id="user-data-modal"
-              data-backdrop="static"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="user-data-modal-label"
-              aria-hidden="true"
+        class="modal fade"
+        id="user-data-modal"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="user-data-modal-label"
+        aria-hidden="true"
       >
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="user-data-modal-label">
-                update profile data
+                [[#{content.dashboard.update_profile_data.modal.title}]]
               </h5>
               <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="close"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <!-- MODAL CONTENT -->
-              <!-- TODO: connettere campi oggetto utente come valori old del form per poi cambiarli -->
+              <label for="user-name"
+                >[[#{content.dashboard.update_profile_data.modal.label.name}]]</label
+              >
               <input
-                      th:field="*{name}"
-                      name="user-name"
-                      type="text"
-                      class="form-control mb-3"
-                      id="user-name"
-                      placeholder="Name"
-                      th:value="${user.getName()}"
-                      th:required="required"
+                th:field="*{name}"
+                name="user-name"
+                type="text"
+                class="form-control mb-3"
+                id="user-name"
+                th:placeholder="#{content.dashboard.update_profile_data.modal.label.name}"
+                th:value="${user.getName()}"
+                th:required="required"
+              />
+              <label for="user-surname"
+                >[[#{content.dashboard.update_profile_data.modal.label.surname}]]</label
+              >
+              <input
+                th:field="*{surname}"
+                name="user-surname"
+                type="text"
+                class="form-control mb-3"
+                id="user-surname"
+                th:placeholder="#{content.dashboard.update_profile_data.modal.label.surname}"
+                th:value="${user.getSurname()}"
+                th:required="required"
+              />
+              <label for="user-email">email</label>
+              <input
+                th:field="*{email}"
+                name="user-email"
+                type="email"
+                class="form-control mb-3"
+                id="user-email"
+                placeholder="email"
+                th:value="${user.getEmail()}"
+                th:required="required"
+              />
+              <label for="user-birthdate"
+                >[[#{content.dashboard.update_profile_data.modal.label.birth_date}]]</label
+              >
+              <input
+                th:field="*{birthDate}"
+                id="user-birthdate"
+                type="date"
+                class="form-control mb-3"
+                name="user-birthdate"
+                th:value="${user.getBirthDate()}"
+                th:required="required"
               />
               <input
-                      th:field="*{surname}"
-                      name="user-surname"
-                      type="text"
-                      class="form-control mb-3"
-                      id="user-surname"
-                      placeholder="Surname"
-                      th:value="${user.getSurname()}"
-                      th:required="required"
+                type="hidden"
+                id="password"
+                name="password"
+                th:value="${user.getPassword()}"
               />
               <input
-                      th:field="*{email}"
-                      name="user-email"
-                      type="email"
-                      class="form-control mb-3"
-                      id="user-email"
-                      placeholder="Email"
-                      th:value="${user.getEmail()}"
-                      th:required="required"
+                type="hidden"
+                id="username"
+                name="username"
+                th:value="${user.getUsername()}"
               />
-              <input
-                      th:field="*{birthDate}"
-                      id="user-birthdate"
-                      type="date"
-                      class="form-control mb-3"
-                      name="user-birthdate"
-                      th:value="${user.getBirthDate()}"
-                      th:required="required"
-              />
-              <input type="hidden" id="password" name="password" th:value="${user.getPassword()}" />
-              <input type="hidden" id="username" name="username" th:value="${user.getUsername()}" />
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-secondary">update</button>
+              <button type="submit" class="btn btn-secondary">
+                [[#{content.dashboard.update_profile_data.modal.button.update}]]
+              </button>
             </div>
           </div>
         </div>
@@ -229,61 +278,66 @@
     </form>
 
     <!-- only logged -->
-    <form sec:authorize="!isAnonymous()" th:action="@{/user/{id}/change_password/(id=${user.getId()})}" method="post" enctype="">
+    <form
+      sec:authorize="!isAnonymous()"
+      th:action="@{/user/{id}/change_password/(id=${user.getId()})}"
+      method="post"
+      enctype=""
+    >
       <div
-              class="modal fade"
-              id="change-password-modal"
-              data-backdrop="static"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="change-password-modal-label"
-              aria-hidden="true"
+        class="modal fade"
+        id="change-password-modal"
+        data-backdrop="static"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="change-password-modal-label"
+        aria-hidden="true"
       >
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="change-password-modal-label">
-                change password
+                [[#{content.dashboard.change_password.modal.title}]]
               </h5>
               <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="close"
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <!-- MODAL CONTENT -->
-              <!-- TODO: connettere campi oggetto utente come valori old del form per poi cambiarli -->
               <input
-                      name="old-password"
-                      type="password"
-                      class="form-control mb-3"
-                      id="old-password"
-                      placeholder="Old password"
-                      th:required="required"
-                      th:minlength="6"
+                name="old-password"
+                type="password"
+                class="form-control mb-3"
+                id="old-password"
+                th:placeholder="#{content.dashboard.change_password.modal.label.old_password}"
+                th:required="required"
+                th:minlength="6"
               />
               <input
-                      name="new-password"
-                      type="password"
-                      class="form-control"
-                      id="new-password"
-                      placeholder="New password"
-                      th:required="required"
-                      th:minlength="6"
+                name="new-password"
+                type="password"
+                class="form-control"
+                id="new-password"
+                th:placeholder="#{content.dashboard.change_password.modal.label.new_password}"
+                th:required="required"
+                th:minlength="6"
               />
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-secondary">change</button>
+              <button type="submit" class="btn btn-secondary">
+                [[#{content.dashboard.change_password.modal.button.change}]]
+              </button>
             </div>
           </div>
         </div>
       </div>
     </form>
-
   </div>
 </html>
