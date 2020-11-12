@@ -8,7 +8,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
-import it.univaq.disim.mwt.j2etpapp.utils.PermissionChecker;
+import it.univaq.disim.mwt.j2etpapp.helpers.PermissionChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;

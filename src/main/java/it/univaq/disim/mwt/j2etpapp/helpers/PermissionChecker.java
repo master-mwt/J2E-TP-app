@@ -1,4 +1,4 @@
-package it.univaq.disim.mwt.j2etpapp.utils;
+package it.univaq.disim.mwt.j2etpapp.helpers;
 
 import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.RoleBO;
