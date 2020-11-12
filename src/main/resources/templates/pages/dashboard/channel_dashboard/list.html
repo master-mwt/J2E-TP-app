@@ -27,28 +27,37 @@
               class="rounded"
             />
             <img
-                    th:unless="${channel.getImage() == null}"
-                    th:src="@{/{link}/(link=${channel.getImage().getLocation()})}"
-                    alt=""
-                    width="40px"
-                    height="40px"
-                    class="rounded"
+              th:unless="${channel.getImage() == null}"
+              th:src="@{/{link}/(link=${channel.getImage().getLocation()})}"
+              alt=""
+              width="40px"
+              height="40px"
+              class="rounded"
             />
             <h3 class="m-0 ml-3">
-              <a class="text-decoration-none" th:href="@{/discover/channel/{id}/(id=${channel.getId()})}" th:text="${channel.getName()}">channel.name</a>
+              <a
+                class="text-decoration-none"
+                th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                th:text="${channel.getName()}"
+              ></a>
             </h3>
-            <h5 class="m-0 ml-auto text-warning" th:text="${userroles.get(channel.getId()).getRole().getName()}">user.channel.role.name</h5>
+            <h5
+              class="m-0 ml-auto text-warning"
+              th:text="${userroles.get(channel.getId()).getRole().getName()}"
+            ></h5>
           </div>
         </div>
         <!-- if empty -->
         <th:block th:if="${channels.isEmpty()}">
           <img
-                  th:src="@{/images/no_res_2.png}"
-                  alt=""
-                  class="rounded my-4"
-                  width="350px"
+            th:src="@{/images/no_res_2.png}"
+            alt=""
+            class="rounded my-4"
+            width="350px"
           />
-          <h2 class="text-primary">no results ...</h2>
+          <h2 class="text-primary">
+            [[#{content.dashboard.submenu.channel.list.no_results}]]
+          </h2>
         </th:block>
         <!-- end forelse -->
       </div>

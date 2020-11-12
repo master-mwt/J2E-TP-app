@@ -8,42 +8,54 @@
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
       <div class="col-md-10 text-center">
-    
-        <a role="button" th:href="@{/discover/channel/{id}/(id=${channel.getId()})}" class="btn btn-dark mb-4"><i
-            class="fas fa-arrow-left mr-2"></i> return to channel <span th:text="${channel.getName()}">channel.name</span></a>
-    
+        <a
+          role="button"
+          th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+          class="btn btn-dark mb-4"
+          ><i class="fas fa-arrow-left mr-2"></i
+          >[[#{content.dashboard.home.change_channel_image.button.back}]]<span
+            th:text="${channel.getName()}"
+          ></span
+        ></a>
+
         <div class="card">
           <div class="card-header">
-            <h2>change channel image</h2>
+            <h2>[[#{content.dashboard.home.change_channel_image.title}]]</h2>
           </div>
-          <div class="card-body">
-            <!-- if session.message is "success" -->
-            <div class="alert alert-success alert-block">
+          <form
+            th:action="@{/channels/{id}/change_image/(id=${channel.getId()})}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <div class="card-body">
+              <!-- if session.message is "success" -->
+              <!-- <div class="alert alert-success alert-block">
               <button type="button" data-dismiss="alert" class="close">x</button>
               <strong>message</strong>
-            </div>
-            <!-- get channel img -->
-            <img src="" class="col mb-3">
-            <!-- end if -->
-    
-            <!-- if count.errors > 0 -->
-            <div class="alert alert-danger">
+            </div> -->
+
+              <!-- get channel img -->
+              <!-- <img src="" class="col mb-3"> -->
+              <!-- end if -->
+
+              <!-- if count.errors > 0 -->
+              <!-- <div class="alert alert-danger">
               <strong>server error</strong>
-              <ul>
-                <!-- foreach errors as error -->
-                <li>error</li>
-                <!-- end foreach -->
-              </ul>
+              <ul> -->
+              <!-- foreach errors as error -->
+              <!-- <li>error</li> -->
+              <!-- end foreach -->
+              <!-- </ul>
+            </div> -->
+              <!-- end if -->
+
+              <input type="file" name="image" class="form-control-file" />
             </div>
-            <!-- end if -->
-    
-            <form th:action="@{/channels/{id}/change_image/(id=${channel.getId()})}" method="post" enctype="multipart/form-data">
-              <!-- {{ Form::hidden('channel_id', $channel->id) }} -->
-              <input type="file" name="image" class="form-control-file">
-          </div>
-          <div class="card-footer">
-            <button type="submit" class="btn btn-success float-right">upload image</button>
-          </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-success float-right">
+                [[#{content.dashboard.home.change_channel_image.button.upload_image}]]
+              </button>
+            </div>
           </form>
         </div>
       </div>

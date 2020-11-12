@@ -103,7 +103,7 @@
                 <a
                   th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
                   class="text-decoration-none"
-                  ><b th:utext="${channel.getName() + ' &#183'}"></b
+                  ><b th:utext="${channel.getName()}"></b
                 ></a>
                 <span class="text-muted"
                   >[[#{content.search.tag.posted_by}]]</span

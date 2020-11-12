@@ -121,7 +121,7 @@
             <div class="card-header text-left border-0 px-3">
               <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
                 <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
-                  class="text-decoration-none"><b th:utext="${channel.getName() + ' &#183'}"></b></a> <span class="text-muted">[[#{content.welcome.post.posted_by}]]
+                  class="text-decoration-none"><b th:utext="${channel.getName()}"></b></a> <span class="text-muted">[[#{content.welcome.post.posted_by}]]
                 </span>
                 <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
                   class="text-decoration-none" th:text="${user.getUsername()}"></a>
