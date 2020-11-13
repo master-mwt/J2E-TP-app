@@ -40,7 +40,7 @@
                 th:if="${subscription != null}"
                 class="m-0 ml-3 text-muted my-auto"
               >
-                [[#{common.discover.channel.subscribed_as}]]
+                [[#{content.discover.channel.subscribed_as}]]
                 <span
                   class="text-uppercase text-warning"
                   th:text="${subscription.getRole().getName()}"
@@ -53,7 +53,7 @@
                 th:href="@{/channels/{id}/join/(id=${channel.getId()})}"
                 class="btn btn btn-outline-light ml-auto my-auto"
               >
-                [[#{common.discover.channel.button.join}]]
+                [[#{content.discover.channel.button.join}]]
               </a>
             </div>
             <!-- if current user is subscribed & current user role == creator -->
@@ -68,7 +68,7 @@
                 data-toggle="modal"
                 data-target="#delete-modal"
               >
-                [[#{common.discover.channel.button.delete_channel}]]
+                [[#{content.discover.channel.button.delete_channel}]]
               </button>
               <button
                 th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
@@ -76,21 +76,21 @@
                 data-toggle="modal"
                 data-target="#edit-modal"
               >
-                [[#{common.discover.channel.button.edit_channel_data}]]
+                [[#{content.discover.channel.button.edit_channel_data}]]
               </button>
               <a
                 role="button"
                 th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
                 th:href="@{/channels/{channelId}/change_image/(channelId=${channel.getId()})}"
                 class="btn btn-outline-success mx-1"
-                >[[#{common.discover.channel.button.change_channel_image}]]</a
+                >[[#{content.discover.channel.button.change_channel_image}]]</a
               >
               <a
                 role="button"
                 th:if="${'administrator'.equals(principal.getGroup().getName()) || 'creator'.equals(subscription.getRole().getName()) || 'admin'.equals(subscription.getRole().getName())}"
                 th:href="@{/channels/{channelId}/remove_image/(channelId=${channel.getId()})}"
                 class="btn btn-outline-success mx-1"
-                >[[#{common.discover.channel.button.remove_channel_image}]]</a
+                >[[#{content.discover.channel.button.remove_channel_image}]]</a
               >
               <!-- if current user is subscribed -->
               <a
@@ -99,21 +99,21 @@
                 th:href="@{/channels/{id}/leave/(id=${channel.getId()})}"
                 class="btn btn btn-outline-warning mx-1"
               >
-                [[#{common.discover.channel.button.leave}]]
+                [[#{content.discover.channel.button.leave}]]
               </a>
             </div>
           </div>
           <div class="card-body text-left px-3 py-2">
             <h5 class="text-muted">
-              [[#{common.discover.channel.info.label.title}]]
+              [[#{content.discover.channel.info.label.title}]]
             </h5>
             <p class="" th:text="${channel.getTitle()}"></p>
             <h5 class="text-muted">
-              [[#{common.discover.channel.info.label.description}]]
+              [[#{content.discover.channel.info.label.description}]]
             </h5>
             <p class="" th:text="${channel.getDescription()}"></p>
             <h5 class="text-muted">
-              [[#{common.discover.channel.info.label.rules}]]
+              [[#{content.discover.channel.info.label.rules}]]
             </h5>
             <p class="" th:text="${channel.getRules()}"></p>
           </div>
@@ -127,7 +127,7 @@
               role="button"
               th:href="@{/discover/channel/{id}/members/(id=${channel.getId()})}"
               class="btn btn-sm btn-info float-right"
-              >[[#{common.discover.channel.button.members}]]</a
+              >[[#{content.discover.channel.button.members}]]</a
             >
             <!-- if current user role != member -->
             <a
@@ -135,7 +135,7 @@
               th:href="@{/discover/channel/{id}/posts/reported/(id=${channel.getId()})}"
               class="btn btn-sm btn-info float-right mr-2"
               th:if="${('administrator'.equals(principal.getGroup().getName())) || !('member'.equals(subscription.getRole().getName()))}"
-              >[[#{common.discover.channel.button.reported_posts}]]</a
+              >[[#{content.discover.channel.button.reported_posts}]]</a
             >
             <!-- if current user role != member & != moderator -->
             <a
@@ -143,7 +143,7 @@
               th:href="@{/discover/channel/{id}/members/banned/(id=${channel.getId()})}"
               class="btn btn-sm btn-info float-right mr-2"
               th:if="${('administrator'.equals(principal.getGroup().getName())) || (!'member'.equals(subscription.getRole().getName()) && !'moderator'.equals(subscription.getRole().getName()))}"
-              >[[#{common.discover.channel.button.banned_users}]]</a
+              >[[#{content.discover.channel.button.banned_users}]]</a
             >
           </div>
         </div>
@@ -173,7 +173,7 @@
           data-toggle="modal"
           data-target="#easymde-modal"
         >
-          [[#{common.discover.channel.button.make_a_post}]]
+          [[#{content.discover.channel.button.make_a_post}]]
         </button>
       </div>
       <!-- else -->
@@ -186,7 +186,7 @@
           role="button"
           th:href="@{/login}"
           class="btn btn-success btn-block text-light"
-          >[[#{common.discover.channel.button.make_a_post}]]</a
+          >[[#{content.discover.channel.button.make_a_post}]]</a
         >
       </div>
 
@@ -342,7 +342,7 @@
                 th:with="user=${userBO.findById(post.getUserId())}, userChannelRole=${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), user.getId())}"
               >
                 <span class="text-muted"
-                  >[[#{common.discover.channel.post.posted_by}]]</span
+                  >[[#{content.discover.channel.post.posted_by}]]</span
                 >
                 <a
                   th:href="@{/discover/user/{id}/(id=${user.getId()})}"
@@ -561,7 +561,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="easymde-modal-label">
-                [[#{common.discover.channel.make_a_post.modal.title}]]
+                [[#{content.discover.channel.make_a_post.modal.title}]]
               </h5>
               <button
                 type="button"
@@ -586,7 +586,7 @@
                 type="text"
                 class="form-control mb-3"
                 id="title"
-                th:placeholder="#{common.discover.channel.make_a_post.modal.form.title}"
+                th:placeholder="#{content.discover.channel.make_a_post.modal.form.title}"
                 th:field="*{title}"
                 th:required="required"
               />
@@ -642,7 +642,7 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-secondary">
-                [[#{common.discover.channel.make_a_post.modal.button.create}]]
+                [[#{content.discover.channel.make_a_post.modal.button.create}]]
               </button>
             </div>
           </div>
@@ -670,7 +670,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="delete-modal-label">
-                [[#{common.discover.channel.delete_channel.modal.title}]]
+                [[#{content.discover.channel.delete_channel.modal.title}]]
               </h5>
               <button
                 type="button"
@@ -684,13 +684,13 @@
             <div class="modal-body">
               <!-- MODAL CONTENT -->
               <h3 class="text-center text-danger">
-                [[#{common.discover.channel.delete_channel.modal.header_warning}]]
+                [[#{content.discover.channel.delete_channel.modal.header_warning}]]
               </h3>
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-secondary">
-                [[#{common.discover.channel.delete_channel.modal.button.delete}]]
+                [[#{content.discover.channel.delete_channel.modal.button.delete}]]
               </button>
             </div>
           </div>
@@ -718,7 +718,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="edit-modal-label">
-                [[#{common.discover.channel.edit_channel_data.modal.title}]]
+                [[#{content.discover.channel.edit_channel_data.modal.title}]]
               </h5>
               <button
                 type="button"
@@ -732,7 +732,7 @@
             <div class="modal-body">
               <!-- MODAL CONTENT -->
               <label for="channel-title"
-                >[[#{common.discover.channel.edit_channel_data.modal.label.title}]]</label
+                >[[#{content.discover.channel.edit_channel_data.modal.label.title}]]</label
               >
               <input
                 th:field="*{title}"
@@ -744,7 +744,7 @@
                 th:value="${channel.getTitle()}"
               />
               <label for="channel-description"
-                >[[#{common.discover.channel.edit_channel_data.modal.label.description}]]</label
+                >[[#{content.discover.channel.edit_channel_data.modal.label.description}]]</label
               >
               <textarea
                 th:field="*{description}"
@@ -757,7 +757,7 @@
                 th:value="${channel.getDescription()}"
               ></textarea>
               <label for="channel-rules"
-                >[[#{common.discover.channel.edit_channel_data.modal.label.rules}]]</label
+                >[[#{content.discover.channel.edit_channel_data.modal.label.rules}]]</label
               >
               <textarea
                 th:field="*{rules}"
@@ -773,7 +773,7 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-secondary">
-                [[#{common.discover.channel.edit_channel_data.modal.button.edit}]]
+                [[#{content.discover.channel.edit_channel_data.modal.button.edit}]]
               </button>
             </div>
           </div>

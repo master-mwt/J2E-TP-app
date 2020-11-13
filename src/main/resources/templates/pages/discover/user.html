@@ -42,7 +42,7 @@
               ></span>
             </h5>
             <h5 class="m-0">
-              <b>[[#{common.discover.user.label.birth_date}]]</b
+              <b>[[#{content.discover.user.label.birth_date}]]</b
               ><span
                 class="ml-4 text-muted"
                 th:text="${#dates.format(user.getBirthDate(), dateFormat)}"
@@ -55,7 +55,7 @@
               th:href="@{/discover/user/{id}/posts/(id=${user.getId()})}"
               class="btn btn-dark float-right"
               ><i class="fas fa-eye mr-2"></i
-              >[[#{common.discover.user.button.see_posts}]]</a
+              >[[#{content.discover.user.button.see_posts}]]</a
             >
             <th:block
               sec:authorize="hasRole('administrator')"
@@ -66,14 +66,14 @@
                 th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
                 class="btn btn-danger float-left"
                 role="button"
-                >[[#{common.discover.user.button.remove_hardban}]]</a
+                >[[#{content.discover.user.button.remove_hardban}]]</a
               >
               <a
                 th:unless="${user.isHard_ban()}"
                 th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
                 class="btn btn-danger float-left"
                 role="button"
-                >[[#{common.discover.user.button.hardban}]]</a
+                >[[#{content.discover.user.button.hardban}]]</a
               >
 
               <a
@@ -81,14 +81,14 @@
                 th:href="@{/user/{userId}/downgrade_to_logged/(userId=${user.getId()})}"
                 class="btn btn-danger float-left ml-3"
                 role="button"
-                >[[#{common.discover.user.button.downgrade_to_normal_user}]]</a
+                >[[#{content.discover.user.button.downgrade_to_normal_user}]]</a
               >
               <a
                 th:if="${'logged'.equals(user.getGroup().getName())}"
                 th:href="@{/user/{userId}/upgrade_to_administrator/(userId=${user.getId()})}"
                 class="btn btn-danger float-left ml-3"
                 role="button"
-                >[[#{common.discover.user.button.upgrade_to_administrator_user}]]</a
+                >[[#{content.discover.user.button.upgrade_to_administrator_user}]]</a
               >
             </th:block>
           </div>

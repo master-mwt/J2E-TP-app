@@ -105,7 +105,7 @@
                   ><b th:utext="${channel.getName()}"></b
                 ></a>
                 <span class="text-muted"
-                  >[[#{common.discover.user.posts.posted_by}]]</span
+                  >[[#{content.discover.user.posts.posted_by}]]</span
                 >
                 <a
                   th:href="@{/discover/user/{id}/(id=${user.getId()})}"
@@ -224,7 +224,7 @@
             width="350px"
           />
           <h2 class="text-primary">
-            [[#{common.discover.user.posts.no_results}]]
+            [[#{content.discover.user.posts.no_results}]]
           </h2>
         </th:block>
         <!-- end forelse -->

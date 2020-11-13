@@ -162,7 +162,7 @@
                   ><b th:utext="${channel.getName()}"></b
                 ></a>
                 <span class="text-muted"
-                  >[[#{common.discover.post.posted_by}]]</span
+                  >[[#{content.discover.post.posted_by}]]</span
                 >
                 <a
                   th:href="@{/discover/user/{id}/(id=${user.getId()})}"
@@ -314,7 +314,7 @@
           data-toggle="modal"
           data-target="#easymde-modal-reply"
         >
-          [[#{common.discover.post.button.make_a_reply}]]
+          [[#{content.discover.post.button.make_a_reply}]]
         </button>
       </div>
       <!-- else -->
@@ -327,7 +327,7 @@
           role="button"
           th:href="@{/login}"
           class="btn btn-success btn-block text-light"
-          >[[#{common.discover.post.button.make_a_reply}]]</a
+          >[[#{content.discover.post.button.make_a_reply}]]</a
         >
       </div>
       <!-- end only logged -->
@@ -419,7 +419,7 @@
                 th:with="user=${userBO.findById(reply.getUserId())}"
               >
                 <span class="text-muted"
-                  >[[#{common.discover.post.reply.posted_by}]]</span
+                  >[[#{content.discover.post.reply.posted_by}]]</span
                 >
                 <a
                   th:href="@{/discover/user/{id}/(id=${user.getId()})}"
@@ -444,7 +444,7 @@
                 th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId())}"
                 class="text-decoration-none mr-2 text-danger replydelete"
                 ><i class="fa fa-exclamation-triangle"></i
-                >[[#{common.discover.post.reply.button.delete_reply}]]</a
+                >[[#{content.discover.post.reply.button.delete_reply}]]</a
               >
             </div>
           </div>
@@ -523,7 +523,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title ml-auto" id="easymde-modal-reply-label">
-                [[#{common.discover.post.reply.modal.make_a_reply}]]
+                [[#{content.discover.post.reply.modal.make_a_reply}]]
               </h5>
               <button
                 type="button"
@@ -565,7 +565,7 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary">
-                [[#{common.discover.post.reply.modal.button.create}]]
+                [[#{content.discover.post.reply.modal.button.create}]]
               </button>
             </div>
           </div>
