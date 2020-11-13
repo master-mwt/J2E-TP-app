@@ -1,22 +1,24 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
+import it.univaq.disim.mwt.j2etpapp.business.ImageBO;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
+import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.JSONDealer;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,15 +28,24 @@ public class UserController {
 
     @Autowired
     private UserBO userBO;
+    @Autowired
+    private ImageBO imageBO;
+
+    @Autowired
+    private ApplicationProperties properties;
 
     @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, @PathVariable("userId") Long userId, Model model, Errors errors) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         if(errors.hasErrors()) {
-            // TODO: trovare un modo per far vedere errori
-            return "";
+            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+            model.addAttribute("user", principal);
+            model.addAttribute("imageBO", imageBO);
+            model.addAttribute("dateFormat", properties.getDateFormat());
+            model.addAttribute("channel", new ChannelClass());
+            return "pages/dashboard/home";
         }
 
         userBO.updateUserProfile(principal, newData);
@@ -69,8 +80,9 @@ public class UserController {
     @PostMapping("{userId}/change_password")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public String changePassword (@RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, @PathVariable("userId") Long userId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
+        // TODO: java error to html (errors) ?
         if(userBO.checkOldPassword(principal, oldPassword)) {
             // old password correct
             userBO.changePassword(principal, newPassword);
@@ -89,13 +101,11 @@ public class UserController {
 
     @PostMapping("{userId}/change_image")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String uploadImage(@PathVariable("userId") Long userId, @RequestParam(value = "image", required = true) MultipartFile image, Model model) throws IOException, BusinessException {
+    public String uploadImage(@PathVariable("userId") Long userId, @RequestParam(value = "image", required = true) MultipartFile image, RedirectAttributes redirectAttributes) throws BusinessException {
         userBO.saveImage(userId, image);
 
-        model.addAttribute("user", userBO.findById(userId));
-        model.addAttribute("success", false);
-
-        return "pages/dashboard/image_upload/profile_img_upl";
+        redirectAttributes.addAttribute("success", true);
+        return "redirect:/user/" + userId + "/change_image";
     }
 
     @GetMapping("{userId}/remove_image")

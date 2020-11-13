@@ -81,6 +81,10 @@ public class PermissionChecker {
                     return true;
                 }
             }
+        } else {
+            if(post.getUserId().equals(currentUser.getId())) {
+                return true;
+            }
         }
         return false;
     }
@@ -109,6 +113,10 @@ public class PermissionChecker {
                 if(service.getName().equals(permission) && (reply.getUserId().equals(currentUser.getId())) || creator.equals(role) || admin.equals(role)) {
                     return true;
                 }
+            }
+        } else {
+            if(reply.getUserId().equals(currentUser.getId())) {
+                return true;
             }
         }
         return false;

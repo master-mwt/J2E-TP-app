@@ -3,12 +3,11 @@ package it.univaq.disim.mwt.j2etpapp.presentation.rest;
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,21 +26,23 @@ public class ReplyRestController {
 
     @PostMapping("{replyId}/upvote")
     public ResponseEntity doUpvote(@PathVariable("replyId") String replyId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
+
         if(principal != null){
             AjaxResponse response = replyBO.upvote(replyId, principal);
             return new ResponseEntity<AjaxResponse>(response, HttpStatus.OK);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("{replyId}/downvote")
     public ResponseEntity doDownvote(@PathVariable("replyId") String replyId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
+
         if(principal != null){
             AjaxResponse response = replyBO.downvote(replyId, principal);
             return new ResponseEntity<AjaxResponse>(response, HttpStatus.OK);
         }
-        return new ResponseEntity("Login requested", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 }

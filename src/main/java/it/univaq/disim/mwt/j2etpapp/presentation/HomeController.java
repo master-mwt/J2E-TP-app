@@ -6,9 +6,8 @@ import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,7 @@ public class HomeController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("postBO", postBO);
         model.addAttribute("page", postFirstPage);
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
         model.addAttribute("user", principal);
         return "pages/welcome";
     }
@@ -53,18 +52,18 @@ public class HomeController {
         model.addAttribute("channelBO", channelBO);
         model.addAttribute("postBO", postBO);
         model.addAttribute("page", postPage);
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
         model.addAttribute("user", principal);
         return "pages/welcome";
     }
 
     @GetMapping("about")
-    public String about(Model model) {
+    public String about() {
         return "pages/info/about";
     }
 
     @GetMapping("contact")
-    public String contact(Model model) {
+    public String contact() {
         return "pages/info/contact";
     }
 }

@@ -6,9 +6,8 @@ import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.RoleClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +42,8 @@ public class DashboardController {
 
     @GetMapping("")
     public String home(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
+
         model.addAttribute("user", principal);
         model.addAttribute("imageBO", imageBO);
         model.addAttribute("dateFormat", properties.getDateFormat());
@@ -53,7 +53,8 @@ public class DashboardController {
 
     @GetMapping("channels/owned")
     public String dashboardChannelOwned(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
+
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
         RoleClass creator = roleBO.findByName("creator");
 
@@ -74,7 +75,8 @@ public class DashboardController {
 
     @GetMapping("channels/joined")
     public String dashboardChannelJoined(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
+
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
         RoleClass creator = roleBO.findByName("creator");
 
@@ -95,7 +97,7 @@ public class DashboardController {
 
     @GetMapping("posts/owned")
     public String dashboardPostOwned(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserId(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -108,7 +110,7 @@ public class DashboardController {
 
     @GetMapping("posts/saved")
     public String dashboardPostSaved(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserSaved(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -121,7 +123,7 @@ public class DashboardController {
 
     @GetMapping("posts/hidden")
     public String dashboardPostHidden(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserHidden(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -134,7 +136,7 @@ public class DashboardController {
 
     @GetMapping("posts/reported")
     public String dashboardPostReported(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserReported(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -147,7 +149,7 @@ public class DashboardController {
 
     @GetMapping("posts/upvoted")
     public String dashboardPostUpvoted(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserUpvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -160,7 +162,7 @@ public class DashboardController {
 
     @GetMapping("posts/downvoted")
     public String dashboardPostDownvoted(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserDownvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -173,7 +175,7 @@ public class DashboardController {
 
     @GetMapping("replies/owned")
     public String dashboardReplyOwned(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserId(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -186,7 +188,7 @@ public class DashboardController {
 
     @GetMapping("replies/upvoted")
     public String dashboardReplyUpvoted(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserUpvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);
@@ -199,7 +201,7 @@ public class DashboardController {
 
     @GetMapping("replies/downvoted")
     public String dashboardReplyDownvoted(Model model) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserDownvoted(principal.getId()));
         model.addAttribute("channelBO", channelBO);

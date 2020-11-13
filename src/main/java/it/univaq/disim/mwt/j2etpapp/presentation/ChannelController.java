@@ -1,10 +1,13 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
-import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
+import it.univaq.disim.mwt.j2etpapp.business.*;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
+import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
+import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -23,15 +27,32 @@ public class ChannelController {
 
     @Autowired
     private ChannelBO channelBO;
+    @Autowired
+    private ImageBO imageBO;
+    @Autowired
+    private PostBO postBO;
+    @Autowired
+    private UserBO userBO;
+    @Autowired
+    private UserChannelRoleBO userChannelRoleBO;
+    @Autowired
+    private TagBO tagBO;
+
+    @Autowired
+    private ApplicationProperties properties;
 
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
-    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, Errors errors) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, Model model, Errors errors) {
+        UserClass principal = UtilsClass.getPrincipal();
 
         if(errors.hasErrors()){
-            // TODO: trovare un modo per far vedere errori
-            return "";
+            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+            model.addAttribute("user", principal);
+            model.addAttribute("imageBO", imageBO);
+            model.addAttribute("dateFormat", properties.getDateFormat());
+            model.addAttribute("channel", new ChannelClass());
+            return "pages/dashboard/home";
         }
 
         channelBO.createChannel(channel, principal);
@@ -49,11 +70,24 @@ public class ChannelController {
 
     @PostMapping("{channelId}/update")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
-    public String update(@ModelAttribute("channel") ChannelClass channel, @PathVariable("channelId") Long channelId, Errors errors) {
+    public String update(@ModelAttribute("channel") ChannelClass channel, @PathVariable("channelId") Long channelId, Model model, Errors errors) {
 
         if(errors.hasErrors()){
-            // TODO: trovare un modo per far vedere errori
-            return "";
+            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+            ChannelClass channelData = channelBO.findById(channelId);
+            Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(channelId, 0, 10);
+            model.addAttribute("post", new PostClass());
+            model.addAttribute("channel", channelData);
+            model.addAttribute("postPage", postPage);
+            model.addAttribute("userBO", userBO);
+            model.addAttribute("postBO", postBO);
+            model.addAttribute("userChannelRoleBO", userChannelRoleBO);
+            UserClass principal = UtilsClass.getPrincipal();
+            model.addAttribute("principal", principal);
+            UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
+            model.addAttribute("subscription", subscription);
+            model.addAttribute("tags", tagBO.findAll());
+            return "pages/discover/channel";
         }
 
         channelBO.updateChannel(channelId, channel);
@@ -64,7 +98,7 @@ public class ChannelController {
     @GetMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
     public String doJoin(@Valid @PathVariable("channelId") Long channelId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         channelBO.joinChannel(channelId, principal);
 
@@ -74,7 +108,7 @@ public class ChannelController {
     @GetMapping("{channelId}/leave")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'leave_channel')")
     public String doLeave(@PathVariable("channelId") Long channelId) {
-        UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
+        UserClass principal = UtilsClass.getPrincipal();
 
         channelBO.leaveChannel(channelId, principal);
 
@@ -179,13 +213,11 @@ public class ChannelController {
 
     @PostMapping("{channelId}/change_image")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
-    public String uploadImage(@PathVariable("channelId") Long channelId, @RequestParam(value = "image", required = true) MultipartFile image, Model model) throws BusinessException {
+    public String uploadImage(@PathVariable("channelId") Long channelId, @RequestParam(value = "image", required = true) MultipartFile image, RedirectAttributes redirectAttributes) throws BusinessException {
         channelBO.saveImage(channelId, image);
 
-        model.addAttribute("channel", channelBO.findById(channelId));
-        model.addAttribute("success", false);
-
-        return "pages/dashboard/image_upload/channel_img_upl";
+        redirectAttributes.addAttribute("success", true);
+        return "redirect:/channels/" + channelId + "/change_image";
     }
 
     @GetMapping("{channelId}/remove_image")
