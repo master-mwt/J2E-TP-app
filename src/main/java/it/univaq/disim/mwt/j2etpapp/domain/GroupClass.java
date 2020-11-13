@@ -34,6 +34,10 @@ public class GroupClass implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<ServiceClass> services;
 
+    public GroupClass(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

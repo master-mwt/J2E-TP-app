@@ -37,6 +37,10 @@ public class ServiceClass implements Serializable {
     @ManyToMany(mappedBy = "services")
     private Set<RoleClass> roles;
 
+    public ServiceClass(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

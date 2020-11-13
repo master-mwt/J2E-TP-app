@@ -1,10 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.*;
-import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
-import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
-import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
-import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +100,7 @@ public class DiscoverChannelController {
         model.addAttribute("members", members);
         model.addAttribute("userBO", userBO);
         model.addAttribute("principal", principal);
-        model.addAttribute("userRole", userChannelRoleBO.findByChannelIdAndUserId(id, principal.getId()).getRole());
+        model.addAttribute("userRole", getUserRole(principal, channel.getId()));
         return "pages/discover/members";
     }
 
@@ -118,7 +115,7 @@ public class DiscoverChannelController {
         model.addAttribute("members", members);
         model.addAttribute("userBO", userBO);
         model.addAttribute("principal", principal);
-        model.addAttribute("userRole", userChannelRoleBO.findByChannelIdAndUserId(id, principal.getId()).getRole());
+        model.addAttribute("userRole", getUserRole(principal, channel.getId()));
         return "pages/discover/members";
     }
 
@@ -128,5 +125,10 @@ public class DiscoverChannelController {
         ChannelClass channel = channelBO.findById(id);
         model.addAttribute("channel", channel);
         return "pages/discover/banned_users";
+    }
+
+
+    private RoleClass getUserRole(UserClass principal, Long channelId) {
+        return "logged".equals(principal.getGroup().getName()) ? userChannelRoleBO.findByChannelIdAndUserId(channelId, principal.getId()).getRole() : new RoleClass("administrator");
     }
 }
