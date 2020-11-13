@@ -567,7 +567,6 @@
             </div>
             <div class="modal-body">
               <!-- MODAL CONTENT -->
-              <!-- TODO: VALIDATION AND ERROR CONTROL -->
               <input
                 name="files"
                 type="file"
@@ -689,7 +688,7 @@
       </div>
     </form>
 
-    <!-- only logged TODO edit form -->
+    <!-- only logged -->
     <form
       sec:authorize="!isAnonymous()"
       th:object="${channel}"

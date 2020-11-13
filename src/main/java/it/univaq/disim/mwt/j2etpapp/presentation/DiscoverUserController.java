@@ -4,6 +4,7 @@ import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,13 @@ public class DiscoverUserController {
     @Autowired
     private PostBO postBO;
 
+    @Autowired
+    private ApplicationProperties properties;
+
     @GetMapping("{id}")
     public String discoverUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userBO.findById(id));
+        model.addAttribute("dateFormat", properties.getDateFormat());
         return "pages/discover/user";
     }
 

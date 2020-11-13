@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="m-0 mb-2"><b>email</b><span class="ml-4 text-muted" th:text="${user.getEmail()}">{{ $user->email }}</span></h5>
-                        <h5 class="m-0"><b>birth date</b><span class="ml-4 text-muted" th:text="${user.getBirthDate().toString()}">{{ $user->birth_date }}</span></h5>
+                        <h5 class="m-0"><b>birth date</b><span class="ml-4 text-muted" th:text="${#dates.format(user.getBirthDate(), dateFormat)}">{{ $user->birth_date }}</span></h5>
                     </div>
                     <div class="card-footer">
                         <a role="button" th:href="@{/discover/user/{id}/posts/(id=${user.getId()})}" class="btn btn-dark float-right"><i class="fas fa-eye mr-2"></i>See Posts</a>

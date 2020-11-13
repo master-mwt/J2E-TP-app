@@ -12,4 +12,5 @@ import javax.validation.Valid;
 @ConfigurationProperties(prefix = "postd")
 public class ApplicationProperties {
     private String imagesStoragePath;
+    private String dateFormat;
 }

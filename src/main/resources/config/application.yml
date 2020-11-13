@@ -23,6 +23,8 @@ spring:
         hbm2ddl.auto: update
         #format_sql: false
         show_sql: true
+        jdbc:
+          time_zone: Europe/Warsaw
 
   # MONGO
   data:
@@ -44,3 +46,4 @@ spring:
 
 postd:
   imagesStoragePath: 'storage/images/'
+  dateFormat: yyyy-MM-dd

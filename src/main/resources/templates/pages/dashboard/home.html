@@ -55,7 +55,7 @@
               <b>[[#{content.dashboard.home.label.birth_date}]]</b
               ><span
                 class="ml-4 text-muted"
-                th:text="${user.getBirthDate()}"
+                th:text="${#dates.format(user.getBirthDate(), dateFormat)}"
               ></span>
             </h5>
           </div>

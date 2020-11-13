@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.*;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.RoleClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
@@ -37,11 +38,15 @@ public class DashboardController {
     @Autowired
     private ImageBO imageBO;
 
+    @Autowired
+    private ApplicationProperties properties;
+
     @GetMapping("")
     public String home(Model model) {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
         model.addAttribute("user", principal);
         model.addAttribute("imageBO", imageBO);
+        model.addAttribute("dateFormat", properties.getDateFormat());
         model.addAttribute("channel", new ChannelClass());
         return "pages/dashboard/home";
     }

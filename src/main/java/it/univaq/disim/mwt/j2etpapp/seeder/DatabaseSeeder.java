@@ -20,10 +20,8 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.time.ZoneId;
 import java.util.*;
 
-// TODO: Roles, Services, Groups rules
 @Component
 @Slf4j
 public class DatabaseSeeder {
@@ -362,7 +360,7 @@ public class DatabaseSeeder {
 
             user.setPassword(passwordEncoder.encode("password"));
 
-            user.setBirthDate(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            user.setBirthDate(faker.date().birthday());
 
             user.setGroup(groupBO.findByName("logged"));
 
@@ -684,11 +682,9 @@ public class DatabaseSeeder {
 
         user.setPassword(passwordEncoder.encode("password"));
 
-        user.setBirthDate(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        user.setBirthDate(faker.date().birthday());
 
         user.setGroup(groupBO.findByName("administrator"));
-
-        user.setImage(imageBO.findByCaption("no_profile_img.jpg"));
 
         userBO.save(user);
     }

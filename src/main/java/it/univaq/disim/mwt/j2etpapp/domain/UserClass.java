@@ -4,14 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -54,10 +52,9 @@ public class UserClass implements Serializable {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean hard_ban;
 
-    // TODO: hardban, upgrade/downgrade administrator bug: birth date change
     @Column(name = "birth_date", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

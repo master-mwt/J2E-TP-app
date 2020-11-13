@@ -22,8 +22,6 @@ public class NotificationRestController {
     @Autowired
     private NotificationBO notificationBO;
 
-    // TODO: protect urls
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllNotifications() throws BusinessException {
         UserClass principal = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser() : null;
