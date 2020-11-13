@@ -89,6 +89,19 @@
       </div>
     </div>
 
+    <div th:if="${errors != null}" class="row justify-content-center">
+      <div class="col-md-12">
+        <!-- if count.errors > 0 -->
+        <div class="alert alert-danger">
+          <strong>SERVER ERROR</strong>
+          <ul>
+            <li th:if="${'oldPasswordError'.equals(errors)}">[[#{common.error.password.match.old}]]</li>
+            <li th:unless="${'oldPasswordError'.equals(errors)}" th:each="error : ${errors}">[[#{common.error.field}]] [[${error.getField()}]]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- only logged -->
     <form
       sec:authorize="!isAnonymous()"

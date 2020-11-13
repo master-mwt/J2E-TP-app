@@ -6,6 +6,17 @@
   layout:decorate="~{commons/exskel}"
 >
   <div class="container p-4" layout:fragment="content">
+    <div th:if="${errors != null}" class="row justify-content-center">
+      <div class="col-md-12">
+        <!-- if count.errors > 0 -->
+        <div class="alert alert-danger">
+          <strong>SERVER ERROR</strong>
+          <ul>
+            <li th:if="${'matchPasswordError'.equals(errors)}">[[#{common.error.password.match}]]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
@@ -24,11 +35,12 @@
                     type="text"
                     class="form-control"
                     name="name"
-                    value=""
+                    th:value="*{name}"
                     th:required="required"
                     autocomplete="name"
                     autofocus
                   />
+                  <span th:if="${#fields.hasErrors('name')}" th:each="err: ${#fields.errors('name')}" th:utext="${err}"></span>
                   <!-- error name -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -50,11 +62,12 @@
                     type="text"
                     class="form-control"
                     name="surname"
-                    value=""
+                    th:value="*{surname}"
                     th:required="required"
                     autocomplete="surname"
                     autofocus
                   />
+                  <span th:if="${#fields.hasErrors('surname')}" th:each="err: ${#fields.errors('surname')}" th:utext="${err}"></span>
                   <!-- error surname -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -76,12 +89,13 @@
                     type="text"
                     class="form-control"
                     name="username"
-                    value=""
+                    th:value="*{username}"
                     th:required="required"
                     th:maxlength="30"
                     autocomplete="username"
                     autofocus
                   />
+                  <span th:if="${#fields.hasErrors('username')}" th:each="err: ${#fields.errors('username')}" th:utext="${err}"></span>
                   <!-- error username -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -103,11 +117,12 @@
                     type="date"
                     class="form-control"
                     name="birth_date"
-                    value=""
+                    th:value="*{birthDate}"
                     th:required="required"
                     autocomplete="birth_date"
                     autofocus
                   />
+                  <span th:if="${#fields.hasErrors('birthDate')}" th:each="err: ${#fields.errors('birthDate')}" th:utext="${err}"></span>
                   <!-- error birth date -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -127,10 +142,11 @@
                     type="email"
                     class="form-control"
                     name="email"
-                    value=""
+                    th:value="*{email}"
                     th:required="required"
                     autocomplete="email"
                   />
+                  <span th:if="${#fields.hasErrors('email')}" th:each="err: ${#fields.errors('email')}" th:utext="${err}"></span>
                   <!-- error email -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -156,6 +172,7 @@
                     th:minlength="6"
                     autocomplete="new-password"
                   />
+                  <span th:if="${#fields.hasErrors('password')}" th:each="err: ${#fields.errors('password')}" th:utext="${err}"></span>
                   <!-- error password -->
                   <!-- <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

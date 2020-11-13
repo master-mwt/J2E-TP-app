@@ -24,15 +24,15 @@
           >
             <div class="card-body">
               <!-- if session.message is "success" -->
-              <!-- <div class="alert alert-success alert-block">
+              <div th:if="${param.success}" class="alert alert-success alert-block">
                 <button type="button" data-dismiss="alert" class="close">
                   x
                 </button>
-                <strong>message</strong>
-              </div> -->
+                <strong>[[#{common.image.upload.success}]]</strong>
+              </div>
 
               <!-- get image -->
-              <!-- <img src="" class="col mb-3" /> -->
+              <!--<img th:if="${param.imagePath != null}" th:src="${param.imagePath}" class="col mb-3" />-->
               <!-- end if -->
 
               <!-- if count.errors > 0 -->
@@ -46,7 +46,7 @@
               </div> -->
               <!-- end if -->
 
-              <input type="file" name="image" class="form-control-file" />
+              <input type="file" name="image" class="form-control-file" th:required="required" />
             </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-success float-right">

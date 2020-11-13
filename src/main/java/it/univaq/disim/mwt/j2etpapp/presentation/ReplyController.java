@@ -9,7 +9,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,18 +31,18 @@ public class ReplyController {
     private ChannelBO channelBO;
 
     @PostMapping("create")
-    public String save(@Valid @ModelAttribute("reply") ReplyClass reply, @RequestParam("postId") String postId, Model model, Errors errors) {
+    public String save(@Valid @ModelAttribute("reply") ReplyClass reply, BindingResult bindingResult, @RequestParam("postId") String postId, Model model) {
 
-        if(errors.hasErrors()) {
-            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+        if(bindingResult.hasErrors()) {
             PostClass post = postBO.findById(postId);
-            model.addAttribute("reply", new ReplyClass());
+            model.addAttribute("reply", reply);
             model.addAttribute("post", post);
             model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
             model.addAttribute("userBO", userBO);
             model.addAttribute("postBO", postBO);
             model.addAttribute("replyBO", replyBO);
             model.addAttribute("channelBO", channelBO);
+            model.addAttribute("errors", bindingResult.getFieldErrors());
             return "pages/discover/post";
         }
 

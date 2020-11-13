@@ -317,6 +317,18 @@
           [[#{content.discover.post.button.make_a_reply}]]
         </button>
       </div>
+      <div
+              class="alert alert-danger col-md-12"
+              style="max-width: 800px"
+              th:if="${errors != null}"
+      >
+        <strong>SERVER ERROR</strong>
+        <ul>
+          <!-- foreach errors as error -->
+          <li th:each="error : ${errors}">[[#{common.error.field}]] [[${error.getField()}]]</li>
+          <!-- endforeach -->
+        </ul>
+      </div>
       <!-- else -->
       <div
         class="col-md-12 text-center px-0 mb-3"

@@ -5,7 +5,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,21 +32,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String performRegistration(@Valid @ModelAttribute("user") UserClass user, @RequestParam("matching-password") String matchingPassword, Errors errors, Model model, RedirectAttributes redirectAttributes) {
-        if(errors.hasErrors()){
-            return "pages/auth/register";
-        }
-
-        // TODO: automatic error ?
-        if(user.getPassword() != null && user.getPassword().length() < 6){
-            // error password length
-            model.addAttribute("passwordError", "Password must be >= 6");
+    public String performRegistration(@Valid @ModelAttribute("user") UserClass user, BindingResult bindingResult, @RequestParam("matching-password") String matchingPassword, Model model, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            model.addAttribute("user", user);
             return "pages/auth/register";
         }
 
         if(user.getPassword() != null && !user.getPassword().equals(matchingPassword)){
-            // error password
-            model.addAttribute("passwordError", "Password are not matching");
+            // error password match
+            model.addAttribute("user", user);
+            model.addAttribute("errors", "matchPasswordError");
             return "pages/auth/register";
         }
 

@@ -104,18 +104,18 @@
             </div>
           </div>
           <div class="card-body text-left px-3 py-2">
-            <h5 class="text-muted">
+            <h5 th:unless="${channel.getTitle() == null || ''.equals(channel.getTitle())}" class="text-muted">
               [[#{content.discover.channel.info.label.title}]]
             </h5>
-            <p class="" th:text="${channel.getTitle()}"></p>
-            <h5 class="text-muted">
+            <p th:unless="${channel.getTitle() == null || ''.equals(channel.getTitle())}" class="" th:text="${channel.getTitle()}"></p>
+            <h5 th:unless="${channel.getDescription() == null || ''.equals(channel.getDescription())}" class="text-muted">
               [[#{content.discover.channel.info.label.description}]]
             </h5>
-            <p class="" th:text="${channel.getDescription()}"></p>
-            <h5 class="text-muted">
+            <p th:unless="${channel.getDescription() == null || ''.equals(channel.getDescription())}" class="" th:text="${channel.getDescription()}"></p>
+            <h5 th:unless="${channel.getRules() == null || ''.equals(channel.getRules())}" class="text-muted">
               [[#{content.discover.channel.info.label.rules}]]
             </h5>
-            <p class="" th:text="${channel.getRules()}"></p>
+            <p th:unless="${channel.getRules() == null || ''.equals(channel.getRules())}" class="" th:text="${channel.getRules()}"></p>
           </div>
           <!-- if logged & current user is channel member & current user group == 1 -->
           <div
@@ -151,14 +151,14 @@
 
       <!-- if count errors > 0 -->
       <div
-        class="alert alert-danger col-md-12 text-center"
+        class="alert alert-danger col-md-12"
         style="max-width: 800px"
-        th:if="${(errors != null) && (errors.size() > 0)}"
+        th:if="${errors != null}"
       >
-        <strong>server error</strong>
+        <strong>SERVER ERROR</strong>
         <ul>
           <!-- foreach errors as error -->
-          <li th:each="error : ${errors}" th:text="${error}">{{$error}}</li>
+          <li th:each="error : ${errors}">[[#{common.error.field}]] [[${error.getField()}]]</li>
           <!-- endforeach -->
         </ul>
       </div>
@@ -769,6 +769,7 @@
                 placeholder="rules"
                 th:value="${channel.getRules()}"
               ></textarea>
+              <input type="hidden" id="name" name="name" th:value="${channel.getName()}" />
               <!-- / MODAL CONTENT -->
             </div>
             <div class="modal-footer">

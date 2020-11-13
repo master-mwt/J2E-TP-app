@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,13 +36,12 @@ public class PostController {
     private TagBO tagBO;
 
     @PostMapping("create")
-    public String save(@Valid @ModelAttribute("post") PostClass post, @RequestParam("tags") String tags, @RequestParam("files") MultipartFile[] images, Model model, Errors errors) throws BusinessException {
+    public String save(@Valid @ModelAttribute("post") PostClass post, BindingResult bindingResult, @RequestParam("tags") String tags, @RequestParam("files") MultipartFile[] images, Model model) throws BusinessException {
 
-        if(errors.hasErrors()) {
-            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+        if(bindingResult.hasErrors()) {
             ChannelClass channel = channelBO.findById(post.getChannelId());
             Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(post.getChannelId(), 0, 10);
-            model.addAttribute("post", new PostClass());
+            model.addAttribute("post", post);
             model.addAttribute("channel", channel);
             model.addAttribute("postPage", postPage);
             model.addAttribute("userBO", userBO);
@@ -53,6 +52,7 @@ public class PostController {
             UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
             model.addAttribute("subscription", subscription);
             model.addAttribute("tags", tagBO.findAll());
+            model.addAttribute("errors", bindingResult.getFieldErrors());
             return "pages/discover/channel";
         }
         postBO.createPostInChannel(post, tags, images);

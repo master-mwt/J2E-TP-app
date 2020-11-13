@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,15 +36,15 @@ public class UserController {
 
     @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, @PathVariable("userId") Long userId, Model model, Errors errors) {
+    public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, BindingResult bindingResult, @PathVariable("userId") Long userId, Model model) {
         UserClass principal = UtilsClass.getPrincipal();
 
-        if(errors.hasErrors()) {
-            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+        if(bindingResult.hasErrors()) {
             model.addAttribute("user", principal);
             model.addAttribute("imageBO", imageBO);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", new ChannelClass());
+            model.addAttribute("errors", bindingResult.getFieldErrors());
             return "pages/dashboard/home";
         }
 
@@ -79,13 +79,19 @@ public class UserController {
 
     @PostMapping("{userId}/change_password")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String changePassword (@RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, @PathVariable("userId") Long userId) {
+    public String changePassword (@RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, @PathVariable("userId") Long userId, Model model) throws BusinessException {
         UserClass principal = UtilsClass.getPrincipal();
 
-        // TODO: java error to html (errors) ?
         if(userBO.checkOldPassword(principal, oldPassword)) {
             // old password correct
             userBO.changePassword(principal, newPassword);
+        } else {
+            model.addAttribute("user", principal);
+            model.addAttribute("imageBO", imageBO);
+            model.addAttribute("dateFormat", properties.getDateFormat());
+            model.addAttribute("channel", new ChannelClass());
+            model.addAttribute("errors", "oldPasswordError");
+            return "pages/dashboard/home";
         }
 
         return "redirect:/home";

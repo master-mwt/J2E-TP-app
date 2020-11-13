@@ -47,3 +47,4 @@ spring:
 postd:
   imagesStoragePath: 'storage/images/'
   dateFormat: yyyy-MM-dd
+  minPasswordLength: 6

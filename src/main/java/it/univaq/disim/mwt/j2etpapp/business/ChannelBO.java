@@ -41,7 +41,7 @@ public interface ChannelBO {
     void downgradeAdminToModerator(Long channelId, Long userId);
     void downgradeCreatorToAdmin(Long channelId, Long userId);
     void removeImage(Long channelId);
-    void saveImage(Long channelId, MultipartFile image) throws BusinessException;
+    String saveImage(Long channelId, MultipartFile image) throws BusinessException;
     void createChannel(ChannelClass channel, UserClass creator);
     void updateChannel(Long channelId, ChannelClass newData);
 }

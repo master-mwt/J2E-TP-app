@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ImageClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
@@ -39,6 +40,9 @@ public class UserBOImpl implements UserBO {
 
     @Autowired
     private FileDealer fileDealer;
+
+    @Autowired
+    private ApplicationProperties properties;
 
     private PasswordEncoder passwordEncoder;
 
@@ -155,9 +159,13 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void changePassword(UserClass user, String newPassword) {
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+    public void changePassword(UserClass user, String newPassword) throws BusinessException {
+        if(newPassword.length() < properties.getMinPasswordLength()) {
+            throw new BusinessException("Password is too short");
+        } else {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -172,11 +180,12 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void saveImage(Long userId, MultipartFile image) throws BusinessException {
+    public String saveImage(Long userId, MultipartFile image) throws BusinessException {
         UserClass user = userRepository.findById(userId).orElse(null);
+        String path = null;
 
         try {
-            String path = fileDealer.uploadFile(image);
+            path = fileDealer.uploadFile(image);
             ImageClass imageClass = new ImageClass();
             imageClass.setLocation(path);
             imageClass.setType(image.getContentType());
@@ -191,6 +200,8 @@ public class UserBOImpl implements UserBO {
         } catch (IOException e) {
             throw new BusinessException("saveImage", e);
         }
+
+        return path;
     }
 
     @Override

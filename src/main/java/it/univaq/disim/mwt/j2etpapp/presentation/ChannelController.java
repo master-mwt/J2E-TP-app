@@ -13,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -43,15 +43,15 @@ public class ChannelController {
 
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
-    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, Model model, Errors errors) {
+    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, Model model) {
         UserClass principal = UtilsClass.getPrincipal();
 
-        if(errors.hasErrors()){
-            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+        if(bindingResult.hasErrors()){
             model.addAttribute("user", principal);
             model.addAttribute("imageBO", imageBO);
             model.addAttribute("dateFormat", properties.getDateFormat());
-            model.addAttribute("channel", new ChannelClass());
+            model.addAttribute("channel", channel);
+            model.addAttribute("errors", bindingResult.getFieldErrors());
             return "pages/dashboard/home";
         }
 
@@ -70,10 +70,9 @@ public class ChannelController {
 
     @PostMapping("{channelId}/update")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
-    public String update(@ModelAttribute("channel") ChannelClass channel, @PathVariable("channelId") Long channelId, Model model, Errors errors) {
+    public String update(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, @PathVariable("channelId") Long channelId, Model model) {
 
-        if(errors.hasErrors()){
-            // TODO: trovare un modo per far vedere errori: è ok inserire questi dati
+        if(bindingResult.hasErrors()){
             ChannelClass channelData = channelBO.findById(channelId);
             Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(channelId, 0, 10);
             model.addAttribute("post", new PostClass());
@@ -87,6 +86,7 @@ public class ChannelController {
             UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
             model.addAttribute("subscription", subscription);
             model.addAttribute("tags", tagBO.findAll());
+            model.addAttribute("errors", bindingResult.getFieldErrors());
             return "pages/discover/channel";
         }
 

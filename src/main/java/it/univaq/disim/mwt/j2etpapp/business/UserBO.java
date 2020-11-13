@@ -25,8 +25,8 @@ public interface UserBO {
     void upgradeToAdministrator(Long userId);
     void downgradeToLogged(Long userId);
     boolean checkOldPassword(UserClass user, String oldPassword);
-    void changePassword(UserClass user, String newPassword);
+    void changePassword(UserClass user, String newPassword) throws BusinessException;
     void removeImage(Long userId);
-    void saveImage(Long userId, MultipartFile image) throws BusinessException;
+    String saveImage(Long userId, MultipartFile image) throws BusinessException;
     void updateUserProfile(UserClass user, UserClass newData);
 }

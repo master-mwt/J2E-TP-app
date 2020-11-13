@@ -387,10 +387,12 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void saveImage(Long channelId, MultipartFile image) throws BusinessException {
+    public String saveImage(Long channelId, MultipartFile image) throws BusinessException {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        String path = null;
+
         try {
-            String path = fileDealer.uploadFile(image);
+            path = fileDealer.uploadFile(image);
             ImageClass imageClass = new ImageClass();
             imageClass.setLocation(path);
             imageClass.setType(image.getContentType());
@@ -405,6 +407,8 @@ public class ChannelBOImpl implements ChannelBO {
         } catch (IOException e) {
             throw new BusinessException("saveImage", e);
         }
+
+        return path;
     }
 
     @Override

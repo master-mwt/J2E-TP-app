@@ -13,4 +13,5 @@ import javax.validation.Valid;
 public class ApplicationProperties {
     private String imagesStoragePath;
     private String dateFormat;
+    private Long minPasswordLength;
 }
