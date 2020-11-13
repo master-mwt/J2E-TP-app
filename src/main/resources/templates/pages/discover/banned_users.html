@@ -7,8 +7,13 @@
 >
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
-      <a role="button" th:href="@{/discover/channel/{id}/(id=${channel.getId()})}" class="btn btn-dark mb-4"
-      ><i class="fas fa-arrow-left mr-2"></i>back to channel <span th:text="${channel.getName()}">channel.name</span></a
+      <a
+        role="button"
+        th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+        class="btn btn-dark mb-4"
+        ><i class="fas fa-arrow-left mr-2"></i
+        >[[#{content.discover.channel.banned_users.button.back_to_channel}]]
+        <span th:text="${channel.getName()}">channel.name</span></a
       >
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- foreach channel.members as member -->
@@ -38,18 +43,34 @@
               class="rounded-circle"
             />
             <h4 class="m-0 ml-3">
-              <a th:href="@{/discover/user/{id}/(id=${user.getId()})}" class="text-decoration-none text-info"
-                th:text="${user.getUsername()}">member.username</a
-              >
+              <a
+                th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                class="text-decoration-none text-info"
+                th:text="${user.getUsername()}"
+              ></a>
             </h4>
-            <a th:href="@{/channels/{channelId}/members/{userId}/unsoftban/(channelId=${channel.getId()}, userId=${user.getId()})}" class="ml-auto" style="color: orange">UNBAN USER</a>
+            <a
+              th:href="@{/channels/{channelId}/members/{userId}/unsoftban/(channelId=${channel.getId()}, userId=${user.getId()})}"
+              class="ml-auto"
+              style="color: orange"
+              >[[#{content.discover.channel.banned_users.button.unban_user}]]</a
+            >
           </div>
         </div>
         <!-- end foreach -->
         <!-- empty -->
-        <th:block th:if="${channel.getSoftBannedUsers() == null || channel.getSoftBannedUsers().isEmpty()}">
-          <img th:src="@{/images/no_res_2.png}" alt="" class="rounded my-4" width="350px">
-          <h2 class="text-primary">no results ...</h2>
+        <th:block
+          th:if="${channel.getSoftBannedUsers() == null || channel.getSoftBannedUsers().isEmpty()}"
+        >
+          <img
+            th:src="@{/images/no_res_2.png}"
+            alt=""
+            class="rounded my-4"
+            width="350px"
+          />
+          <h2 class="text-primary">
+            [[#{content.discover.channel.banned_users.button.no_results}]]
+          </h2>
         </th:block>
       </div>
     </div>

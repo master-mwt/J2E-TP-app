@@ -7,157 +7,254 @@
 >
   <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
-      <a role="button" th:href="@{/discover/channel/{id}/(id=${channel.getId()})}" class="btn btn-dark mb-4"><i
-          class="fas fa-arrow-left mr-2"></i> back to channel <span th:text="${channel.getName()}">channel.name</span></a>
+      <a
+        role="button"
+        th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+        class="btn btn-dark mb-4"
+        ><i class="fas fa-arrow-left mr-2"></i>
+        [[#{content.discover.channel.reported_posts.button.back_to_channel}]]
+        <span th:text="${channel.getName()}"></span
+      ></a>
       <div class="col-md-12 text-center infinite-scroll px-0">
         <!-- forelse posts as post -->
-        <div th:each="post : ${postPage.getContent()}" th:id="${'post-' + post.getId()}" class="card col-lg-10 mx-auto d-flex flex-row px-0" style="max-width: 800px">
-          <div class="rounded-left py-3 d-flex flex-column" style="flex: 0 0 50px; background-color: #222">
+        <div
+          th:each="post : ${postPage.getContent()}"
+          th:id="${'post-' + post.getId()}"
+          class="card col-lg-10 mx-auto d-flex flex-row px-0"
+          style="max-width: 800px"
+        >
+          <div
+            class="rounded-left py-3 d-flex flex-column"
+            style="flex: 0 0 50px; background-color: #222"
+          >
             <!-- if post is not upvoted -->
-            <a th:id="${'post-' + post.getId() + '-upvote'}"
-               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               th:href="@{/posts/{id}/upvote(id=${post.getId()})}" class="upvote"><i
-                class="fas fa-arrow-up mb-1"></i></a>
+            <a
+              th:id="${'post-' + post.getId() + '-upvote'}"
+              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
+              class="upvote"
+              ><i class="fas fa-arrow-up mb-1"></i
+            ></a>
             <!-- if post is upvoted -->
-            <a th:id="${'post-' + post.getId() + '-upvote'}"
-               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
-              class="text-warning upvote"><i class="fas fa-arrow-up mb-1"></i></a>
+            <a
+              th:id="${'post-' + post.getId() + '-upvote'}"
+              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
+              class="text-warning upvote"
+              ><i class="fas fa-arrow-up mb-1"></i
+            ></a>
             <!-- else -->
-            <!--
-            <a href="" class=""><i class="fas fa-arrow-up mb-1"></i></a>
-            -->
             <!-- end if -->
             <!-- if post is upvoted | downvoted -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}"
-                  th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-              class="my-1 text-warning votenumber" th:text="${post.getUpvote() - post.getDownvote()}"></span>
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="my-1 text-warning votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+            ></span>
             <!-- else -->
-            <span th:id="${'post-' + post.getId() + '-votenumber'}"
-                  th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-              class="my-1 text-light votenumber" th:text="${post.getUpvote() - post.getDownvote()}"></span>
+            <span
+              th:id="${'post-' + post.getId() + '-votenumber'}"
+              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="my-1 text-light votenumber"
+              th:text="${post.getUpvote() - post.getDownvote()}"
+            ></span>
             <!-- end if -->
             <!-- if post is not downvoted -->
-            <a th:id="${'post-' + post.getId() + '-downvote'}"
-               th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
-               th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-              class="downvote"><i class="fas fa-arrow-down"></i></a>
+            <a
+              th:id="${'post-' + post.getId() + '-downvote'}"
+              th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
+              th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              class="downvote"
+              ><i class="fas fa-arrow-down"></i
+            ></a>
             <!-- if post is downvoted -->
-            <a th:id="${'post-' + post.getId() + '-downvote'}"
-               th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-               th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
-              class="text-warning downvote"><i class="fas fa-arrow-down"></i></a>
+            <a
+              th:id="${'post-' + post.getId() + '-downvote'}"
+              th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
+              class="text-warning downvote"
+              ><i class="fas fa-arrow-down"></i
+            ></a>
             <!-- else -->
-            <!--
-            <a href="" class=""><i class="fas fa-arrow-down"></i></a>
-            -->
             <!-- end if -->
           </div>
           <div class="col p-0 d-flex flex-column overflow-auto">
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
-                <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
-                  class="text-decoration-none"><b th:utext="${channel.getName()}">post.channel_name &#183</b></a> <span
-                  class="text-muted">Posted by </span>
-                <a th:href="@{/discover/user/{id}/(id=${user.getId()})}"
-                  class="text-decoration-none" th:text="${user.getUsername()}">post.username</a>
-                <span class="ml-2 badge badge-pill badge-danger" th:text="${post.getUsersReported().size() + ' reports'}">post.counter reports</span>
+              <p
+                class="m-0 mb-1"
+                th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}"
+              >
+                <a
+                  th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
+                  class="text-decoration-none"
+                  ><b th:utext="${channel.getName()}"></b
+                ></a>
+                <span class="text-muted"
+                  >[[#{content.discover.channel.reported_posts.posted_by}]]</span
+                >
+                <a
+                  th:href="@{/discover/user/{id}/(id=${user.getId()})}"
+                  class="text-decoration-none"
+                  th:text="${user.getUsername()}"
+                ></a>
+                <span
+                  class="ml-2 badge badge-pill badge-danger"
+                  th:text="${post.getUsersReported().size() + ' reports'}"
+                ></span>
               </p>
-              <h5 class="m-0 mb-1"><a th:href="@{/discover/post/{id}/(id=${post.getId()})}"
-                  class="text-decoration-none" th:text="${post.getTitle()}">post.title</a></h5>
+              <h5 class="m-0 mb-1">
+                <a
+                  th:href="@{/discover/post/{id}/(id=${post.getId()})}"
+                  class="text-decoration-none"
+                  th:text="${post.getTitle()}"
+                ></a>
+              </h5>
             </div>
-            <a th:href="${'#content-collapse-' + post.getId()}" role="button"
-              class="text-decoration-none px-3 py-2 btn btn-sm btn-block btn-outline-secondary" data-toggle="collapse"><i
-                class="fas fa-eye mr-2"></i>See Post Content</a>
-    
-            <div class="card-body text-left px-3 py-1 collapse mb-1" th:id="${'content-collapse-' + post.getId()}">
-              <div class="markdown-content" th:data-markdown-content="${post.getContent()}"></div>
+            <a
+              th:href="${'#content-collapse-' + post.getId()}"
+              role="button"
+              class="text-decoration-none px-3 py-2 btn btn-sm btn-block btn-outline-secondary"
+              data-toggle="collapse"
+              ><i class="fas fa-eye mr-2"></i
+              >[[#{content.discover.channel.reported_posts.see_post_content}]]</a
+            >
+
+            <div
+              class="card-body text-left px-3 py-1 collapse mb-1"
+              th:id="${'content-collapse-' + post.getId()}"
+            >
+              <div
+                class="markdown-content"
+                th:data-markdown-content="${post.getContent()}"
+              ></div>
               <!-- foreach post.tags as tag -->
-              <a th:each="tag : ${post.getTags()}" th:href="@{/search/(target=tags, query=${tag.getName()})}"><span
-                  class="badge badge-pill" style="font-size: 11px; background-color: #ddd" th:text="${tag.getName()}">tag.tag-id.name</span></a>
+              <a
+                th:each="tag : ${post.getTags()}"
+                th:href="@{/search/(target=tags, query=${tag.getName()})}"
+                ><span
+                  class="badge badge-pill"
+                  style="font-size: 11px; background-color: #ddd"
+                  th:text="${tag.getName()}"
+                ></span
+              ></a>
               <!-- end foreach -->
             </div>
-            <div class="card-footer border-0 p-1 px-3 text-left" style="border-bottom-left-radius: 0px">
+            <div
+              class="card-footer border-0 p-1 px-3 text-left"
+              style="border-bottom-left-radius: 0px"
+            >
               <!-- if post not saved -->
-              <a th:id="${'post-' + post.getId() + '-save'}"
-                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
-                 th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                class="text-decoration-none mr-2 save"><i th:id="${'post-' + post.getId() + '-save-icon'}"
-                  class="far fa-bookmark mr-1"></i>Save</a>
+              <a
+                th:id="${'post-' + post.getId() + '-save'}"
+                th:href="@{/posts/{id}/save(id=${post.getId()})}"
+                th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 save"
+                ><i
+                  th:id="${'post-' + post.getId() + '-save-icon'}"
+                  class="far fa-bookmark mr-1"
+                ></i
+                >Save</a
+              >
               <!-- if post saved -->
-              <a th:id="${'post-' + post.getId() + '-save'}"
-                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
-                 th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                class="text-decoration-none mr-2 text-danger save"><i th:id="${'post-' + post.getId() + '-save-icon'}"
-                  class="fas fa-bookmark mr-1"></i>Unsave</a>
+              <a
+                th:id="${'post-' + post.getId() + '-save'}"
+                th:href="@{/posts/{id}/save(id=${post.getId()})}"
+                th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 text-danger save"
+                ><i
+                  th:id="${'post-' + post.getId() + '-save-icon'}"
+                  class="fas fa-bookmark mr-1"
+                ></i
+                >Unsave</a
+              >
               <!-- else -->
-              <!--
-              <a href="" class="text-decoration-none mr-2"><i class="far fa-bookmark mr-1"></i>Save</a>
-              -->
               <!-- end if -->
               <!-- if post not hidden -->
-              <a th:id="${'post-' + post.getId() + '-hide'}"
-                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
-                 th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                class="text-decoration-none mr-2 hide"><i th:id="${'post-' + post.getId() + '-hide-icon'}"
-                  class="far fa-eye-slash mr-1"></i>Hide</a>
+              <a
+                th:id="${'post-' + post.getId() + '-hide'}"
+                th:href="@{/posts/{id}/hide(id=${post.getId()})}"
+                th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 hide"
+                ><i
+                  th:id="${'post-' + post.getId() + '-hide-icon'}"
+                  class="far fa-eye-slash mr-1"
+                ></i
+                >Hide</a
+              >
               <!-- if post hidden -->
-              <a th:id="${'post-' + post.getId() + '-hide'}"
-                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
-                 th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
-                class="text-decoration-none mr-2 text-danger hide"><i th:id="${'post-' + post.getId() + '-hide-icon'}"
-                  class="fas fa-eye-slash mr-1"></i>Unhide</a>
+              <a
+                th:id="${'post-' + post.getId() + '-hide'}"
+                th:href="@{/posts/{id}/hide(id=${post.getId()})}"
+                th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                class="text-decoration-none mr-2 text-danger hide"
+                ><i
+                  th:id="${'post-' + post.getId() + '-hide-icon'}"
+                  class="fas fa-eye-slash mr-1"
+                ></i
+                >Unhide</a
+              >
               <!-- else -->
-              <!--
-              <a href="" class="text-decoration-none mr-2"><i class="far fa-eye-slash mr-1"></i>Hide</a>
-              -->
               <!-- end if -->
-              <a th:href="@{/channels/{channelId}/posts/{postId}/globalunreport(channelId=${post.getChannelId()}, postId=${post.getId()})}"
-                class="float-right text-decoration-none text-danger mr-2"><i class="fas fa-flag-checkered mr-1"></i>Globally
-                Unreport</a>
-              <a th:href="@{/posts/{id}/delete(id=${post.getId()})}"
-                class="float-right text-decoration-none text-danger mr-2 delete"><i
-                  class="fas fa-exclamation-triangle mr-1"></i>Delete</a>
+              <a
+                th:href="@{/channels/{channelId}/posts/{postId}/globalunreport(channelId=${post.getChannelId()}, postId=${post.getId()})}"
+                class="float-right text-decoration-none text-danger mr-2"
+                ><i class="fas fa-flag-checkered mr-1"></i
+                >[[#{content.discover.channel.reported_posts.button.globally_unreport}]]</a
+              >
+              <a
+                th:href="@{/posts/{id}/delete(id=${post.getId()})}"
+                class="float-right text-decoration-none text-danger mr-2 delete"
+                ><i class="fas fa-exclamation-triangle mr-1"></i
+                >[[#{content.discover.channel.reported_posts.button.delete}]]</a
+              >
             </div>
           </div>
         </div>
         <!-- empty -->
         <th:block th:if="${postPage.getContent().isEmpty()}">
-          <img th:src="@{/images/no_res_2.png}" alt="" class="rounded my-4" width="350px">
-          <h2 class="text-primary">no results ...</h2>
+          <img
+            th:src="@{/images/no_res_2.png}"
+            alt=""
+            class="rounded my-4"
+            width="350px"
+          />
+          <h2 class="text-primary">
+            [[#{content.discover.channel.reported_posts.no_results}]]
+          </h2>
         </th:block>
         <!-- end forelse -->
       </div>
-    
     </div>
 
     <!-- JScroll func -->
     <script type="text/javascript">
-      $('ul.pagination').hide();
+      $("ul.pagination").hide();
       $(function () {
-        $('document').ready(function () {
-          $('.markdown-content').each(function () {
-            let markdown_content = $(this).data('markdown-content');
+        $("document").ready(function () {
+          $(".markdown-content").each(function () {
+            let markdown_content = $(this).data("markdown-content");
             $(this).html(marked(markdown_content));
           });
-          $('.infinite-scroll').jscroll({
+          $(".infinite-scroll").jscroll({
             debug: true,
             autoTrigger: true,
-            loadingHtml: '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
+            loadingHtml:
+              '<div class="spinner-grow text-primary" role="status"><span class="sr-only">loading...</span></div>',
             padding: 0,
-            nextSelector: '.pagination li.active + li a',
-            contentSelector: 'div.infinite-scroll',
+            nextSelector: ".pagination li.active + li a",
+            contentSelector: "div.infinite-scroll",
             callback: function () {
-              $('ul.pagination').remove();
+              $("ul.pagination").remove();
               // Marked markdown parser func
               // maybe remove document ready
               $(document).ready(function () {
-                $('.markdown-content').each(function () {
-                  let markdown_content = $(this).data('markdown-content');
+                $(".markdown-content").each(function () {
+                  let markdown_content = $(this).data("markdown-content");
                   $(this).html(marked(markdown_content));
                 });
               });
-            }
+            },
           });
         });
       });
