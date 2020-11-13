@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // login
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/login_success", true)
                 .and()
                 // remember me
                 .rememberMe()
@@ -55,6 +55,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("administrator")
                 .antMatchers("/home/**").hasAnyRole("administrator", "logged")
                 .antMatchers("/home").hasAnyRole("administrator", "logged")
+
+                .antMatchers("/posts/create").hasAnyRole("administrator", "logged")
+                .antMatchers("/replies/create").hasAnyRole("administrator", "logged")
+                .antMatchers("/user/**").hasAnyRole("administrator", "logged")
+
                 .antMatchers("/notifications/**").hasAnyRole("administrator", "logged")
                 .antMatchers("/notifications").hasAnyRole("administrator", "logged")
                 .antMatchers("/", "/static/**", "/favicon.ico").permitAll();

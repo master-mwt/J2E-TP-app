@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class HomeController {
 
@@ -23,6 +25,14 @@ public class HomeController {
     private ChannelBO channelBO;
     @Autowired
     private UserBO userBO;
+
+    @GetMapping("login_success")
+    public String defaultAfterLogin(HttpServletRequest req) {
+        if(req.isUserInRole("administrator")) {
+            return "redirect:/admin";
+        }
+        return "redirect:/";
+    }
 
     @GetMapping("")
     public String welcome(Model model) {

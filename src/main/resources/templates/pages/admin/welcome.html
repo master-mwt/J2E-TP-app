@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{commons/exskel}"
+>
+    <div class="container p-4" layout:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h1 class="text-center mt-3 mb-4">[[#{common.section.administrators}]]</h1>
+                <div class="text-center">
+                    <img
+                            th:src="@{images/main_logo.png}"
+                            alt="Logo"
+                            class="img-circle"
+                            width="100"
+                    />
+                    <h3 class="mt-2 mb-3 text-muted">
+                        [[#{common.administrators.welcome}]] [[${user.getUsername()}]].
+                    </h3>
+                    <div class="text-muted mt-4">
+                        <p class="m-0">[[#{common.administrators.info_text_1}]]</p>
+                        <p class="m-0">[[#{common.administrators.info_text_2}]]</p>
+                        <p class="m-0">[[#{common.administrators.info_text_3}]]</p>
+                        <p class="m-0">[[#{common.administrators.info_text_4}]]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
