@@ -1,57 +1,99 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{commons/exskel}"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{commons/exskel}"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
-    <div class="container p-4" layout:fragment="content">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header d-flex flex-row">
-                        <img th:if="${user.getImage() == null}" th:src="@{/images/no_profile_img.jpg}" alt="user-profile-image" class="rounded border" width='80'>
-                        <img th:unless="${user.getImage() == null}" th:src="@{/{link}/(link=${user.getImage().getLocation()})}" alt="user-profile-image" class="rounded border" width='80'>
-                        <div class="d-flex flex-column my-auto ml-4">
-                            <h4 class="m-0" th:text="${user.getName() + ' ' + user.getSurname()}">{{ $user->name }} {{ $user->surname }}</h4>
-                            <h5 class="m-0 text-muted" th:text="${user.getUsername()}">{{ $user->username }}</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="m-0 mb-2"><b>email</b><span class="ml-4 text-muted" th:text="${user.getEmail()}">{{ $user->email }}</span></h5>
-                        <h5 class="m-0"><b>birth date</b><span class="ml-4 text-muted" th:text="${#dates.format(user.getBirthDate(), dateFormat)}">{{ $user->birth_date }}</span></h5>
-                    </div>
-                    <div class="card-footer">
-                        <a role="button" th:href="@{/discover/user/{id}/posts/(id=${user.getId()})}" class="btn btn-dark float-right"><i class="fas fa-eye mr-2"></i>See Posts</a>
-                        <!--
-                        @if(Auth::check() && Auth::User()->group_id == 1 && Auth::User()->id != $user->id)
-                        @if($user->hardBanned === true)
-                        <a href="{{route('backend.user.unhardban', $user)}}" class="btn btn-danger float-left" role="button">Remove hardban</a>
-                        @else
-                        <a href="{{route('backend.user.hardban', $user)}}" class="btn btn-danger float-left" role="button">Hardban</a>
-                        @endif
-                        @endif
-                        -->
-                        <th:block sec:authorize="hasRole('administrator')" th:unless="${user.getId().equals(#authentication.getPrincipal().getUser().getId())}">
-                            <a
-                                    th:if="${user.isHard_ban()}"
-                                    th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
-                                    class="btn btn-danger float-left" role="button">Remove hardban</a>
-                            <a      th:unless="${user.isHard_ban()}"
-                                    th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
-                                    class="btn btn-danger float-left" role="button">Hardban</a>
-
-                            <a
-                                    th:if="${'administrator'.equals(user.getGroup().getName())}"
-                                    th:href="@{/user/{userId}/downgrade_to_logged/(userId=${user.getId()})}"
-                                    class="btn btn-danger float-left ml-3" role="button">Downgrade to logged</a>
-                            <a      th:if="${'logged'.equals(user.getGroup().getName())}"
-                                    th:href="@{/user/{userId}/upgrade_to_administrator/(userId=${user.getId()})}"
-                                    class="btn btn-danger float-left ml-3" role="button">Upgrade to administrator</a>
-                        </th:block>
-                    </div>
-                </div>
+  <div class="container p-4" layout:fragment="content">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header d-flex flex-row">
+            <img
+              th:if="${user.getImage() == null}"
+              th:src="@{/images/no_profile_img.jpg}"
+              alt="user-profile-image"
+              class="rounded border"
+              width="80"
+            />
+            <img
+              th:unless="${user.getImage() == null}"
+              th:src="@{/{link}/(link=${user.getImage().getLocation()})}"
+              alt="user-profile-image"
+              class="rounded border"
+              width="80"
+            />
+            <div class="d-flex flex-column my-auto ml-4">
+              <h4
+                class="m-0"
+                th:text="${user.getName() + ' ' + user.getSurname()}"
+              ></h4>
+              <h5 class="m-0 text-muted" th:text="${user.getUsername()}"></h5>
             </div>
+          </div>
+          <div class="card-body">
+            <h5 class="m-0 mb-2">
+              <b>email</b
+              ><span
+                class="ml-4 text-muted"
+                th:text="${user.getEmail()}"
+              ></span>
+            </h5>
+            <h5 class="m-0">
+              <b>[[#{common.discover.user.label.birth_date}]]</b
+              ><span
+                class="ml-4 text-muted"
+                th:text="${#dates.format(user.getBirthDate(), dateFormat)}"
+              ></span>
+            </h5>
+          </div>
+          <div class="card-footer">
+            <a
+              role="button"
+              th:href="@{/discover/user/{id}/posts/(id=${user.getId()})}"
+              class="btn btn-dark float-right"
+              ><i class="fas fa-eye mr-2"></i
+              >[[#{common.discover.user.button.see_posts}]]</a
+            >
+            <th:block
+              sec:authorize="hasRole('administrator')"
+              th:unless="${user.getId().equals(#authentication.getPrincipal().getUser().getId())}"
+            >
+              <a
+                th:if="${user.isHard_ban()}"
+                th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
+                class="btn btn-danger float-left"
+                role="button"
+                >[[#{common.discover.user.button.remove_hardban}]]</a
+              >
+              <a
+                th:unless="${user.isHard_ban()}"
+                th:href="@{/user/{userId}/hardban/(userId=${user.getId()})}"
+                class="btn btn-danger float-left"
+                role="button"
+                >[[#{common.discover.user.button.hardban}]]</a
+              >
+
+              <a
+                th:if="${'administrator'.equals(user.getGroup().getName())}"
+                th:href="@{/user/{userId}/downgrade_to_logged/(userId=${user.getId()})}"
+                class="btn btn-danger float-left ml-3"
+                role="button"
+                >[[#{common.discover.user.button.downgrade_to_normal_user}]]</a
+              >
+              <a
+                th:if="${'logged'.equals(user.getGroup().getName())}"
+                th:href="@{/user/{userId}/upgrade_to_administrator/(userId=${user.getId()})}"
+                class="btn btn-danger float-left ml-3"
+                role="button"
+                >[[#{common.discover.user.button.upgrade_to_administrator_user}]]</a
+              >
+            </th:block>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </html>
