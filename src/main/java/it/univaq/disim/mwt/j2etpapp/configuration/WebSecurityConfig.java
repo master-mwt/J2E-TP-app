@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO: all missing routes and control if correct
         http.headers().disable().csrf().disable().formLogin()
                 // login
                 .loginPage("/login")

@@ -16,7 +16,7 @@ public class AdministratorController {
     @Autowired
     private UserBO userBO;
 
-    @GetMapping("")
+    @GetMapping("welcome")
     public String welcome(Model model) {
         UserClass principal = UtilsClass.getPrincipal();
 

@@ -3,6 +3,7 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   layout:decorate="~{sidebar}"
 >
   <nav class="mt-2" th:fragment="sidebar_menu">
@@ -14,6 +15,15 @@
     >
       <li class="nav-header px-0 px-3">
         [[#{common.sidebar_menu.section.user}]]
+      </li>
+
+      <li sec:authorize="hasRole('administrator')" class="nav-item">
+        <a th:href="@{/admin/welcome}" class="nav-link">
+          <i class="fas fa-tools nav-icon"></i>
+          <p>
+            [[#{common.sidebar_menu.subsection.administrators}]]
+          </p>
+        </a>
       </li>
 
       <li class="nav-item has-treeview">

@@ -28,7 +28,7 @@ public class HomeController {
     @GetMapping("login_success")
     public String defaultAfterLogin(HttpServletRequest req) {
         if(req.isUserInRole("administrator")) {
-            return "redirect:/admin";
+            return "redirect:/admin/welcome";
         }
         return "redirect:/";
     }
