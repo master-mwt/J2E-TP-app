@@ -10,7 +10,7 @@ spring:
     active: dev
   # i18n
   messages:
-    basename: i18n/common
+    basename: i18n/common, i18n/content
   # JPA
   jpa:
     properties:
