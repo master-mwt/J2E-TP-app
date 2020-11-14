@@ -196,7 +196,7 @@
           class="card col-lg-10 mx-auto d-flex flex-row px-0"
           style="max-width: 800px"
           th:each="post : ${postPage.getContent()}"
-          th:if="${principal == null || !postBO.findByUserHidden(principal.getId()).contains(post)}"
+          th:if="${principal == null || !templateHelper.isPostHiddenByUser(principal.getId(), post)}"
         >
           <div
             class="rounded-left py-3 d-flex flex-column"
@@ -204,7 +204,7 @@
           >
             <!-- if post not upvoted -->
             <a
-              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:unless="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:id="${'post-' + post.getId() + '-upvote'}"
               sec:authorize="!isAnonymous()"
               th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
@@ -213,7 +213,7 @@
             ></a>
             <!-- if post upvoted -->
             <a
-              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:if="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:id="${'post-' + post.getId() + '-upvote'}"
               sec:authorize="!isAnonymous()"
               th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
@@ -229,7 +229,7 @@
               th:id="${'post-' + post.getId() + '-votenumber'}"
               class="my-1 text-warning votenumber"
               sec:authorize="!isAnonymous()"
-              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:if="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post) || templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:text="${post.getUpvote() - post.getDownvote()}"
             ></span>
             <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
@@ -237,7 +237,7 @@
               th:id="${'post-' + post.getId() + '-votenumber'}"
               class="my-1 text-light votenumber"
               sec:authorize="!isAnonymous()"
-              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:unless="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post) || templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:text="${post.getUpvote() - post.getDownvote()}"
             ></span>
             <!-- else guest, draw text-light info -->
@@ -249,7 +249,7 @@
             ></span>
             <!-- if post not downvoted -->
             <a
-              th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:unless="${templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:id="${'post-' + post.getId() + '-downvote'}"
               th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
               sec:authorize="!isAnonymous()"
@@ -258,7 +258,7 @@
             ></a>
             <!-- if post downvoted -->
             <a
-              th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:if="${templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:id="${'post-' + post.getId() + '-downvote'}"
               th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
               sec:authorize="!isAnonymous()"
@@ -291,7 +291,7 @@
               <div class="carousel-inner bg-secondary rounded-right">
                 <!-- foreach images as image -->
                 <th:block
-                  th:each="image : ${postBO.getPostImages(post.getId())}"
+                  th:each="image : ${templateHelper.findPostImages(post.getId())}"
                 >
                   <div th:if="${image.isFirst()}" class="carousel-item active">
                     <img
@@ -339,7 +339,7 @@
             <div class="card-header text-left border-0 px-3">
               <p
                 class="m-0 mb-1"
-                th:with="user=${userBO.findById(post.getUserId())}, userChannelRole=${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), user.getId())}"
+                th:with="user=${templateHelper.findUserById(post.getUserId())}, userChannelRole=${templateHelper.findMemberUserChannelRole(channel.getId(), user.getId())}"
               >
                 <span class="text-muted"
                   >[[#{content.discover.channel.post.posted_by}]]</span
@@ -389,7 +389,7 @@
                 th:id="${'post-' + post.getId() + '-save'}"
                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:unless="${templateHelper.isPostSavedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 class="text-decoration-none mr-2 save"
                 ><i
                   th:id="${'post-' + post.getId() + '-save-icon'}"
@@ -402,7 +402,7 @@
                 th:id="${'post-' + post.getId() + '-save'}"
                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:if="${templateHelper.isPostSavedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 class="text-decoration-none mr-2 text-danger save"
                 ><i
                   th:id="${'post-' + post.getId() + '-save-icon'}"
@@ -422,7 +422,7 @@
                 th:id="${'post-' + post.getId() + '-hide'}"
                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:unless="${templateHelper.isPostHiddenByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 class="text-decoration-none mr-2 hide"
                 ><i
                   th:id="${'post-' + post.getId() + '-hide-icon'}"
@@ -436,7 +436,7 @@
                 sec:authorize="!isAnonymous()"
                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                 class="text-decoration-none mr-2 text-danger hide"
-                th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:if="${templateHelper.isPostHiddenByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 ><i
                   th:id="${'post-' + post.getId() + '-hide-icon'}"
                   class="fas fa-eye-slash mr-1"
@@ -455,7 +455,7 @@
                 th:id="${'post-' + post.getId() + '-report'}"
                 th:href="@{/posts/{id}/report(id=${post.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:unless="${postBO.findByUserReported(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:unless="${templateHelper.isPostReportedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 class="text-decoration-none mr-2 report"
                 ><i
                   th:id="${'post-' + post.getId() + '-report-icon'}"
@@ -467,7 +467,7 @@
               <a
                 th:id="${'post-' + post.getId() + '-report'}"
                 sec:authorize="!isAnonymous()"
-                th:if="${postBO.findByUserReported(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:if="${templateHelper.isPostReportedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 th:href="@{/posts/{id}/report(id=${post.getId()})}"
                 class="text-decoration-none mr-2 text-danger report"
                 ><i

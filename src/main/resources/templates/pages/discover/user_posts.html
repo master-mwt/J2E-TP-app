@@ -26,7 +26,7 @@
               class="upvote"
               th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
               sec:authorize="!isAnonymous()"
-              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:unless="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
             >
               <i class="fas fa-arrow-up mb-1"></i
             ></a>
@@ -37,7 +37,7 @@
               class="text-warning upvote"
               th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
               sec:authorize="!isAnonymous()"
-              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:if="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
             >
               <i class="fas fa-arrow-up mb-1"></i
             ></a>
@@ -50,7 +50,7 @@
               th:id="${'post-' + post.getId() + '-votenumber'}"
               class="my-1 text-warning votenumber"
               sec:authorize="!isAnonymous()"
-              th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:if="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post) || templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:text="${post.getUpvote() - post.getDownvote()}"
             ></span>
             <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
@@ -58,7 +58,7 @@
               th:id="${'post-' + post.getId() + '-votenumber'}"
               class="my-1 text-light votenumber"
               sec:authorize="!isAnonymous()"
-              th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:unless="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post) || templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               th:text="${post.getUpvote() - post.getDownvote()}"
             ></span>
             <!-- else guest, draw text-light info -->
@@ -74,7 +74,7 @@
               th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
               class="downvote"
               sec:authorize="!isAnonymous()"
-              th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:unless="${templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
             >
               <i class="fas fa-arrow-down"></i
             ></a>
@@ -84,7 +84,7 @@
               th:href="@{/posts/{id}/downvote(id=${post.getId()})}"
               class="text-warning downvote"
               sec:authorize="!isAnonymous()"
-              th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+              th:if="${templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
             >
               <i class="fas fa-arrow-down"></i
             ></a>
@@ -97,7 +97,7 @@
             <div class="card-header text-left border-0 px-3">
               <p
                 class="m-0 mb-1"
-                th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}"
+                th:with="channel=${templateHelper.findChannelById(post.getChannelId())}, user=${templateHelper.findUserById(post.getUserId())}"
               >
                 <a
                   th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
@@ -148,7 +148,7 @@
                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
                 class="text-decoration-none mr-2 save"
                 sec:authorize="!isAnonymous()"
-                th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:unless="${templateHelper.isPostSavedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               >
                 <i
                   th:id="${'post-' + post.getId() + '-save-icon'}"
@@ -162,7 +162,7 @@
                 th:href="@{/posts/{id}/save(id=${post.getId()})}"
                 class="text-decoration-none mr-2 text-danger save"
                 sec:authorize="!isAnonymous()"
-                th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:if="${templateHelper.isPostSavedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
               >
                 <i
                   th:id="${'post-' + post.getId() + '-save-icon'}"
@@ -182,7 +182,7 @@
                 th:id="${'post-' + post.getId() + '-hide'}"
                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:unless="${templateHelper.isPostHiddenByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 class="text-decoration-none mr-2 hide"
               >
                 <i
@@ -196,7 +196,7 @@
                 th:id="${'post-' + post.getId() + '-hide'}"
                 th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                th:if="${templateHelper.isPostHiddenByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                 class="text-decoration-none mr-2 text-danger hide"
               >
                 <i
