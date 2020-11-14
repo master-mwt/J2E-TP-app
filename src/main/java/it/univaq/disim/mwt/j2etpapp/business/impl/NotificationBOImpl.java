@@ -70,23 +70,4 @@ public class NotificationBOImpl implements NotificationBO {
     public Long count() {
         return notificationRepository.count();
     }
-
-    @Override
-    public void read(String notificationId) {
-        NotificationClass notification = notificationRepository.findById(notificationId).orElse(null);
-        if(notification != null) {
-            notification.setRead(true);
-        }
-    }
-
-    @Override
-    public void readAllByUserTargetId(Long userId) {
-        List<NotificationClass> notifications = notificationRepository.findByUserTargetId(userId).orElse(new ArrayList<>());
-        if(!notifications.isEmpty()) {
-            for(NotificationClass notification : notifications) {
-                notification.setRead(true);
-                notificationRepository.save(notification);
-            }
-        }
-    }
 }

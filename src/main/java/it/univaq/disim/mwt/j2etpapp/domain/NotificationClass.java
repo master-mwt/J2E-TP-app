@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -28,7 +29,6 @@ public class NotificationClass implements Serializable {
 
     private String content;
     private String scope;
-    private boolean read = false;
     @CreatedDate
     private Date created_at;
 
@@ -41,5 +41,10 @@ public class NotificationClass implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         NotificationClass that = (NotificationClass) o;
         return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

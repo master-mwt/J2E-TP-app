@@ -17,6 +17,4 @@ public interface NotificationBO {
     void deleteAllByUserTargetId(Long userId);
     Long count();
 
-    void read(String notificationId);
-    void readAllByUserTargetId(Long userId);
 }

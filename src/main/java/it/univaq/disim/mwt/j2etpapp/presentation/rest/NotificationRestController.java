@@ -51,23 +51,4 @@ public class NotificationRestController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @PostMapping("read_all")
-    public ResponseEntity readAllNotifications() {
-        UserClass principal = UtilsClass.getPrincipal();
-
-        if(principal != null) {
-            notificationBO.readAllByUserTargetId(principal.getId());
-            return new ResponseEntity(HttpStatus.OK);
-        }
-
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-    }
-
-    @PostMapping("{notificationId}/read")
-    public ResponseEntity readNotification(@PathVariable("notificationId") String notificationId) {
-        notificationBO.read(notificationId);
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

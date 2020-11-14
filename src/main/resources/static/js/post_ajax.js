@@ -2,7 +2,7 @@
 // POST AJAX FUNCTIONS
 //
 
-import {makeToast} from './notify.js';
+//import {makeToast} from './notify.js';
 
 let loginpath = window.location.protocol + "//" + window.location.host + '/j2etpapp' + "/login";
 
@@ -35,7 +35,8 @@ $(document).ready(function() {
 
             },
             error: function(XMLHTTPRequest, textStatus, errorThrown){
-                makeToast("Error", errorThrown, 4000);
+                //makeToast("Error", errorThrown, 4000);
+                console.error(errorThrown);
             },
         });
     });
@@ -67,7 +68,8 @@ $(document).ready(function() {
 
             },
             error: function(XMLHTTPRequest, textStatus, errorThrown){
-                makeToast("Error", errorThrown, 4000);
+                //makeToast("Error", errorThrown, 4000);
+                console.error(errorThrown);
             },
         });
     });
@@ -100,7 +102,8 @@ $(document).ready(function() {
 
             },
             error: function(XMLHTTPRequest, textStatus, errorThrown){
-                makeToast("Error", errorThrown, 4000);
+                //makeToast("Error", errorThrown, 4000);
+                console.error(errorThrown);
             },
         });
     });
@@ -133,7 +136,8 @@ $(document).ready(function() {
 
             },
             error: function(XMLHTTPRequest, textStatus, errorThrown){
-                makeToast("Error", errorThrown, 4000);
+                //makeToast("Error", errorThrown, 4000);
+                console.error(errorThrown);
             },
         });
     });
@@ -166,7 +170,8 @@ $(document).ready(function() {
 
             },
             error: function(XMLHTTPRequest, textStatus, errorThrown){
-                makeToast("Error", errorThrown, 4000);
+                //makeToast("Error", errorThrown, 4000);
+                console.error(errorThrown);
             },
         });
     });
@@ -192,7 +197,8 @@ $(document).ready(function() {
 
             },
             error: function(XMLHTTPRequest, textStatus, errorThrown){
-                makeToast("Error", errorThrown, 4000);
+                //makeToast("Error", errorThrown, 4000);
+                console.error(errorThrown);
             },
         });
     });

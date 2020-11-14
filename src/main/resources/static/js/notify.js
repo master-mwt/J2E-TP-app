@@ -7,7 +7,7 @@
  * @param {string} body The body of the toast
  * @param {number} delay The delay of the toast (in milliseconds)
  */
-let toastId = 0;
+/*let toastId = 0;
 function makeToast(title, body, delay){
     let now = new Date();
     let time = now.getHours() + ':' + now.getMinutes();
@@ -24,12 +24,9 @@ function makeToast(title, body, delay){
                  </div>`;
 
     $('#toast-container').append(toast);
-    // TODO: Toast not showing
-    console.log('toast appended');
     $(document).find('#toast' + toastId).toast('show');
-    console.log('toast fired');
     toastId++;
-}
+}*/
 
 
 /**
@@ -38,8 +35,6 @@ function makeToast(title, body, delay){
 let notifications = [];
 let baseUrl = window.location.protocol + "//" + window.location.host + '/j2etpapp';
 let postpath = window.location.protocol + "//" + window.location.host + '/j2etpapp' + "/discover/post/";
-
-// TODO: Notifications
 
 $(document).ready(function() {
     if(window.userIsLogged){
@@ -50,7 +45,6 @@ $(document).ready(function() {
 
 function notification(){
     $.get(baseUrl + '/notifications', function (data) {
-        console.log(data);
         addNotifications(data);
     });
 }
@@ -63,7 +57,7 @@ function addNotifications(newNotifications) {
 
     notifications = newNotifications;
     $('#notification-area').empty();
-    $('#notification-count').text(notifications.length + ' Notifications');
+    //$('#notification-count').text(notifications.length + ' Notifications');
 
     if(notifications.length){
         $('#notification-button').addClass('text-danger');
@@ -101,8 +95,9 @@ function notify(user, entry){
 
     $('#notification-area').append(notification);
 
-    // TODO: makeToast
-    makeToast('Notification', 'You have new notifications', 4000);
+    // TODO: makeToast?
+
+    //makeToast('Notification', 'You have new notifications', 4000);
 }
 
 $(document).ready(function() {
@@ -127,7 +122,7 @@ $(document).ready(function() {
             success: function(data, textStatus, XMLHTTPRequest){
                 notifications = [];
                 $('#notification-area').empty();
-                $('#notification-count').text('no notifications');
+                //$('#notification-count').text('no notifications');
 
                 if(notifications.length){
                     $('#notification-button').addClass('text-danger');
@@ -141,6 +136,6 @@ $(document).ready(function() {
     });
 });
 
-export {
+/*export {
     makeToast,
-};
+};*/
