@@ -21,9 +21,12 @@ public class NotificationRestController {
     @Autowired
     private NotificationBO notificationBO;
 
+    @Autowired
+    private UtilsClass utilsClass;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllNotifications() throws BusinessException {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null) {
             List<NotificationClass> notifications = notificationBO.findByUserTargetId(principal.getId());
@@ -35,7 +38,7 @@ public class NotificationRestController {
 
     @PostMapping("delete_all")
     public ResponseEntity deleteAllNotifications() {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null) {
             notificationBO.deleteAllByUserTargetId(principal.getId());

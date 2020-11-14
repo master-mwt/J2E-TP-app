@@ -21,6 +21,9 @@ public class HomeController {
     private PostBO postBO;
 
     @Autowired
+    private UtilsClass utilsClass;
+
+    @Autowired
     private TemplateHelper templateHelper;
 
     @GetMapping("login_success")
@@ -36,7 +39,7 @@ public class HomeController {
         Page<PostClass> postFirstPage = postBO.findAllOrderByCreatedAtDescPaginated(0, 10);
         model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("page", postFirstPage);
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
         model.addAttribute("user", principal);
         return "pages/welcome";
     }
@@ -46,7 +49,7 @@ public class HomeController {
         Page<PostClass> postPage = postBO.findAllOrderByCreatedAtDescPaginated(page, 10);
         model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("page", postPage);
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
         model.addAttribute("user", principal);
         return "pages/welcome";
     }

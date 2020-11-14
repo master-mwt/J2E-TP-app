@@ -17,6 +17,9 @@ public class ReplyRestController {
     @Autowired
     private ReplyBO replyBO;
 
+    @Autowired
+    private UtilsClass utilsClass;
+
     @DeleteMapping("{replyId}/delete")
     @PreAuthorize("hasPermission(#replyId, 'it.univaq.disim.mwt.j2etpapp.domain.ReplyClass', 'delete_reply')")
     public ResponseEntity delete(@PathVariable("replyId") String replyId) {
@@ -26,7 +29,7 @@ public class ReplyRestController {
 
     @PostMapping("{replyId}/upvote")
     public ResponseEntity doUpvote(@PathVariable("replyId") String replyId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             AjaxResponse response = replyBO.upvote(replyId, principal);
@@ -37,7 +40,7 @@ public class ReplyRestController {
 
     @PostMapping("{replyId}/downvote")
     public ResponseEntity doDownvote(@PathVariable("replyId") String replyId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             AjaxResponse response = replyBO.downvote(replyId, principal);

@@ -16,9 +16,12 @@ public class AdministratorController {
     @Autowired
     private UserBO userBO;
 
+    @Autowired
+    private UtilsClass utilsClass;
+
     @GetMapping("welcome")
     public String welcome(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("user", userBO.findById(principal.getId()));
 

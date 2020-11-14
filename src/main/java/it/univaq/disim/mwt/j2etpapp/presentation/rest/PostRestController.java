@@ -17,6 +17,9 @@ public class PostRestController {
     @Autowired
     private PostBO postBO;
 
+    @Autowired
+    private UtilsClass utilsClass;
+
     @DeleteMapping("{postId}/delete")
     @PreAuthorize("hasPermission(#postId, 'it.univaq.disim.mwt.j2etpapp.domain.PostClass', 'delete_post')")
     public ResponseEntity delete(@PathVariable("postId") String postId) {
@@ -26,7 +29,7 @@ public class PostRestController {
 
     @PostMapping("{postId}/upvote")
     public ResponseEntity doUpvote(@PathVariable("postId") String postId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             AjaxResponse response = postBO.upvote(postId, principal);
@@ -37,7 +40,7 @@ public class PostRestController {
 
     @PostMapping("{postId}/downvote")
     public ResponseEntity doDownvote(@PathVariable("postId") String postId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             AjaxResponse response = postBO.downvote(postId, principal);
@@ -48,7 +51,7 @@ public class PostRestController {
 
     @PostMapping("{postId}/hide")
     public ResponseEntity doHide(@PathVariable("postId") String postId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             postBO.hideToggle(postId, principal);
@@ -59,7 +62,7 @@ public class PostRestController {
 
     @PostMapping("{postId}/report")
     public ResponseEntity doReport(@PathVariable("postId") String postId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             postBO.reportToggle(postId, principal);
@@ -70,7 +73,7 @@ public class PostRestController {
 
     @PostMapping("{postId}/save")
     public ResponseEntity doSave(@PathVariable("postId") String postId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             postBO.saveToggle(postId, principal);

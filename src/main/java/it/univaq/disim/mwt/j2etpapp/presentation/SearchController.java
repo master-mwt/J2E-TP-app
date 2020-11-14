@@ -28,11 +28,14 @@ public class SearchController {
     private TagBO tagBO;
 
     @Autowired
+    private UtilsClass utilsClass;
+
+    @Autowired
     private TemplateHelper templateHelper;
 
     @GetMapping(value = "/search")
     public String search(@PathParam("target") String target, @PathParam("query") String query, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(target != null){
             if(query == null || query.equals("")){
@@ -91,7 +94,7 @@ public class SearchController {
 
     @GetMapping(value = "/search/posts/page/{page}")
     public String postPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(query == null || query.equals("")){
             model.addAttribute("emptySearch", true);
@@ -148,7 +151,7 @@ public class SearchController {
 
     @GetMapping(value = "/search/tags/page/{page}")
     public String tagPaginated(@PathVariable(name = "page") int page, @PathParam("query") String query, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
         
         if(query == null || query.equals("")){
             model.addAttribute("emptySearch", true);

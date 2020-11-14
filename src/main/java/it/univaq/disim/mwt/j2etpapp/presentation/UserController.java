@@ -33,12 +33,15 @@ public class UserController {
     private ApplicationProperties properties;
 
     @Autowired
+    private UtilsClass utilsClass;
+
+    @Autowired
     private TemplateHelper templateHelper;
 
     @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, BindingResult bindingResult, @PathVariable("userId") Long userId, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("user", principal);
@@ -81,7 +84,7 @@ public class UserController {
     @PostMapping("{userId}/change_password")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
     public String changePassword (@RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, @PathVariable("userId") Long userId, Model model) throws BusinessException {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(userBO.checkOldPassword(principal, oldPassword)) {
             // old password correct
@@ -127,6 +130,7 @@ public class UserController {
     @ResponseBody
     public String getUser(@PathVariable("userId") Long userId) throws BusinessException {
         UserClass user = userBO.findById(userId);
+
         Map<String, String> result = new HashMap<>();
         result.put("username", user.getUsername());
         result.put("userImage", user.getImage() == null ? "images/no_profile_img.jpg" : user.getImage().getLocation());

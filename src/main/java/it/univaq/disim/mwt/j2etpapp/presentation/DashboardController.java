@@ -39,11 +39,14 @@ public class DashboardController {
     private ApplicationProperties properties;
 
     @Autowired
+    private UtilsClass utilsClass;
+
+    @Autowired
     private TemplateHelper templateHelper;
 
     @GetMapping("")
     public String home(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("user", principal);
         model.addAttribute("templateHelper", templateHelper);
@@ -54,7 +57,7 @@ public class DashboardController {
 
     @GetMapping("channels/owned")
     public String dashboardChannelOwned(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
         RoleClass creator = roleBO.findByName("creator");
@@ -76,7 +79,7 @@ public class DashboardController {
 
     @GetMapping("channels/joined")
     public String dashboardChannelJoined(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         List<UserChannelRole> userChannelRoles = userChannelRoleBO.findByUserId(principal.getId());
         RoleClass creator = roleBO.findByName("creator");
@@ -98,7 +101,7 @@ public class DashboardController {
 
     @GetMapping("posts/owned")
     public String dashboardPostOwned(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserId(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -109,7 +112,7 @@ public class DashboardController {
 
     @GetMapping("posts/saved")
     public String dashboardPostSaved(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserSaved(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -120,7 +123,7 @@ public class DashboardController {
 
     @GetMapping("posts/hidden")
     public String dashboardPostHidden(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserHidden(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -131,7 +134,7 @@ public class DashboardController {
 
     @GetMapping("posts/reported")
     public String dashboardPostReported(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserReported(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -142,7 +145,7 @@ public class DashboardController {
 
     @GetMapping("posts/upvoted")
     public String dashboardPostUpvoted(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserUpvoted(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -153,7 +156,7 @@ public class DashboardController {
 
     @GetMapping("posts/downvoted")
     public String dashboardPostDownvoted(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserDownvoted(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -164,7 +167,7 @@ public class DashboardController {
 
     @GetMapping("replies/owned")
     public String dashboardReplyOwned(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserId(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -175,7 +178,7 @@ public class DashboardController {
 
     @GetMapping("replies/upvoted")
     public String dashboardReplyUpvoted(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserUpvoted(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
@@ -186,7 +189,7 @@ public class DashboardController {
 
     @GetMapping("replies/downvoted")
     public String dashboardReplyDownvoted(Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserDownvoted(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);

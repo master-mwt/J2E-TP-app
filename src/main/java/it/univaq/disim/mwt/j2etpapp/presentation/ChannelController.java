@@ -7,11 +7,9 @@ import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,12 +28,13 @@ public class ChannelController {
     @Autowired
     private PostBO postBO;
     @Autowired
-    private UserChannelRoleBO userChannelRoleBO;
-    @Autowired
     private TagBO tagBO;
 
     @Autowired
     private ApplicationProperties properties;
+
+    @Autowired
+    private UtilsClass utilsClass;
 
     @Autowired
     private TemplateHelper templateHelper;
@@ -43,7 +42,7 @@ public class ChannelController {
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
     public String save(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         if(bindingResult.hasErrors()){
             model.addAttribute("user", principal);
@@ -78,9 +77,9 @@ public class ChannelController {
             model.addAttribute("channel", channelData);
             model.addAttribute("postPage", postPage);
             model.addAttribute("templateHelper", templateHelper);
-            UserClass principal = UtilsClass.getPrincipal();
+            UserClass principal = utilsClass.getPrincipal();
             model.addAttribute("principal", principal);
-            UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
+            UserChannelRole subscription = utilsClass.getSubscription(channel, principal);
             model.addAttribute("subscription", subscription);
             model.addAttribute("tags", tagBO.findAll());
             model.addAttribute("errors", bindingResult.getFieldErrors());
@@ -95,7 +94,7 @@ public class ChannelController {
     @GetMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
     public String doJoin(@Valid @PathVariable("channelId") Long channelId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         channelBO.joinChannel(channelId, principal);
 
@@ -105,7 +104,7 @@ public class ChannelController {
     @GetMapping("{channelId}/leave")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'leave_channel')")
     public String doLeave(@PathVariable("channelId") Long channelId) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         channelBO.leaveChannel(channelId, principal);
 

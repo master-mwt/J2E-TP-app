@@ -6,10 +6,8 @@ import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,9 +28,10 @@ public class PostController {
     @Autowired
     private ChannelBO channelBO;
     @Autowired
-    private UserChannelRoleBO userChannelRoleBO;
-    @Autowired
     private TagBO tagBO;
+
+    @Autowired
+    private UtilsClass utilsClass;
 
     @Autowired
     private TemplateHelper templateHelper;
@@ -47,9 +46,9 @@ public class PostController {
             model.addAttribute("channel", channel);
             model.addAttribute("postPage", postPage);
             model.addAttribute("templateHelper", templateHelper);
-            UserClass principal = UtilsClass.getPrincipal();
+            UserClass principal = utilsClass.getPrincipal();
             model.addAttribute("principal", principal);
-            UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
+            UserChannelRole subscription = utilsClass.getSubscription(channel, principal);
             model.addAttribute("subscription", subscription);
             model.addAttribute("tags", tagBO.findAll());
             model.addAttribute("errors", bindingResult.getFieldErrors());

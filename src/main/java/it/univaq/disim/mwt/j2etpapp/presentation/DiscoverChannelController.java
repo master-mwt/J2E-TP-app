@@ -3,11 +3,9 @@ package it.univaq.disim.mwt.j2etpapp.presentation;
 import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
-import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +26,9 @@ public class DiscoverChannelController {
     private TagBO tagBO;
 
     @Autowired
+    private UtilsClass utilsClass;
+
+    @Autowired
     private TemplateHelper templateHelper;
 
     @GetMapping("{id}")
@@ -38,9 +39,9 @@ public class DiscoverChannelController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("templateHelper", templateHelper);
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
         model.addAttribute("principal", principal);
-        UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
+        UserChannelRole subscription = utilsClass.getSubscription(channel, principal);
         model.addAttribute("subscription", subscription);
         model.addAttribute("tags", tagBO.findAll());
         return "pages/discover/channel";
@@ -53,9 +54,9 @@ public class DiscoverChannelController {
         model.addAttribute("channel", channel);
         model.addAttribute("postPage", postPage);
         model.addAttribute("templateHelper", templateHelper);
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
         model.addAttribute("principal", principal);
-        UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;
+        UserChannelRole subscription = utilsClass.getSubscription(channel, principal);
         model.addAttribute("subscription", subscription);
         model.addAttribute("tags", tagBO.findAll());
         return "pages/discover/channel";
@@ -86,7 +87,7 @@ public class DiscoverChannelController {
     @GetMapping("{id}/members")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'view_channel_members')")
     public String discoverChannelMembers(@PathVariable("id") Long id, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         ChannelClass channel = channelBO.findById(id);
         Page<UserChannelRole> members = userChannelRoleBO.findByChannelIdPaginated(channel.getId(), 0, 10);
@@ -101,7 +102,7 @@ public class DiscoverChannelController {
     @GetMapping("{id}/members/page/{pageId}")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'view_channel_members')")
     public String discoverChannelMembersPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
-        UserClass principal = UtilsClass.getPrincipal();
+        UserClass principal = utilsClass.getPrincipal();
 
         ChannelClass channel = channelBO.findById(id);
         Page<UserChannelRole> members = userChannelRoleBO.findByChannelIdPaginated(channel.getId(), pageId, 10);

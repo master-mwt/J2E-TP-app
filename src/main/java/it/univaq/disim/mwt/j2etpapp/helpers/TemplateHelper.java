@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-// TODO: will this class be inserted in all templates ? (decision)
 @Component
 public class TemplateHelper {
 
@@ -25,6 +24,7 @@ public class TemplateHelper {
     private ReplyBO replyBO;
     @Autowired
     private ImageBO imageBO;
+
 
     public boolean isPostUpvotedByUser(Long userId, PostClass post) {
         return postBO.findByUserUpvoted(userId).contains(post);
