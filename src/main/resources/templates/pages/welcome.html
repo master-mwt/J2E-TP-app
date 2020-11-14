@@ -14,7 +14,7 @@
           th:each="post : ${page.getContent()}"
           class="card col-lg-10 mx-auto d-flex flex-row px-0"
           style="max-width: 800px;"
-          th:if="${user == null || !postBO.findByUserHidden(user.getId()).contains(post)}"
+          th:if="${user == null || !templateHelper.isPostHiddenByUser(user.getId(), post)}"
         >
         <!-- ##### POST SIDEBAR ##### -->
           <div
@@ -24,14 +24,14 @@
             <!-- if auth and post is not upvoted, upvote is enabled-->
             <a th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
                sec:authorize="!isAnonymous()"
-               th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:unless="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                th:id="${'post-' + post.getId() + '-upvote'}" class="upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
             <!-- if auth and post is upvoted, unupvote is enabled-->
             <a th:href="@{/posts/{id}/upvote(id=${post.getId()})}"
                sec:authorize="!isAnonymous()"
-               th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:if="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                th:id="${'post-' + post.getId() + '-upvote'}" class="text-warning upvote">
               <i class="fas fa-arrow-up mb-1"></i>
             </a>
@@ -42,14 +42,14 @@
             <!-- if auth and post is upvoted or downvoted, draw text-warning info -->
             <span th:id="${'post-' + post.getId() + '-votenumber'}"
                   sec:authorize="!isAnonymous()"
-                  th:if="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                  th:if="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post) || templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                   class="my-1 text-warning votenumber"
                   th:text="${post.getUpvote() - post.getDownvote()}"
               ></span>
             <!-- else auth, post is not upvoted and not downvoted, draw text-light info -->
             <span th:id="${'post-' + post.getId() + '-votenumber'}"
                   sec:authorize="!isAnonymous()"
-                  th:unless="${postBO.findByUserUpvoted(#authentication.getPrincipal().getUser().getId()).contains(post) || postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                  th:unless="${templateHelper.isPostUpvotedByUser(#authentication.getPrincipal().getUser().getId(), post) || templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                   class="my-1 text-light votenumber"
                   th:text="${post.getUpvote() - post.getDownvote()}"></span>
             <!-- else guest, draw text-light info -->
@@ -60,14 +60,14 @@
             <!-- if auth and post is not downvoted, downvote is enabled-->
             <a th:href="@{/posts/{id}/downvote(id=${post.getId()})}" th:id="${'post-' + post.getId() + '-downvote'}"
                sec:authorize="!isAnonymous()"
-               th:unless="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:unless="${templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                class="downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
             <!-- if auth and post is downvoted, undownvote is enabled-->
             <a th:href="@{/posts/{id}/downvote(id=${post.getId()})}" th:id="${'post-' + post.getId() + '-downvote'}"
                sec:authorize="!isAnonymous()"
-               th:if="${postBO.findByUserDownvoted(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+               th:if="${templateHelper.isPostDownvotedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                class="text-warning downvote">
               <i class="fas fa-arrow-down"></i>
             </a>
@@ -93,7 +93,7 @@
               style="max-width:800px;height:300px;">
               <div class="carousel-inner bg-secondary rounded-right">
                 <!-- for images -->
-                <th:block th:each="image : ${postBO.getPostImages(post.getId())}">
+                <th:block th:each="image : ${templateHelper.findPostImages(post.getId())}">
                   <!-- if first image -->
                   <div th:if="${image.isFirst()}" class="carousel-item active">
                     <img th:src="${image.getLocation()}" class="d-block mx-auto w-100 h-auto">
@@ -119,7 +119,7 @@
 
             <!-- ##### POST HEADER-BODY ##### -->
             <div class="card-header text-left border-0 px-3">
-              <p class="m-0 mb-1" th:with="channel=${channelBO.findById(post.getChannelId())}, user=${userBO.findById(post.getUserId())}">
+              <p class="m-0 mb-1" th:with="channel=${templateHelper.findChannelById(post.getChannelId())}, user=${templateHelper.findUserById(post.getUserId())}">
                 <a th:href="@{/discover/channel/{id}/(id=${channel.getId()})}"
                   class="text-decoration-none"><b th:utext="${channel.getName()}"></b></a> <span class="text-muted">[[#{content.welcome.post.posted_by}]]
                 </span>
@@ -143,7 +143,7 @@
               <a th:href="@{/posts/{id}/save(id=${post.getId()})}"
                  th:id="${'post-' + post.getId() + '-save'}"
                  sec:authorize="!isAnonymous()"
-                 th:unless="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                 th:unless="${templateHelper.isPostSavedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                  class="text-decoration-none mr-2 save">
                 <i th:id="${'post-' + post.getId() + '-save-icon'}" class="far fa-bookmark mr-1"></i>
                 Save
@@ -151,7 +151,7 @@
               <!-- if auth and post saved, save is disabled -->
               <a th:id="${'post-' + post.getId() + '-save'}"
                  sec:authorize="!isAnonymous()"
-                 th:if="${postBO.findByUserSaved(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                 th:if="${templateHelper.isPostSavedByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                  th:href="@{/posts/{id}/save(id=${post.getId()})}"
                  class="text-decoration-none mr-2 text-danger save">
                 <i th:id="${'post-' + post.getId() + '-save-icon'}" class="fas fa-bookmark mr-1"></i>
@@ -168,7 +168,7 @@
               <!-- if auth and post unhidden, hide is enabled -->
               <a th:id="${'post-' + post.getId() + '-hide'}" th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                  sec:authorize="!isAnonymous()"
-                 th:unless="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                 th:unless="${templateHelper.isPostHiddenByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                  class="text-decoration-none mr-2 hide">
                 <i th:id="${'post-' + post.getId() + '-hide-icon'}" class="far fa-eye-slash mr-1"></i>
                 Hide
@@ -176,7 +176,7 @@
               <!-- if auth and post hidden, hide is disabled -->
               <a th:id="${'post-' + post.getId() + '-hide'}" th:href="@{/posts/{id}/hide(id=${post.getId()})}"
                  sec:authorize="!isAnonymous()"
-                 th:if="${postBO.findByUserHidden(#authentication.getPrincipal().getUser().getId()).contains(post)}"
+                 th:if="${templateHelper.isPostHiddenByUser(#authentication.getPrincipal().getUser().getId(), post)}"
                  class="text-decoration-none mr-2 text-danger hide">
                 <i th:id="${'post-' + post.getId() + '-hide-icon'}" class="fas fa-eye-slash mr-1"></i>
                 Unhide
