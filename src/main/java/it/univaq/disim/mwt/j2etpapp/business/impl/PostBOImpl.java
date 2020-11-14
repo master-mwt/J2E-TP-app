@@ -12,6 +12,7 @@ import it.univaq.disim.mwt.j2etpapp.repository.mongo.NotificationRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,7 @@ import java.util.*;
 
 @Service
 @Transactional
+@Slf4j
 public class PostBOImpl implements PostBO {
 
     @Autowired
@@ -352,7 +354,8 @@ public class PostBOImpl implements PostBO {
                     post.setImages(imagesId);
                 }
             } catch (IOException e) {
-                throw new BusinessException("createPostInChannel save image", e);
+                log.info("createPostInChannel: Error in saving image while creating post in channel with id " + post.getChannelId());
+                throw new BusinessException("Error in saving image while creating post", e);
             }
         }
 

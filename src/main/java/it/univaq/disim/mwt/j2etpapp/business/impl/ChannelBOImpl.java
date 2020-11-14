@@ -8,6 +8,7 @@ import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.*;
 
 @Service
 @Transactional
+@Slf4j
 public class ChannelBOImpl implements ChannelBO {
 
     @Autowired
@@ -95,14 +97,18 @@ public class ChannelBOImpl implements ChannelBO {
         if(replies != null && !replies.isEmpty()) {
             replyRepository.deleteAll(replies);
         }
+
+        log.info("Deleted channel with id " + id);
     }
 
     @Override
     public void delete(ChannelClass channel) {
+        Long channelId = channel.getId();
+
         channelRepository.delete(channel);
 
-        List<PostClass> posts = postRepository.findByChannelId(channel.getId()).orElse(null);
-        List<ReplyClass> replies = replyRepository.findByChannelId(channel.getId()).orElse(null);
+        List<PostClass> posts = postRepository.findByChannelId(channelId).orElse(null);
+        List<ReplyClass> replies = replyRepository.findByChannelId(channelId).orElse(null);
 
         if(posts != null && !posts.isEmpty()) {
             postRepository.deleteAll(posts);
@@ -111,6 +117,8 @@ public class ChannelBOImpl implements ChannelBO {
         if(replies != null && !replies.isEmpty()) {
             replyRepository.deleteAll(replies);
         }
+
+        log.info("Deleted channel with id " + channelId);
     }
 
     @Override
@@ -203,7 +211,8 @@ public class ChannelBOImpl implements ChannelBO {
     public void globalUnreportPost(Long channelId, String postId) throws BusinessException {
         PostClass post = postRepository.findById(postId).orElse(null);
         if(!post.getChannelId().equals(channelId)){
-            throw new BusinessException();
+            log.info("globalUnreportPost: Error global unreport post with id " + postId + " in channel " + channelId);
+            throw new BusinessException("Global unreport post error");
         }
         post.getUsersReported().clear();
         post.setReported(false);
@@ -318,7 +327,8 @@ public class ChannelBOImpl implements ChannelBO {
 
         for(UserChannelRole userChannelRole : userChannelRoleRepository.findByChannelId(channelId).orElse(null)) {
             if(creator.equals(userChannelRole.getRole())) {
-                throw new BusinessException();
+                log.info("upgradeAdminToCreator: Upgrade admin with id " + userId +  " to creator rejected, creator already present in channel with id " + channelId);
+                throw new BusinessException("A creator is already present");
             }
         }
 
@@ -335,6 +345,7 @@ public class ChannelBOImpl implements ChannelBO {
 
             channel.setCreator(userRepository.findById(userId).orElse(null));
             channelRepository.save(channel);
+            log.info("Upgraded admin to creator user with id " + userId + " in channel with id " + channelId);
         }
     }
 
@@ -371,6 +382,7 @@ public class ChannelBOImpl implements ChannelBO {
             newRole.setUserChannelRoleFKs(userChannelRoleFKs);
             userChannelRoleRepository.delete(currentMember);
             userChannelRoleRepository.save(newRole);
+            log.info("Downgraded creator to admin user with id " + userId + " in channel with id " + channelId);
         }
     }
 
@@ -405,7 +417,8 @@ public class ChannelBOImpl implements ChannelBO {
             channelRepository.save(channel);
 
         } catch (IOException e) {
-            throw new BusinessException("saveImage", e);
+            log.info("saveImage: Error in saving image in channel id " + channelId);
+            throw new BusinessException("Error in saving image", e);
         }
 
         return path;

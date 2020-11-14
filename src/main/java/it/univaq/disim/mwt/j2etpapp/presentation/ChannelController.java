@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
-//TODO: MISSING LOGGING FEATURE IN ALL CLASSES!!
 @Controller
 @RequestMapping("channels")
 public class ChannelController {

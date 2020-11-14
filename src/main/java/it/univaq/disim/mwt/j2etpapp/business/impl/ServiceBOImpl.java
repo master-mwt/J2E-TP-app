@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.ServiceBO;
 import it.univaq.disim.mwt.j2etpapp.domain.ServiceClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ServiceRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class ServiceBOImpl implements ServiceBO {
 
     @Autowired
@@ -45,11 +47,16 @@ public class ServiceBOImpl implements ServiceBO {
     @Override
     public void deleteById(Long id) {
         serviceRepository.deleteById(id);
+        log.info("Deleted service with id " + id);
     }
 
     @Override
     public void delete(ServiceClass service) {
+        Long serviceId = service.getId();
+
         serviceRepository.delete(service);
+
+        log.info("Deleted service with id " + serviceId);
     }
 
     @Override

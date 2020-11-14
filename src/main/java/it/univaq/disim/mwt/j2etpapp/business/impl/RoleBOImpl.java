@@ -3,6 +3,7 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 import it.univaq.disim.mwt.j2etpapp.business.RoleBO;
 import it.univaq.disim.mwt.j2etpapp.domain.RoleClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.RoleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class RoleBOImpl implements RoleBO {
 
     @Autowired
@@ -50,11 +52,16 @@ public class RoleBOImpl implements RoleBO {
     @Override
     public void deleteById(Long id) {
         roleRepository.deleteById(id);
+        log.info("Deleted role with id " + id);
     }
 
     @Override
     public void delete(RoleClass role) {
+        Long roleId = role.getId();
+
         roleRepository.delete(role);
+
+        log.info("Deleted role with id " + roleId);
     }
 
     @Override

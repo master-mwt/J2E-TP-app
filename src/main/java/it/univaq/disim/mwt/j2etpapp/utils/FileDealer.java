@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.utils;
 
 import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class FileDealer {
 
     @Autowired
@@ -27,11 +29,13 @@ public class FileDealer {
 
         FileUtils.writeByteArrayToFile(file, image.getBytes());
 
+        log.info("Uploaded file: " + path);
         return path;
     }
 
     public void removeFile(String location) {
         File file = new File(location);
         FileUtils.deleteQuietly(file);
+        log.info("Deleted file: " + location);
     }
 }

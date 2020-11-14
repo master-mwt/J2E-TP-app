@@ -112,6 +112,8 @@ public class DatabaseSeeder {
 
     // seeders
     private void seedServices() {
+        log.info("Seeding services");
+
         ArrayList<ServiceClass> list = new ArrayList<>();
 
         ServiceClass mod_user_data = new ServiceClass();
@@ -223,6 +225,8 @@ public class DatabaseSeeder {
     }
 
     private void seedGroups() {
+        log.info("Seeding groups");
+
         ArrayList<GroupClass> list = new ArrayList<>();
 
         GroupClass administrator = new GroupClass();
@@ -247,6 +251,8 @@ public class DatabaseSeeder {
     }
 
     private void seedRoles() {
+        log.info("Seeding roles");
+
         ArrayList<RoleClass> list = new ArrayList<>();
 
         Set<ServiceClass> creatorServices = new HashSet<>();
@@ -330,6 +336,8 @@ public class DatabaseSeeder {
     }
 
     private void seedImages(){
+        log.info("Seeding images");
+
         try {
             Resource[] resources = loadResources("classpath*:static/images/*.*");
             BufferedImage img = null;
@@ -351,6 +359,8 @@ public class DatabaseSeeder {
     }
 
     private void seedUsers(Long iter){
+        log.info("Seeding users");
+
         for(long i = 0; i < iter; i++){
             UserClass user = new UserClass();
             user.setEmail(faker.internet().safeEmailAddress());
@@ -369,6 +379,8 @@ public class DatabaseSeeder {
     }
 
     private void seedChannels(Long iter){
+        log.info("Seeding channels");
+
         for(long i = 0; i < iter; i++){
             ChannelClass channel = new ChannelClass();
             channel.setName(faker.bothify(faker.lorem().word() + "_#####"));
@@ -384,6 +396,8 @@ public class DatabaseSeeder {
     }
 
     private void seedUserChannelRoleCreators(){
+        log.info("Seeding channels creators");
+
         RoleClass creator = roleBO.findByName("creator");
         for(ChannelClass channel : channelBO.findAll()){
 
@@ -404,6 +418,8 @@ public class DatabaseSeeder {
     }
 
     private void seedUserChannelRoleNonCreators(Long iter){
+        log.info("Seeding channels roles");
+
         RoleClass admin = roleBO.findByName("admin");
         RoleClass moderator = roleBO.findByName("moderator");
         RoleClass member = roleBO.findByName("member");
@@ -446,6 +462,8 @@ public class DatabaseSeeder {
     }
 
     private void seedReportedUsers(Long nUsers){
+        log.info("Seeding channels reported users");
+
         List<UserClass> users = shuffle(userBO.findAll());
         RoleClass creator = roleBO.findByName("creator");
         long inserted = 0;
@@ -471,6 +489,8 @@ public class DatabaseSeeder {
     }
 
     private void seedSoftBannedUsers(Long nUsers){
+        log.info("Seeding channels softbanned users");
+
         List<UserClass> users = shuffle(userBO.findAll());
         RoleClass creator = roleBO.findByName("creator");
         long inserted = 0;
@@ -496,6 +516,8 @@ public class DatabaseSeeder {
     }
 
     private void seedTags(Long iter){
+        log.info("Seeding tags");
+
         for(long i = 0; i < iter; i++){
             TagClass tag = new TagClass();
             tag.setName(faker.bothify(faker.lorem().word() + "_#####"));
@@ -505,6 +527,8 @@ public class DatabaseSeeder {
     }
 
     private void seedPosts(Long iter){
+        log.info("Seeding posts");
+
         RoleClass admin = roleBO.findByName("admin");
         RoleClass moderator = roleBO.findByName("moderator");
         RoleClass member = roleBO.findByName("member");
@@ -605,6 +629,8 @@ public class DatabaseSeeder {
     }
 
     private void seedReplies(Long iter){
+        log.info("Seeding replies");
+
         RoleClass admin = roleBO.findByName("admin");
         RoleClass moderator = roleBO.findByName("moderator");
         RoleClass member = roleBO.findByName("member");
@@ -674,6 +700,8 @@ public class DatabaseSeeder {
     }
 
     private void seedAdmins(){
+        log.info("Seeding administrators");
+
         UserClass user = new UserClass();
         user.setEmail("a@a.it");
         user.setName("a");

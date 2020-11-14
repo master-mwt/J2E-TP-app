@@ -14,11 +14,11 @@ import java.io.StringWriter;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    // TODO: logging in classes !!
     // TODO: adjust error.html
     @ExceptionHandler(Exception.class)
     public String handleException(HttpServletRequest req, Exception ex, Model model) {
         log.info("Exception Occured:: URL=" + req.getRequestURL() + ", method=" + req.getMethod());
+        log.info((ex.getCause() != null) ? ex.getCause().getMessage() : ex.getMessage());
 
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         // TODO: debug
         ex.printStackTrace();
 
-        String errorCause = (ex.getCause() != null) ? ex.getCause().getMessage() : "";
+        String errorCause = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getMessage();
         model.addAttribute("status", (ex instanceof AccessDeniedException) ? 403 : 500);
         model.addAttribute("message", errorCause);
         model.addAttribute("trace", stringWriter.toString());

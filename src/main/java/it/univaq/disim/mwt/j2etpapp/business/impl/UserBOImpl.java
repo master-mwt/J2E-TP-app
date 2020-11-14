@@ -11,6 +11,7 @@ import it.univaq.disim.mwt.j2etpapp.repository.jpa.GroupRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class UserBOImpl implements UserBO {
 
     @Autowired
@@ -105,11 +107,16 @@ public class UserBOImpl implements UserBO {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+        log.info("Deleted user with id " + id);
     }
 
     @Override
     public void delete(UserClass user) {
+        Long userId = user.getId();
+
         userRepository.delete(user);
+
+        log.info("Deleted user with id " + userId);
     }
 
     @Override
@@ -122,8 +129,10 @@ public class UserBOImpl implements UserBO {
         UserClass user = userRepository.findById(userId).orElse(null);
         if(user.isHard_ban()){
             user.setHard_ban(false);
+            log.info("User with id " + userId + " and username " + user.getUsername() + " has been unbanned from platform");
         } else {
             user.setHard_ban(true);
+            log.info("User with id " + userId + " and username " + user.getUsername() + " has been banned from platform");
         }
         userRepository.save(user);
     }
@@ -136,6 +145,7 @@ public class UserBOImpl implements UserBO {
         if(user != null) {
             user.setGroup(administrator);
             userRepository.save(user);
+            log.info("User with id " + user.getId() + " and username " + user.getUsername() + " has been upgraded to administrator");
         }
     }
 
@@ -147,6 +157,7 @@ public class UserBOImpl implements UserBO {
         if(user != null) {
             user.setGroup(logged);
             userRepository.save(user);
+            log.info("User with id " + user.getId() + " and username " + user.getUsername() + " has been downgraded to logged");
         }
     }
 
@@ -161,6 +172,7 @@ public class UserBOImpl implements UserBO {
     @Override
     public void changePassword(UserClass user, String newPassword) throws BusinessException {
         if(newPassword.length() < properties.getMinPasswordLength()) {
+            log.info("changePassword: Password is too short error for user with id " + user.getId());
             throw new BusinessException("Password is too short");
         } else {
             user.setPassword(passwordEncoder.encode(newPassword));
@@ -198,7 +210,8 @@ public class UserBOImpl implements UserBO {
             userRepository.save(user);
 
         } catch (IOException e) {
-            throw new BusinessException("saveImage", e);
+            log.info("saveImage: Error in saving image for user with id " + userId);
+            throw new BusinessException("Error in saving image", e);
         }
 
         return path;
