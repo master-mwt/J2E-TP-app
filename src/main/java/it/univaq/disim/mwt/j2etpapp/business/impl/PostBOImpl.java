@@ -7,6 +7,7 @@ import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserChannelRoleRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.NotificationRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
+import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.TagRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
@@ -38,6 +39,8 @@ public class PostBOImpl implements PostBO {
     private TagRepository tagRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Autowired
     private FileDealer fileDealer;
@@ -177,11 +180,17 @@ public class PostBOImpl implements PostBO {
 
     @Override
     public void deleteById(String id) {
+        PostClass post = postRepository.findById(id).orElse(null);
+
+        deletePostRepliesAndImages(post);
+
         postRepository.deleteById(id);
     }
 
     @Override
     public void delete(PostClass post) {
+        deletePostRepliesAndImages(post);
+
         postRepository.delete(post);
     }
 
@@ -439,6 +448,25 @@ public class PostBOImpl implements PostBO {
                     notification.setContent("New post in channel " + notification.getChannelName());
 
                     notificationRepository.save(notification);
+                }
+            }
+        }
+    }
+
+    private void deletePostRepliesAndImages(PostClass post) {
+        Set<ReplyClass> replies = post.getReplies();
+        Set<Long> imagesId = post.getImages();
+
+        if(replies != null && !replies.isEmpty()) {
+            replyRepository.deleteAll(replies);
+        }
+
+        if(imagesId != null && !imagesId.isEmpty()) {
+            for(Long imageId : imagesId) {
+                ImageClass image = imageRepository.findById(imageId).orElse(null);
+                if(image != null) {
+                    fileDealer.removeFile(image.getLocation());
+                    imageRepository.delete(image);
                 }
             }
         }
