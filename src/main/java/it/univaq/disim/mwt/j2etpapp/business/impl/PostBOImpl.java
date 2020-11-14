@@ -389,16 +389,16 @@ public class PostBOImpl implements PostBO {
     private void createPostAux(PostClass post, String tagListString) {
         // tags: string -> array
         String[] tagNames = tagListString.split(" ");
-        List<TagClass> tagList = new ArrayList<>();
+        Set<TagClass> tagSet = new HashSet<>();
         List<TagClass> newtagList = new ArrayList<>();
 
         for(String tagName : tagNames) {
             if(tagName != null && !tagName.equals("")) {
-                tagList.add(new TagClass(tagName));
+                tagSet.add(new TagClass(tagName));
             }
         }
 
-        for(TagClass tag : tagList) {
+        for(TagClass tag : tagSet) {
             if(tagRepository.findByName(tag.getName()).orElse(null) == null) {
                 newtagList.add(tag);
             }
@@ -411,7 +411,7 @@ public class PostBOImpl implements PostBO {
 
         // get tags and save to post
         Set<TagClass> tagsToBeSavedInPost = new HashSet<>();
-        for(TagClass tag : tagList) {
+        for(TagClass tag : tagSet) {
             tagsToBeSavedInPost.add(tagRepository.findByName(tag.getName()).orElse(null));
         }
         // set post tags
