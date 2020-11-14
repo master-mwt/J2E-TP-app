@@ -31,11 +31,14 @@ public class RoleClass implements Serializable {
     @Size(max = 200)
     private String description;
 
+    // relations
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<ServiceClass> services;
 
     @OneToMany(mappedBy = "role")
     private Set<UserChannelRole> userChannelRoles;
+
 
     public RoleClass(String name) {
         this.name = name;

@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
-// TODO: Validation in all domain classes
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -61,6 +60,8 @@ public class UserClass implements Serializable {
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "timestamp default current_timestamp")
     private Date createdAt;
 
+    // relations
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<UserChannelRole> userChannelRoles;
 
@@ -75,6 +76,7 @@ public class UserClass implements Serializable {
 
     @OneToOne(cascade = CascadeType.REMOVE)
     private ImageClass image;
+
 
     @Override
     public boolean equals(Object o) {

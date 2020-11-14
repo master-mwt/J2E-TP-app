@@ -70,6 +70,7 @@ public class PostClass implements Serializable {
     @Column(name = "users_saved")
     private Set<Long> usersSaved;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

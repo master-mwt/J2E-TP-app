@@ -31,8 +31,11 @@ public class GroupClass implements Serializable {
     @Size(max = 200)
     private String description;
 
+    // relations
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<ServiceClass> services;
+
 
     public GroupClass(String name) {
         this.name = name;

@@ -48,7 +48,6 @@ public class UserBOImpl implements UserBO {
 
     private PasswordEncoder passwordEncoder;
 
-    // TODO: is this ok ?
     @Autowired
     private void setPasswordEncoder(@Lazy PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;

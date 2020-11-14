@@ -51,6 +51,7 @@ public class ReplyClass implements Serializable {
     @Column(name = "users_upvoted")
     private Set<Long> usersUpvoted;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

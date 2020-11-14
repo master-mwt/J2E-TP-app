@@ -31,11 +31,14 @@ public class ServiceClass implements Serializable {
     @Size(max = 200)
     private String description;
 
+    // relations
+
     @ManyToMany(mappedBy = "services")
     private Set<GroupClass> groups;
 
     @ManyToMany(mappedBy = "services")
     private Set<RoleClass> roles;
+
 
     public ServiceClass(String name) {
         this.name = name;

@@ -17,7 +17,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "channels")
-
 public class ChannelClass implements Serializable {
 
     @Id
@@ -38,21 +37,18 @@ public class ChannelClass implements Serializable {
     @Column(columnDefinition = "text")
     private String rules;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    private ImageClass image;
-
-    @OneToOne
-    private UserClass creator;
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "timestamp default current_timestamp")
     private Date createdAt;
 
-    //@UpdateTimestamp
-    //@Temporal(TemporalType.TIMESTAMP)
-    //@Column(name = "updated_at", nullable = false, columnDefinition = "timestamp")
-    //private Date updatedAt = new Date();
+    // relations
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private ImageClass image;
+
+    @OneToOne
+    private UserClass creator;
 
     @OneToMany(mappedBy = "channel", cascade = CascadeType.REMOVE)
     private Set<UserChannelRole> userChannelRoles;

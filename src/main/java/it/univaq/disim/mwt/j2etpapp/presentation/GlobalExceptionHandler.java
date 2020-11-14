@@ -14,7 +14,6 @@ import java.io.StringWriter;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    // TODO: adjust error.html
     @ExceptionHandler(Exception.class)
     public String handleException(HttpServletRequest req, Exception ex, Model model) {
         log.info("Exception Occured:: URL=" + req.getRequestURL() + ", method=" + req.getMethod());

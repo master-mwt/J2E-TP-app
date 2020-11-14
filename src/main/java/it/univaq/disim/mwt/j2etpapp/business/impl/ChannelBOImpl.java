@@ -40,6 +40,7 @@ public class ChannelBOImpl implements ChannelBO {
     private UserRepository userRepository;
     @Autowired
     private ImageRepository imageRepository;
+
     @Autowired
     private FileDealer fileDealer;
 
@@ -85,6 +86,14 @@ public class ChannelBOImpl implements ChannelBO {
 
     @Override
     public void deleteById(Long id) {
+        ChannelClass channel = channelRepository.findById(id).orElse(null);
+
+        String imageLocation = getChannelImageLocation(channel);
+
+        if(imageLocation != null) {
+            fileDealer.removeFile(imageLocation);
+        }
+
         channelRepository.deleteById(id);
 
         List<PostClass> posts = postRepository.findByChannelId(id).orElse(null);
@@ -104,6 +113,12 @@ public class ChannelBOImpl implements ChannelBO {
     @Override
     public void delete(ChannelClass channel) {
         Long channelId = channel.getId();
+
+        String imageLocation = getChannelImageLocation(channel);
+
+        if(imageLocation != null) {
+            fileDealer.removeFile(imageLocation);
+        }
 
         channelRepository.delete(channel);
 
@@ -451,5 +466,16 @@ public class ChannelBOImpl implements ChannelBO {
         savedChannel.setRules(newData.getRules());
 
         channelRepository.save(savedChannel);
+    }
+
+
+    private String getChannelImageLocation(ChannelClass channel) {
+        ImageClass channelImage = channel.getImage();
+        String imageLocation = null;
+
+        if(channelImage != null) {
+            imageLocation = channelImage.getLocation();
+        }
+        return imageLocation;
     }
 }
