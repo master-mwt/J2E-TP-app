@@ -2,12 +2,14 @@ package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
+import it.univaq.disim.mwt.j2etpapp.business.FileTypeException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.*;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.PostRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.mongo.ReplyRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -43,6 +42,9 @@ public class ChannelBOImpl implements ChannelBO {
 
     @Autowired
     private FileDealer fileDealer;
+
+    @Autowired
+    private UtilsClass utilsClass;
 
     @Override
     public List<ChannelClass> findAll() {
@@ -419,19 +421,17 @@ public class ChannelBOImpl implements ChannelBO {
         String path = null;
 
         try {
-            path = fileDealer.uploadFile(image);
-            ImageClass imageClass = new ImageClass();
-            imageClass.setLocation(path);
-            imageClass.setType(image.getContentType());
+            if(utilsClass.checkContentTypeValidity(image.getContentType())) {
+                path = fileDealer.uploadFile(image);
+                ImageClass imageClass = utilsClass.fillImageData(path, image.getContentType());
 
-            BufferedImage bimg = ImageIO.read(new File(path));
-            imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
-
-            imageRepository.save(imageClass);
-            channel.setImage(imageClass);
-            channelRepository.save(channel);
-
-        } catch (IOException e) {
+                imageRepository.save(imageClass);
+                channel.setImage(imageClass);
+                channelRepository.save(channel);
+            } else {
+                throw new FileTypeException("The uploaded file is not an image");
+            }
+        } catch (IOException | FileTypeException e) {
             log.info("saveImage: Error in saving image in channel id " + channelId);
             throw new BusinessException("Error in saving image", e);
         }

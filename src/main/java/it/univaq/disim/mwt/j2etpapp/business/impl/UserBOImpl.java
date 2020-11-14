@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
+import it.univaq.disim.mwt.j2etpapp.business.FileTypeException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
@@ -11,6 +12,7 @@ import it.univaq.disim.mwt.j2etpapp.repository.jpa.GroupRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.ImageRepository;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.UserRepository;
 import it.univaq.disim.mwt.j2etpapp.utils.FileDealer;
+import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,9 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +41,9 @@ public class UserBOImpl implements UserBO {
 
     @Autowired
     private FileDealer fileDealer;
+
+    @Autowired
+    private UtilsClass utilsClass;
 
     @Autowired
     private ApplicationProperties properties;
@@ -196,19 +198,17 @@ public class UserBOImpl implements UserBO {
         String path = null;
 
         try {
-            path = fileDealer.uploadFile(image);
-            ImageClass imageClass = new ImageClass();
-            imageClass.setLocation(path);
-            imageClass.setType(image.getContentType());
+            if(utilsClass.checkContentTypeValidity(image.getContentType())) {
+                path = fileDealer.uploadFile(image);
+                ImageClass imageClass = utilsClass.fillImageData(path, image.getContentType());
 
-            BufferedImage bimg = ImageIO.read(new File(path));
-            imageClass.setSize(bimg.getWidth() + "x" + bimg.getHeight());
-
-            imageRepository.save(imageClass);
-            user.setImage(imageClass);
-            userRepository.save(user);
-
-        } catch (IOException e) {
+                imageRepository.save(imageClass);
+                user.setImage(imageClass);
+                userRepository.save(user);
+            } else {
+                throw new FileTypeException("The uploaded file is not an image");
+            }
+        } catch (IOException | FileTypeException e) {
             log.info("saveImage: Error in saving image for user with id " + userId);
             throw new BusinessException("Error in saving image", e);
         }
