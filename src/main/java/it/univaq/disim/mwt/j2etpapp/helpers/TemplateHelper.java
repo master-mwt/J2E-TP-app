@@ -9,7 +9,7 @@ import java.util.List;
 
 // TODO: will this class be inserted in all templates ? (decision)
 @Component
-public class Utility {
+public class TemplateHelper {
 
     @Autowired
     private PostBO postBO;
