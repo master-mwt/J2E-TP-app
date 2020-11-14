@@ -1,11 +1,10 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DiscoverPostController {
 
     @Autowired
-    private ChannelBO channelBO;
-    @Autowired
-    private UserBO userBO;
-    @Autowired
     private PostBO postBO;
     @Autowired
     private ReplyBO replyBO;
+
+    @Autowired
+    private TemplateHelper templateHelper;
 
     @GetMapping("{id}")
     public String discoverPost(@PathVariable("id") String id, Model model) {
@@ -32,10 +30,7 @@ public class DiscoverPostController {
         model.addAttribute("reply", new ReplyClass());
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("replyBO", replyBO);
-        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("templateHelper", templateHelper);
         return "pages/discover/post";
     }
 
@@ -44,10 +39,7 @@ public class DiscoverPostController {
         PostClass post = postBO.findById(id);
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, page, 10));
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
-        model.addAttribute("replyBO", replyBO);
-        model.addAttribute("channelBO", channelBO);
+        model.addAttribute("templateHelper", templateHelper);
         return "pages/discover/post";
     }
 }

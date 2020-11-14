@@ -1,11 +1,11 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
-import it.univaq.disim.mwt.j2etpapp.business.ImageBO;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import it.univaq.disim.mwt.j2etpapp.utils.JSONDealer;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,12 @@ public class UserController {
 
     @Autowired
     private UserBO userBO;
-    @Autowired
-    private ImageBO imageBO;
 
     @Autowired
     private ApplicationProperties properties;
+
+    @Autowired
+    private TemplateHelper templateHelper;
 
     @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
@@ -41,7 +42,7 @@ public class UserController {
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("user", principal);
-            model.addAttribute("imageBO", imageBO);
+            model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", new ChannelClass());
             model.addAttribute("errors", bindingResult.getFieldErrors());
@@ -87,7 +88,7 @@ public class UserController {
             userBO.changePassword(principal, newPassword);
         } else {
             model.addAttribute("user", principal);
-            model.addAttribute("imageBO", imageBO);
+            model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", new ChannelClass());
             model.addAttribute("errors", "oldPasswordError");

@@ -6,6 +6,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,7 @@ public class ChannelController {
     @Autowired
     private ChannelBO channelBO;
     @Autowired
-    private ImageBO imageBO;
-    @Autowired
     private PostBO postBO;
-    @Autowired
-    private UserBO userBO;
     @Autowired
     private UserChannelRoleBO userChannelRoleBO;
     @Autowired
@@ -40,6 +37,9 @@ public class ChannelController {
     @Autowired
     private ApplicationProperties properties;
 
+    @Autowired
+    private TemplateHelper templateHelper;
+
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
     public String save(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, Model model) {
@@ -47,7 +47,7 @@ public class ChannelController {
 
         if(bindingResult.hasErrors()){
             model.addAttribute("user", principal);
-            model.addAttribute("imageBO", imageBO);
+            model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", channel);
             model.addAttribute("errors", bindingResult.getFieldErrors());
@@ -77,9 +77,7 @@ public class ChannelController {
             model.addAttribute("post", new PostClass());
             model.addAttribute("channel", channelData);
             model.addAttribute("postPage", postPage);
-            model.addAttribute("userBO", userBO);
-            model.addAttribute("postBO", postBO);
-            model.addAttribute("userChannelRoleBO", userChannelRoleBO);
+            model.addAttribute("templateHelper", templateHelper);
             UserClass principal = UtilsClass.getPrincipal();
             model.addAttribute("principal", principal);
             UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;

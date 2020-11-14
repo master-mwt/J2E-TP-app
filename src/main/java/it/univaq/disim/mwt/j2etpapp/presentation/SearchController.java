@@ -4,6 +4,7 @@ import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +26,9 @@ public class SearchController {
     private UserBO userBO;
     @Autowired
     private TagBO tagBO;
+
     @Autowired
-    private UserChannelRoleBO userChannelRoleBO;
-    @Autowired
-    private RoleBO roleBO;
+    private TemplateHelper templateHelper;
 
     @GetMapping(value = "/search")
     public String search(@PathParam("target") String target, @PathParam("query") String query, Model model) {
@@ -48,9 +48,7 @@ public class SearchController {
                     }
 
                     model.addAttribute("postPage", postPage);
-                    model.addAttribute("channelBO", channelBO);
-                    model.addAttribute("userBO", userBO);
-                    model.addAttribute("postBO", postBO);
+                    model.addAttribute("templateHelper", templateHelper);
                     model.addAttribute("principal", principal);
                     return "pages/search_res/posts_res";
                 case "channels":
@@ -61,8 +59,7 @@ public class SearchController {
                     }
 
                     model.addAttribute("channelPage", channelPage);
-                    model.addAttribute("userChannelRoleBO", userChannelRoleBO);
-                    model.addAttribute("roleBO", roleBO);
+                    model.addAttribute("templateHelper", templateHelper);
                     return "pages/search_res/channels_res";
                 case "users":
                     Page<UserClass> userPage = userBO.findByUsernameContainsPaginated(query, 0, 10);
@@ -81,9 +78,7 @@ public class SearchController {
                     }
 
                     model.addAttribute("postPage", postPageByTags);
-                    model.addAttribute("channelBO", channelBO);
-                    model.addAttribute("userBO", userBO);
-                    model.addAttribute("postBO", postBO);
+                    model.addAttribute("templateHelper", templateHelper);
                     model.addAttribute("principal", principal);
                     return "pages/search_res/tags_res";
                 default:
@@ -110,9 +105,7 @@ public class SearchController {
         }
 
         model.addAttribute("postPage", postPage);
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("principal", principal);
         return "pages/search_res/posts_res";
     }
@@ -131,8 +124,7 @@ public class SearchController {
         }
 
         model.addAttribute("channelPage", channelPage);
-        model.addAttribute("userChannelRoleBO", userChannelRoleBO);
-        model.addAttribute("roleBO", roleBO);
+        model.addAttribute("templateHelper", templateHelper);
         return "pages/search_res/channels_res";
     }
 
@@ -150,7 +142,7 @@ public class SearchController {
         }
 
         model.addAttribute("userPage", userPage);
-        model.addAttribute("userBO", userBO);
+        model.addAttribute("templateHelper", templateHelper);
         return "pages/search_res/users_res";
     }
 
@@ -170,9 +162,7 @@ public class SearchController {
         }
 
         model.addAttribute("postPage", postPage);
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("principal", principal);
         return "pages/search_res/tags_res";
     }

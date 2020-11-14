@@ -5,6 +5,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import it.univaq.disim.mwt.j2etpapp.security.UserDetailsImpl;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,12 @@ public class PostController {
     @Autowired
     private ChannelBO channelBO;
     @Autowired
-    private UserBO userBO;
-    @Autowired
     private UserChannelRoleBO userChannelRoleBO;
     @Autowired
     private TagBO tagBO;
+
+    @Autowired
+    private TemplateHelper templateHelper;
 
     @PostMapping("create")
     public String save(@Valid @ModelAttribute("post") PostClass post, BindingResult bindingResult, @RequestParam("tags") String tags, @RequestParam("files") MultipartFile[] images, Model model) throws BusinessException {
@@ -44,9 +46,7 @@ public class PostController {
             model.addAttribute("post", post);
             model.addAttribute("channel", channel);
             model.addAttribute("postPage", postPage);
-            model.addAttribute("userBO", userBO);
-            model.addAttribute("postBO", postBO);
-            model.addAttribute("userChannelRoleBO", userChannelRoleBO);
+            model.addAttribute("templateHelper", templateHelper);
             UserClass principal = UtilsClass.getPrincipal();
             model.addAttribute("principal", principal);
             UserChannelRole subscription = (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetailsImpl) ? userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), principal.getId()) : null;

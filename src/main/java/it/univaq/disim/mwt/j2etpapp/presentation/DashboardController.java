@@ -1,11 +1,15 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
-import it.univaq.disim.mwt.j2etpapp.business.*;
+import it.univaq.disim.mwt.j2etpapp.business.PostBO;
+import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
+import it.univaq.disim.mwt.j2etpapp.business.RoleBO;
+import it.univaq.disim.mwt.j2etpapp.business.UserChannelRoleBO;
 import it.univaq.disim.mwt.j2etpapp.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.RoleClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserChannelRole;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +27,6 @@ import java.util.Map;
 public class DashboardController {
 
     @Autowired
-    private ChannelBO channelBO;
-    @Autowired
     private PostBO postBO;
     @Autowired
     private ReplyBO replyBO;
@@ -32,20 +34,19 @@ public class DashboardController {
     private UserChannelRoleBO userChannelRoleBO;
     @Autowired
     private RoleBO roleBO;
-    @Autowired
-    private UserBO userBO;
-    @Autowired
-    private ImageBO imageBO;
 
     @Autowired
     private ApplicationProperties properties;
+
+    @Autowired
+    private TemplateHelper templateHelper;
 
     @GetMapping("")
     public String home(Model model) {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("user", principal);
-        model.addAttribute("imageBO", imageBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("dateFormat", properties.getDateFormat());
         model.addAttribute("channel", new ChannelClass());
         return "pages/dashboard/home";
@@ -100,9 +101,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserId(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -113,9 +112,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserSaved(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -126,9 +123,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserHidden(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -139,9 +134,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserReported(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -152,9 +145,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserUpvoted(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -165,9 +156,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("posts", postBO.findByUserDownvoted(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("postBO", postBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/post_dashboard/list";
@@ -178,9 +167,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserId(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("replyBO", replyBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/reply_dashboard/list";
@@ -191,9 +178,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserUpvoted(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("replyBO", replyBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/reply_dashboard/list";
@@ -204,9 +189,7 @@ public class DashboardController {
         UserClass principal = UtilsClass.getPrincipal();
 
         model.addAttribute("replies", replyBO.findByUserDownvoted(principal.getId()));
-        model.addAttribute("channelBO", channelBO);
-        model.addAttribute("userBO", userBO);
-        model.addAttribute("replyBO", replyBO);
+        model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("user", principal);
 
         return "pages/dashboard/reply_dashboard/list";

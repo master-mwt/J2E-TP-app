@@ -1,11 +1,10 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
+import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +24,9 @@ public class ReplyController {
     private ReplyBO replyBO;
     @Autowired
     private PostBO postBO;
+
     @Autowired
-    private UserBO userBO;
-    @Autowired
-    private ChannelBO channelBO;
+    private TemplateHelper templateHelper;
 
     @PostMapping("create")
     public String save(@Valid @ModelAttribute("reply") ReplyClass reply, BindingResult bindingResult, @RequestParam("postId") String postId, Model model) {
@@ -38,10 +36,7 @@ public class ReplyController {
             model.addAttribute("reply", reply);
             model.addAttribute("post", post);
             model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, 0, 10));
-            model.addAttribute("userBO", userBO);
-            model.addAttribute("postBO", postBO);
-            model.addAttribute("replyBO", replyBO);
-            model.addAttribute("channelBO", channelBO);
+            model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("errors", bindingResult.getFieldErrors());
             return "pages/discover/post";
         }
