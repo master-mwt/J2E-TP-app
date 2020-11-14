@@ -93,4 +93,8 @@ public class TemplateHelper {
     public List<ImageClass> findPostImages(String postId) {
         return postBO.getPostImages(postId);
     }
+
+    public RoleClass findRoleById(Long roleId) {
+        return roleBO.findById(roleId);
+    }
 }

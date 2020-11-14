@@ -46,9 +46,9 @@
             <!-- if !is_null($channel->member) -->
             <h5
               sec:authorize="!isAnonymous()"
-              th:if="${userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()) != null}"
+              th:if="${templateHelper.findMemberUserChannelRole(channel.getId(), #authentication.getPrincipal().getUser().getId()) != null}"
               class="m-0 ml-auto text-warning"
-              th:text="${roleBO.findById(userChannelRoleBO.findByChannelIdAndUserId(channel.getId(), #authentication.getPrincipal().getUser().getId()).getRole().getId()).getName()}"
+              th:text="${templateHelper.findRoleById(templateHelper.findMemberUserChannelRole(channel.getId(), #authentication.getPrincipal().getUser().getId()).getRole().getId()).getName()}"
             ></h5>
             <!-- endif -->
           </div>
