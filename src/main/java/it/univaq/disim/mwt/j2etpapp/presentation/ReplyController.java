@@ -6,6 +6,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +30,8 @@ public class ReplyController {
     private TemplateHelper templateHelper;
 
     @PostMapping("create")
-    public String save(@Valid @ModelAttribute("reply") ReplyClass reply, BindingResult bindingResult, @RequestParam("postId") String postId, Model model) {
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'create_reply')")
+    public String save(@Valid @ModelAttribute("reply") ReplyClass reply, BindingResult bindingResult, @RequestParam("postId") String postId, @RequestParam("channelId") Long channelId, Model model) {
 
         if(bindingResult.hasErrors()) {
             PostClass post = postBO.findById(postId);

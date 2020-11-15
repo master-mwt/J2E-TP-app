@@ -8,6 +8,7 @@ import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.helpers.TemplateHelper;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,7 +38,8 @@ public class PostController {
     private TemplateHelper templateHelper;
 
     @PostMapping("create")
-    public String save(@Valid @ModelAttribute("post") PostClass post, BindingResult bindingResult, @RequestParam("tags") String tags, @RequestParam("files") MultipartFile[] images, Model model) throws BusinessException {
+    @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'create_post')")
+    public String save(@Valid @ModelAttribute("post") PostClass post, BindingResult bindingResult, @RequestParam("tags") String tags, @RequestParam("files") MultipartFile[] images, @RequestParam("channelId") Long channelId, Model model) throws BusinessException {
 
         if(bindingResult.hasErrors()) {
             ChannelClass channel = channelBO.findById(post.getChannelId());
