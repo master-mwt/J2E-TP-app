@@ -308,11 +308,13 @@
         class="col-md-12 text-center px-0 mb-3"
         style="max-width: 800px"
         sec:authorize="!isAnonymous()"
+        th:with="subscription=${templateHelper.findMemberUserChannelRole(post.getChannelId(), #authentication.getPrincipal().getUser().getId())}"
       >
         <button
           class="btn btn-success btn-block"
           data-toggle="modal"
-          data-target="#easymde-modal-reply"
+          th:classappend="${(subscription == null) && (!'administrator'.equals(#authentication.getPrincipal().getUser().getGroup().getName()))} ? 'disabled'"
+          th:attr="data-target=${(subscription != null || 'administrator'.equals(#authentication.getPrincipal().getUser().getGroup().getName())) ? '#easymde-modal-reply' : null}"
         >
           [[#{content.discover.post.button.make_a_reply}]]
         </button>
@@ -453,7 +455,7 @@
               <a
                 th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId())}"
+                th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId()) || 'administrator'.equals(#authentication.getPrincipal().getUser().getGroup().getName())}"
                 class="text-decoration-none mr-2 text-danger replydelete"
                 ><i class="fa fa-exclamation-triangle"></i
                 >[[#{content.discover.post.reply.button.delete_reply}]]</a

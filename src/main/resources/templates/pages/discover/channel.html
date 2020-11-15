@@ -170,8 +170,9 @@
       >
         <button
           class="btn btn-success btn-block"
+          th:classappend="${(subscription == null) && (!'administrator'.equals(principal.getGroup().getName()))} ? 'disabled'"
+          th:attr="data-target=${(subscription != null || 'administrator'.equals(principal.getGroup().getName())) ? '#easymde-modal' : null}"
           data-toggle="modal"
-          data-target="#easymde-modal"
         >
           [[#{content.discover.channel.button.make_a_post}]]
         </button>
