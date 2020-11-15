@@ -7,13 +7,16 @@
 <div class="container p-4" layout:fragment="content">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
+            <img
+                    th:src="@{/images/no_res_2.png}"
+                    alt="Logo"
+                    class="img-circle"
+                    width="250"
+            />
             <span class="display-1 d-block" th:text="${status}">Error code</span>
-            <div th:if="${message}" class="mb-4 lead">[[${message}]]</div>
-            <a th:href="@{/}" class="btn btn-link">Back to Home</a>
-            <p th:if="${timestamp}">[[${timestamp}]]</p>
-            <p th:if="${error}">[[${error}]]</p>
-            <p th:if="${status}">[[${status}]]</p>
-            <p th:if="${trace}">[[${trace}]]</p>
+            <div th:if="${message != null && !'No message available'.equals(message)}" class="mb-4 lead">[[${message}]]</div>
+            <p th:if="${error}" class="mb-4 lead">[[${error}]]</p>
+            <a th:href="@{/}" class="btn btn-link">[[#{common.error.page.back}]]</a>
         </div>
     </div>
 </div>

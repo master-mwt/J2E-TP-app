@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
         String errorCause = (ex.getCause() != null) ? ex.getCause().getMessage() : ex.getMessage();
         model.addAttribute("status", (ex instanceof AccessDeniedException) ? 403 : 500);
         model.addAttribute("message", errorCause);
-        model.addAttribute("trace", stringWriter.toString());
+        //model.addAttribute("trace", stringWriter.toString());
         return "error";
     }
 }
