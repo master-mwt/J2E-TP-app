@@ -13,7 +13,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "users_channels_roles")
 public class UserChannelRole implements Serializable {
-
     @EmbeddedId
     private UserChannelRoleFKs userChannelRoleFKs;
 

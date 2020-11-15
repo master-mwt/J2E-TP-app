@@ -46,11 +46,19 @@ public class GroupClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupClass that = (GroupClass) o;
-        return name.equals(that.name);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "GroupClass{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

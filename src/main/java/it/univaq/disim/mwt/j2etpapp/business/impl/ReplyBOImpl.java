@@ -105,6 +105,16 @@ public class ReplyBOImpl implements ReplyBO {
     }
 
     @Override
+    public void deleteAll(List<ReplyClass> replies) {
+        replyRepository.deleteAll(replies);
+    }
+
+    @Override
+    public void deleteAll(ReplyClass... replies) {
+        replyRepository.deleteAll(Arrays.asList(replies));
+    }
+
+    @Override
     public Long count() {
         return replyRepository.count();
     }

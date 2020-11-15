@@ -66,11 +66,6 @@ public class UserChannelRoleBOImpl implements UserChannelRoleBO {
     }
 
     @Override
-    public void deleteById(Long id) {
-        userChannelRoleRepository.deleteById(id);
-    }
-
-    @Override
     public void delete(UserChannelRole userChannelRole) {
         userChannelRoleRepository.delete(userChannelRole);
     }

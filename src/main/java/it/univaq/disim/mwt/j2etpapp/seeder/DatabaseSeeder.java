@@ -507,6 +507,8 @@ public class DatabaseSeeder {
 
                 channelBO.appendSoftBannedUsers(userChannelRole.getChannel().getId(), softBannedUsers);
 
+                userChannelRoleBO.delete(userChannelRole);
+
                 inserted++;
                 if(inserted >= nUsers){
                     return;

@@ -18,6 +18,9 @@
             <div th:if="${param.logout}" class="alert alert-success">
               [[#{common.login.logout_message}]]
             </div>
+            <div th:if="${param.registered}" class="alert alert-success">
+              [[#{common.login.sign_up_success}]]
+            </div>
             <!-- end session message -->
 
             <form method="POST" th:action="@{/login}">

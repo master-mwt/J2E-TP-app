@@ -23,6 +23,8 @@ public interface ReplyBO {
     void saveAll(ReplyClass... replies);
     void deleteById(String id);
     void delete(ReplyClass reply);
+    void deleteAll(List<ReplyClass> replies);
+    void deleteAll(ReplyClass... replies);
     Long count();
 
     AjaxResponse upvote(String replyId, UserClass user);

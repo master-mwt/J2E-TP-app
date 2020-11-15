@@ -57,11 +57,19 @@ public class ReplyClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReplyClass that = (ReplyClass) o;
-        return id.equals(that.id);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "ReplyClass{" +
+                "id='" + id + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

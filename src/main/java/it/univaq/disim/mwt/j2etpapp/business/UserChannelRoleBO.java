@@ -15,7 +15,6 @@ public interface UserChannelRoleBO {
     void save(UserChannelRole userChannelRole);
     void saveAll(List<UserChannelRole> userChannelRoles);
     void saveAll(UserChannelRole... userChannelRoles);
-    void deleteById(Long id);
     void delete(UserChannelRole userChannelRole);
     Long count();
 

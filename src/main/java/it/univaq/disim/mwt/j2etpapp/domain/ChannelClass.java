@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -58,4 +59,26 @@ public class ChannelClass implements Serializable {
 
     @ManyToMany
     private Set<UserClass> reportedUsers;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChannelClass that = (ChannelClass) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "ChannelClass{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

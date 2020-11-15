@@ -76,11 +76,19 @@ public class PostClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PostClass postClass = (PostClass) o;
-        return id.equals(postClass.id);
+        return Objects.equals(id, postClass.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "PostClass{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                '}';
     }
 }

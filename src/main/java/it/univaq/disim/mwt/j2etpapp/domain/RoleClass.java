@@ -49,11 +49,19 @@ public class RoleClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoleClass roleClass = (RoleClass) o;
-        return name.equals(roleClass.name);
+        return Objects.equals(name, roleClass.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "RoleClass{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -41,11 +41,21 @@ public class NotificationClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NotificationClass that = (NotificationClass) o;
-        return id.equals(that.id);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "NotificationClass{" +
+                "id='" + id + '\'' +
+                ", userTargetId=" + userTargetId +
+                ", userCreatedById=" + userCreatedById +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

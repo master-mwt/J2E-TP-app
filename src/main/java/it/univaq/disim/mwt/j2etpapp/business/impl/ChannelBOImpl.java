@@ -96,18 +96,9 @@ public class ChannelBOImpl implements ChannelBO {
             fileDealer.removeFile(imageLocation);
         }
 
+        deleteChannelPostsAndReplies(id);
+
         channelRepository.deleteById(id);
-
-        List<PostClass> posts = postRepository.findByChannelId(id).orElse(null);
-        List<ReplyClass> replies = replyRepository.findByChannelId(id).orElse(null);
-
-        if(posts != null && !posts.isEmpty()) {
-            postRepository.deleteAll(posts);
-        }
-
-        if(replies != null && !replies.isEmpty()) {
-            replyRepository.deleteAll(replies);
-        }
 
         log.info("Deleted channel with id " + id);
     }
@@ -122,18 +113,9 @@ public class ChannelBOImpl implements ChannelBO {
             fileDealer.removeFile(imageLocation);
         }
 
+        deleteChannelPostsAndReplies(channelId);
+
         channelRepository.delete(channel);
-
-        List<PostClass> posts = postRepository.findByChannelId(channelId).orElse(null);
-        List<ReplyClass> replies = replyRepository.findByChannelId(channelId).orElse(null);
-
-        if(posts != null && !posts.isEmpty()) {
-            postRepository.deleteAll(posts);
-        }
-
-        if(replies != null && !replies.isEmpty()) {
-            replyRepository.deleteAll(replies);
-        }
 
         log.info("Deleted channel with id " + channelId);
     }
@@ -477,5 +459,30 @@ public class ChannelBOImpl implements ChannelBO {
             imageLocation = channelImage.getLocation();
         }
         return imageLocation;
+    }
+
+    private void deleteChannelPostsAndReplies(Long channelId) {
+        List<PostClass> posts = postRepository.findByChannelId(channelId).orElse(null);
+        List<ReplyClass> replies = replyRepository.findByChannelId(channelId).orElse(null);
+
+        if(posts != null && !posts.isEmpty()) {
+            for(PostClass post : posts) {
+                Set<Long> imagesId = post.getImages();
+                if(imagesId != null && !imagesId.isEmpty()) {
+                    for(Long imageId : imagesId) {
+                        ImageClass image = imageRepository.findById(imageId).orElse(null);
+                        if(image != null) {
+                            fileDealer.removeFile(image.getLocation());
+                            imageRepository.delete(image);
+                        }
+                    }
+                }
+            }
+            postRepository.deleteAll(posts);
+        }
+
+        if(replies != null && !replies.isEmpty()) {
+            replyRepository.deleteAll(replies);
+        }
     }
 }

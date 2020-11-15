@@ -35,11 +35,19 @@ public class TagClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TagClass tagClass = (TagClass) o;
-        return name.equals(tagClass.name);
+        return Objects.equals(name, tagClass.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "TagClass{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

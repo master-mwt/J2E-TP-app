@@ -83,11 +83,20 @@ public class UserClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserClass userClass = (UserClass) o;
-        return username.equals(userClass.username);
+        return Objects.equals(username, userClass.username);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(username);
+    }
+
+    @Override
+    public String toString() {
+        return "UserClass{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 }
