@@ -121,32 +121,40 @@ public class ChannelController {
 
     @GetMapping("{channelId}/members/{userId}/report")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
-    public String doReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        channelBO.reportUser(channelId, userId);
+    public String doReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
+        UserClass principal = utilsClass.getPrincipal();
+
+        channelBO.reportUser(channelId, userId, principal);
 
         return "redirect:/discover/channel/" + channelId + "/members";
     }
 
     @GetMapping("{channelId}/members/{userId}/unreport")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'report_user_in_channel')")
-    public String doUnReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        channelBO.unReportUser(channelId, userId);
+    public String doUnReportUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
+        UserClass principal = utilsClass.getPrincipal();
+
+        channelBO.unReportUser(channelId, userId, principal);
 
         return "redirect:/discover/channel/" + channelId + "/members";
     }
 
     @GetMapping("{channelId}/members/{userId}/softban")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
-    public String doSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        channelBO.softBan(channelId, userId);
+    public String doSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
+        UserClass principal = utilsClass.getPrincipal();
+
+        channelBO.softBan(channelId, userId, principal);
 
         return "redirect:/discover/channel/" + channelId + "/members";
     }
 
     @GetMapping("{channelId}/members/{userId}/unsoftban")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
-    public String doUnSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
-        channelBO.unSoftBan(channelId, userId);
+    public String doUnSoftBanUserInChannel(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
+        UserClass principal = utilsClass.getPrincipal();
+
+        channelBO.unSoftBan(channelId, userId, principal);
 
         return "redirect:/discover/channel/" + channelId + "/members/banned";
     }

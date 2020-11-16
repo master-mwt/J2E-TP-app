@@ -30,10 +30,10 @@ public interface ChannelBO {
     void joinChannel(Long channelId, UserClass user);
     void leaveChannel(Long channelId, UserClass user);
     void globalUnreportPost(Long channelId, String postId) throws BusinessException;
-    void reportUser(Long channelId, Long userId);
-    void unReportUser(Long channelId, Long userId);
-    void softBan(Long channelId, Long userId);
-    void unSoftBan(Long channelId, Long userId);
+    void reportUser(Long channelId, Long userId, UserClass principal) throws BusinessException;
+    void unReportUser(Long channelId, Long userId, UserClass principal) throws BusinessException;
+    void softBan(Long channelId, Long userId, UserClass principal) throws BusinessException;
+    void unSoftBan(Long channelId, Long userId, UserClass principal) throws BusinessException;
     void upgradeMemberToModerator(Long channelId, Long userId);
     void upgradeModeratorToAdmin(Long channelId, Long userId);
     void downgradeModeratorToMember(Long channelId, Long userId);

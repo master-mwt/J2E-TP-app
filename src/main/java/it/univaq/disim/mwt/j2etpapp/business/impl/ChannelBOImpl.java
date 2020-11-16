@@ -219,7 +219,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void reportUser(Long channelId, Long userId) {
+    public void reportUser(Long channelId, Long userId, UserClass principal) throws BusinessException {
+        if(userId.equals(principal.getId())) {
+            throw new BusinessException("You cannot report yourself");
+        }
+
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getReportedUsers() == null){
             channel.setReportedUsers(new HashSet<>());
@@ -229,7 +233,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void unReportUser(Long channelId, Long userId) {
+    public void unReportUser(Long channelId, Long userId, UserClass principal) throws BusinessException {
+        if(userId.equals(principal.getId())) {
+            throw new BusinessException("You cannot unreport yourself");
+        }
+
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getReportedUsers() == null){
             channel.setReportedUsers(new HashSet<>());
@@ -239,7 +247,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void softBan(Long channelId, Long userId) {
+    public void softBan(Long channelId, Long userId, UserClass principal) throws BusinessException {
+        if(userId.equals(principal.getId())) {
+            throw new BusinessException("You cannot softban yourself");
+        }
+
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getSoftBannedUsers() == null){
             channel.setSoftBannedUsers(new HashSet<>());
@@ -252,7 +264,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void unSoftBan(Long channelId, Long userId) {
+    public void unSoftBan(Long channelId, Long userId, UserClass principal) throws BusinessException {
+        if(userId.equals(principal.getId())) {
+            throw new BusinessException("You cannot unsoftban yourself");
+        }
+
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
         if(channel.getSoftBannedUsers() == null){
             channel.setSoftBannedUsers(new HashSet<>());
