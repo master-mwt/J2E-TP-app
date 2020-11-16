@@ -128,17 +128,11 @@ public class DatabaseSeeder {
         ServiceClass delete_post = new ServiceClass();
         delete_post.setName("delete_post");
 
-        ServiceClass mod_post = new ServiceClass();
-        mod_post.setName("mod_post");
-
         ServiceClass create_reply = new ServiceClass();
         create_reply.setName("create_reply");
 
         ServiceClass delete_reply = new ServiceClass();
         delete_reply.setName("delete_reply");
-
-        ServiceClass mod_reply = new ServiceClass();
-        mod_reply.setName("mod_reply");
 
         ServiceClass create_channel = new ServiceClass();
         create_channel.setName("create_channel");
@@ -198,10 +192,8 @@ public class DatabaseSeeder {
         list.add(view_user_data);
         list.add(create_post);
         list.add(delete_post);
-        list.add(mod_post);
         list.add(create_reply);
         list.add(delete_reply);
-        list.add(mod_reply);
         list.add(create_channel);
         list.add(mod_channel_data);
         list.add(view_channel_members);
@@ -235,6 +227,7 @@ public class DatabaseSeeder {
         logged.setName("logged");
 
         Set<ServiceClass> administratorServices = new HashSet<>(serviceBO.findAll());
+        administratorServices.remove(serviceBO.findByName("leave_channel"));
         administrator.setServices(administratorServices);
 
         Set<ServiceClass> loggedServices = new HashSet<>();
@@ -258,10 +251,8 @@ public class DatabaseSeeder {
         Set<ServiceClass> creatorServices = new HashSet<>();
         creatorServices.add(serviceBO.findByName("create_post"));
         creatorServices.add(serviceBO.findByName("delete_post"));
-        creatorServices.add(serviceBO.findByName("mod_post"));
         creatorServices.add(serviceBO.findByName("create_reply"));
         creatorServices.add(serviceBO.findByName("delete_reply"));
-        creatorServices.add(serviceBO.findByName("mod_reply"));
         creatorServices.add(serviceBO.findByName("mod_channel_data"));
         creatorServices.add(serviceBO.findByName("delete_channel"));
         creatorServices.add(serviceBO.findByName("global_unreport_post_in_channel"));
@@ -276,10 +267,8 @@ public class DatabaseSeeder {
         Set<ServiceClass> adminServices = new HashSet<>();
         adminServices.add(serviceBO.findByName("create_post"));
         adminServices.add(serviceBO.findByName("delete_post"));
-        adminServices.add(serviceBO.findByName("mod_post"));
         adminServices.add(serviceBO.findByName("create_reply"));
         adminServices.add(serviceBO.findByName("delete_reply"));
-        adminServices.add(serviceBO.findByName("mod_reply"));
         adminServices.add(serviceBO.findByName("mod_channel_data"));
         adminServices.add(serviceBO.findByName("leave_channel"));
         adminServices.add(serviceBO.findByName("global_unreport_post_in_channel"));
@@ -292,10 +281,8 @@ public class DatabaseSeeder {
         Set<ServiceClass> moderatorServices = new HashSet<>();
         moderatorServices.add(serviceBO.findByName("create_post"));
         moderatorServices.add(serviceBO.findByName("delete_post"));
-        moderatorServices.add(serviceBO.findByName("mod_post"));
         moderatorServices.add(serviceBO.findByName("create_reply"));
         moderatorServices.add(serviceBO.findByName("delete_reply"));
-        moderatorServices.add(serviceBO.findByName("mod_reply"));
         moderatorServices.add(serviceBO.findByName("leave_channel"));
         moderatorServices.add(serviceBO.findByName("global_unreport_post_in_channel"));
         moderatorServices.add(serviceBO.findByName("report_user_in_channel"));
@@ -304,10 +291,8 @@ public class DatabaseSeeder {
         Set<ServiceClass> memberServices = new HashSet<>();
         memberServices.add(serviceBO.findByName("create_post"));
         memberServices.add(serviceBO.findByName("delete_post"));
-        memberServices.add(serviceBO.findByName("mod_post"));
         memberServices.add(serviceBO.findByName("create_reply"));
         memberServices.add(serviceBO.findByName("delete_reply"));
-        memberServices.add(serviceBO.findByName("mod_reply"));
         memberServices.add(serviceBO.findByName("leave_channel"));
         memberServices.add(serviceBO.findByName("view_channel_members"));
 

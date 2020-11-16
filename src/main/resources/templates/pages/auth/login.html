@@ -12,7 +12,7 @@
           <div class="card-header">[[#{common.login.main}]]</div>
           <div class="card-body">
             <!-- session message -->
-            <div th:if="${param.error}" class="alert alert-danger">
+            <div th:if="${(param.error != null && !'User is disabled'.equals(session['SPRING_SECURITY_LAST_EXCEPTION'].message))}" class="alert alert-danger">
               [[#{common.login.invalid_username_password_message}]]
             </div>
             <div th:if="${param.logout}" class="alert alert-success">
@@ -20,6 +20,9 @@
             </div>
             <div th:if="${param.registered}" class="alert alert-success">
               [[#{common.login.sign_up_success}]]
+            </div>
+            <div th:if="${(param.error != null && 'User is disabled'.equals(session['SPRING_SECURITY_LAST_EXCEPTION'].message))}" class="alert alert-danger">
+              [[#{common.login.user_disabled}]]
             </div>
             <!-- end session message -->
 
