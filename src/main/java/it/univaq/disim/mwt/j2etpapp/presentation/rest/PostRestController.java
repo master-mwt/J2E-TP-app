@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation.rest;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
@@ -22,13 +23,13 @@ public class PostRestController {
 
     @DeleteMapping("{postId}/delete")
     @PreAuthorize("hasPermission(#postId, 'it.univaq.disim.mwt.j2etpapp.domain.PostClass', 'delete_post')")
-    public ResponseEntity delete(@PathVariable("postId") String postId) {
+    public ResponseEntity delete(@PathVariable("postId") String postId) throws BusinessException {
         postBO.deleteById(postId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("{postId}/upvote")
-    public ResponseEntity doUpvote(@PathVariable("postId") String postId) {
+    public ResponseEntity doUpvote(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
@@ -39,7 +40,7 @@ public class PostRestController {
     }
 
     @PostMapping("{postId}/downvote")
-    public ResponseEntity doDownvote(@PathVariable("postId") String postId) {
+    public ResponseEntity doDownvote(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
@@ -50,7 +51,7 @@ public class PostRestController {
     }
 
     @PostMapping("{postId}/hide")
-    public ResponseEntity doHide(@PathVariable("postId") String postId) {
+    public ResponseEntity doHide(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
@@ -61,7 +62,7 @@ public class PostRestController {
     }
 
     @PostMapping("{postId}/report")
-    public ResponseEntity doReport(@PathVariable("postId") String postId) {
+    public ResponseEntity doReport(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
@@ -72,7 +73,7 @@ public class PostRestController {
     }
 
     @PostMapping("{postId}/save")
-    public ResponseEntity doSave(@PathVariable("postId") String postId) {
+    public ResponseEntity doSave(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){

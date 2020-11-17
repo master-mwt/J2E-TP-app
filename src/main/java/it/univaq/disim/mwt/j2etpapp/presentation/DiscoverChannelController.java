@@ -32,7 +32,7 @@ public class DiscoverChannelController {
     private TemplateHelper templateHelper;
 
     @GetMapping("{id}")
-    public String discoverChannel(@PathVariable("id") Long id, Model model) {
+    public String discoverChannel(@PathVariable("id") Long id, Model model) throws BusinessException {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(id, 0, 10);
         model.addAttribute("post", new PostClass());
@@ -48,7 +48,7 @@ public class DiscoverChannelController {
     }
 
     @GetMapping("{id}/posts/page/{pageId}")
-    public String discoverChannelPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
+    public String discoverChannelPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) throws BusinessException {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdOrderByCreatedAtDescPaginated(id, pageId, 10);
         model.addAttribute("channel", channel);
@@ -64,7 +64,7 @@ public class DiscoverChannelController {
 
     @GetMapping("{id}/posts/reported")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'global_unreport_post_in_channel')")
-    public String discoverChannelPostsReported(@PathVariable("id") Long id, Model model) {
+    public String discoverChannelPostsReported(@PathVariable("id") Long id, Model model) throws BusinessException {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdReportedOrderByCreatedAtDescPaginated(id, 0, 10);
         model.addAttribute("channel", channel);
@@ -75,7 +75,7 @@ public class DiscoverChannelController {
 
     @GetMapping("{id}/posts/reported/page/{pageId}")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'global_unreport_post_in_channel')")
-    public String discoverChannelPostsReportedPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
+    public String discoverChannelPostsReportedPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) throws BusinessException {
         ChannelClass channel = channelBO.findById(id);
         Page<PostClass> postPage = postBO.findByChannelIdReportedOrderByCreatedAtDescPaginated(id, pageId, 10);
         model.addAttribute("channel", channel);
@@ -86,7 +86,7 @@ public class DiscoverChannelController {
 
     @GetMapping("{id}/members")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'view_channel_members')")
-    public String discoverChannelMembers(@PathVariable("id") Long id, Model model) {
+    public String discoverChannelMembers(@PathVariable("id") Long id, Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         ChannelClass channel = channelBO.findById(id);
@@ -101,7 +101,7 @@ public class DiscoverChannelController {
 
     @GetMapping("{id}/members/page/{pageId}")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'view_channel_members')")
-    public String discoverChannelMembersPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) {
+    public String discoverChannelMembersPage(@PathVariable("id") Long id, @PathVariable("pageId") int pageId, Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         ChannelClass channel = channelBO.findById(id);
@@ -116,7 +116,7 @@ public class DiscoverChannelController {
 
     @GetMapping("{id}/members/banned")
     @PreAuthorize("hasPermission(#id, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'softban_user_in_channel')")
-    public String discoverChannelMembersBanned(@PathVariable("id") Long id, Model model) {
+    public String discoverChannelMembersBanned(@PathVariable("id") Long id, Model model) throws BusinessException {
         ChannelClass channel = channelBO.findById(id);
         model.addAttribute("channel", channel);
         return "pages/discover/banned_users";

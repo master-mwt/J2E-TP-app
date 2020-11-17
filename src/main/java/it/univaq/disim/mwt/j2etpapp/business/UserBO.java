@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserBO {
 
     List<UserClass> findAll();
-    UserClass findById(Long id);
+    UserClass findById(Long id) throws BusinessException;
     UserClass findByUsername(String username);
     List<UserClass> findByUsernameContains(String username);
     Page<UserClass> findByUsernameContainsPaginated(String username, int page, int size);
@@ -21,12 +21,12 @@ public interface UserBO {
     void delete(UserClass user);
     Long count();
 
-    void hardBanToggle(Long userId);
-    void upgradeToAdministrator(Long userId);
-    void downgradeToLogged(Long userId);
+    void hardBanToggle(Long userId) throws BusinessException;
+    void upgradeToAdministrator(Long userId) throws BusinessException;
+    void downgradeToLogged(Long userId) throws BusinessException;
     boolean checkOldPassword(UserClass user, String oldPassword);
     void changePassword(UserClass user, String newPassword) throws BusinessException;
-    void removeImage(Long userId);
+    void removeImage(Long userId) throws BusinessException;
     String saveImage(Long userId, MultipartFile image) throws BusinessException;
     void updateUserProfile(UserClass user, UserClass newData);
 }

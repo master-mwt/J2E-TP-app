@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.AuthBO;
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.domain.GroupClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.repository.jpa.GroupRepository;
@@ -23,8 +24,8 @@ public class AuthBOImpl implements AuthBO {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void registerUser(UserClass user) {
-        GroupClass logged = groupRepository.findByName("logged").orElse(null);
+    public void registerUser(UserClass user) throws BusinessException {
+        GroupClass logged = groupRepository.findByName("logged").orElseThrow(BusinessException::new);
 
         user.setGroup(logged);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

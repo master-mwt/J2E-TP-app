@@ -33,20 +33,20 @@ public interface PostBO {
     List<PostClass> findByUserHidden(Long userId);
     List<PostClass> findByUserReported(Long userId);
     List<PostClass> findByUserSaved(Long userId);
-    PostClass findById(String id);
+    PostClass findById(String id) throws BusinessException;
     void save(PostClass post);
     void saveAll(List<PostClass> posts);
     void saveAll(PostClass... posts);
-    void deleteById(String id);
+    void deleteById(String id) throws BusinessException;
     void delete(PostClass post);
     Long count();
 
-    AjaxResponse upvote(String postId, UserClass user);
-    AjaxResponse downvote(String postId, UserClass user);
-    void hideToggle(String postId, UserClass user);
-    void saveToggle(String postId, UserClass user);
-    void reportToggle(String postId, UserClass user);
-    void createPostInChannel(PostClass post, String tagListString);
+    AjaxResponse upvote(String postId, UserClass user) throws BusinessException;
+    AjaxResponse downvote(String postId, UserClass user) throws BusinessException;
+    void hideToggle(String postId, UserClass user) throws BusinessException;
+    void saveToggle(String postId, UserClass user) throws BusinessException;
+    void reportToggle(String postId, UserClass user) throws BusinessException;
+    void createPostInChannel(PostClass post, String tagListString) throws BusinessException;
     void createPostInChannel(PostClass post, String tagListString, MultipartFile[] images) throws BusinessException;
-    List<ImageClass> getPostImages(String postId);
+    List<ImageClass> getPostImages(String postId) throws BusinessException;
 }

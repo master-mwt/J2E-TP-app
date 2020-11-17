@@ -27,7 +27,7 @@ public interface ReplyBO {
     void deleteAll(ReplyClass... replies);
     Long count();
 
-    AjaxResponse upvote(String replyId, UserClass user);
-    AjaxResponse downvote(String replyId, UserClass user);
-    void createReplyInPost(ReplyClass reply, PostClass postContainer);
+    AjaxResponse upvote(String replyId, UserClass user) throws BusinessException;
+    AjaxResponse downvote(String replyId, UserClass user) throws BusinessException;
+    void createReplyInPost(ReplyClass reply, PostClass postContainer) throws BusinessException;
 }

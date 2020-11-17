@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.business.impl;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
@@ -120,8 +121,8 @@ public class ReplyBOImpl implements ReplyBO {
     }
 
     @Override
-    public AjaxResponse upvote(String replyId, UserClass user) {
-        ReplyClass reply = replyRepository.findById(replyId).orElse(null);
+    public AjaxResponse upvote(String replyId, UserClass user) throws BusinessException {
+        ReplyClass reply = replyRepository.findById(replyId).orElseThrow(BusinessException::new);
         boolean upvotedAlready = false;
         boolean downvotedAlready = false;
 
@@ -157,8 +158,8 @@ public class ReplyBOImpl implements ReplyBO {
     }
 
     @Override
-    public AjaxResponse downvote(String replyId, UserClass user) {
-        ReplyClass reply = replyRepository.findById(replyId).orElse(null);
+    public AjaxResponse downvote(String replyId, UserClass user) throws BusinessException {
+        ReplyClass reply = replyRepository.findById(replyId).orElseThrow(BusinessException::new);
         boolean upvotedAlready = false;
         boolean downvotedAlready = false;
 
@@ -194,7 +195,7 @@ public class ReplyBOImpl implements ReplyBO {
     }
 
     @Override
-    public void createReplyInPost(ReplyClass reply, PostClass postContainer) {
+    public void createReplyInPost(ReplyClass reply, PostClass postContainer) throws BusinessException {
         Long replyCreator = reply.getUserId();
 
         reply.setPost(postContainer);
@@ -214,7 +215,7 @@ public class ReplyBOImpl implements ReplyBO {
         // notifications
         // send notification to all other replies creators and to post creator
         Long postCreator = postContainer.getUserId();
-        ChannelClass channel = channelRepository.findById(reply.getChannelId()).orElse(null);
+        ChannelClass channel = channelRepository.findById(reply.getChannelId()).orElseThrow(BusinessException::new);
         List<Long> alreadyNotified = new ArrayList<>();
 
         if(!replyCreator.equals(postCreator)) {

@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
@@ -31,7 +32,7 @@ public class ReplyController {
 
     @PostMapping("create")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'create_reply')")
-    public String save(@Valid @ModelAttribute("reply") ReplyClass reply, BindingResult bindingResult, @RequestParam("postId") String postId, @RequestParam("channelId") Long channelId, Model model) {
+    public String save(@Valid @ModelAttribute("reply") ReplyClass reply, BindingResult bindingResult, @RequestParam("postId") String postId, @RequestParam("channelId") Long channelId, Model model) throws BusinessException {
 
         if(bindingResult.hasErrors()) {
             PostClass post = postBO.findById(postId);

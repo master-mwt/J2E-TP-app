@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.Page;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
@@ -30,14 +31,14 @@ public class DiscoverUserController {
     private TemplateHelper templateHelper;
 
     @GetMapping("{id}")
-    public String discoverUser(@PathVariable("id") Long id, Model model) {
+    public String discoverUser(@PathVariable("id") Long id, Model model) throws BusinessException {
         model.addAttribute("user", userBO.findById(id));
         model.addAttribute("dateFormat", properties.getDateFormat());
         return "pages/discover/user";
     }
 
     @GetMapping("{id}/posts")
-    public String discoverUserPosts(@PathVariable("id") Long id, Model model) {
+    public String discoverUserPosts(@PathVariable("id") Long id, Model model) throws BusinessException {
         UserClass user = userBO.findById(id);
         Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), 0, 10);
         model.addAttribute("user", user);
@@ -47,7 +48,7 @@ public class DiscoverUserController {
     }
 
     @GetMapping("{id}/posts/page/{pageId}")
-    public String discoverUserPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int page, Model model) {
+    public String discoverUserPostsPage(@PathVariable("id") Long id, @PathVariable("pageId") int page, Model model) throws BusinessException {
         UserClass user = userBO.findById(id);
         Page<PostClass> postPage = postBO.findByUserIdOrderByCreatedAtDescPaginated(user.getId(), page, 10);
         model.addAttribute("user", user);

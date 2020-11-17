@@ -59,7 +59,7 @@ public class UserController {
 
     @GetMapping("{userId}/hardban")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'hardban_user_from_platform')")
-    public String hardBanToggle(@PathVariable("userId") Long userId) {
+    public String hardBanToggle(@PathVariable("userId") Long userId) throws BusinessException {
         userBO.hardBanToggle(userId);
 
         return "redirect:/discover/user/" + userId;
@@ -67,7 +67,7 @@ public class UserController {
 
     @GetMapping("{userId}/upgrade_to_administrator")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'upgrade_user_to_administrator')")
-    public String upgradeToAdministrator(@PathVariable("userId") Long userId) {
+    public String upgradeToAdministrator(@PathVariable("userId") Long userId) throws BusinessException {
         userBO.upgradeToAdministrator(userId);
 
         return "redirect:/discover/user/" + userId;
@@ -75,7 +75,7 @@ public class UserController {
 
     @GetMapping("{userId}/downgrade_to_logged")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'downgrade_user_to_logged')")
-    public String downgradeToLogged(@PathVariable("userId") Long userId) {
+    public String downgradeToLogged(@PathVariable("userId") Long userId) throws BusinessException {
         userBO.downgradeToLogged(userId);
 
         return "redirect:/discover/user/" + userId;
@@ -103,7 +103,7 @@ public class UserController {
 
     @GetMapping("{userId}/change_image")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String changeImage(@PathVariable("userId") Long userId, Model model) {
+    public String changeImage(@PathVariable("userId") Long userId, Model model) throws BusinessException {
         model.addAttribute("user", userBO.findById(userId));
 
         return "pages/dashboard/image_upload/profile_img_upl";
@@ -120,7 +120,7 @@ public class UserController {
 
     @GetMapping("{userId}/remove_image")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.j2etpapp.domain.UserClass', 'mod_user_data')")
-    public String removeImage(@PathVariable("userId") Long userId) {
+    public String removeImage(@PathVariable("userId") Long userId) throws BusinessException {
         userBO.removeImage(userId);
 
         return "redirect:/home";

@@ -61,8 +61,15 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public UserClass findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public UserClass findById(Long id) throws BusinessException {
+        UserClass user = userRepository.findById(id).orElse(null);
+
+        if(user == null) {
+            log.info("findById: Error finding user with id " + id);
+            throw new BusinessException("User with id " + id + " not found");
+        }
+
+        return user;
     }
 
     @Override
@@ -126,8 +133,8 @@ public class UserBOImpl implements UserBO {
     }
     
     @Override
-    public void hardBanToggle(Long userId) {
-        UserClass user = userRepository.findById(userId).orElse(null);
+    public void hardBanToggle(Long userId) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
         if(user.isHard_ban()){
             user.setHard_ban(false);
             log.info("User with id " + userId + " and username " + user.getUsername() + " has been unbanned from platform");
@@ -139,27 +146,23 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void upgradeToAdministrator(Long userId) {
-        UserClass user = userRepository.findById(userId).orElse(null);
-        GroupClass administrator = groupRepository.findByName("administrator").orElse(null);
+    public void upgradeToAdministrator(Long userId) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
+        GroupClass administrator = groupRepository.findByName("administrator").orElseThrow(BusinessException::new);
 
-        if(user != null) {
-            user.setGroup(administrator);
-            userRepository.save(user);
-            log.info("User with id " + user.getId() + " and username " + user.getUsername() + " has been upgraded to administrator");
-        }
+        user.setGroup(administrator);
+        userRepository.save(user);
+        log.info("User with id " + user.getId() + " and username " + user.getUsername() + " has been upgraded to administrator");
     }
 
     @Override
-    public void downgradeToLogged(Long userId) {
-        UserClass user = userRepository.findById(userId).orElse(null);
-        GroupClass logged = groupRepository.findByName("logged").orElse(null);
+    public void downgradeToLogged(Long userId) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
+        GroupClass logged = groupRepository.findByName("logged").orElseThrow(BusinessException::new);
 
-        if(user != null) {
-            user.setGroup(logged);
-            userRepository.save(user);
-            log.info("User with id " + user.getId() + " and username " + user.getUsername() + " has been downgraded to logged");
-        }
+        user.setGroup(logged);
+        userRepository.save(user);
+        log.info("User with id " + user.getId() + " and username " + user.getUsername() + " has been downgraded to logged");
     }
 
     @Override
@@ -182,8 +185,8 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void removeImage(Long userId) {
-        UserClass user = userRepository.findById(userId).orElse(null);
+    public void removeImage(Long userId) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
         if(user.getImage() != null) {
             imageRepository.delete(user.getImage());
             fileDealer.removeFile(user.getImage().getLocation());
@@ -194,7 +197,7 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public String saveImage(Long userId, MultipartFile image) throws BusinessException {
-        UserClass user = userRepository.findById(userId).orElse(null);
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
         String path = null;
 
         try {

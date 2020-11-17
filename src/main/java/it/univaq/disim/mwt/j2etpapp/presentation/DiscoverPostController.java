@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.PostBO;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
@@ -25,7 +26,7 @@ public class DiscoverPostController {
     private TemplateHelper templateHelper;
 
     @GetMapping("{id}")
-    public String discoverPost(@PathVariable("id") String id, Model model) {
+    public String discoverPost(@PathVariable("id") String id, Model model) throws BusinessException {
         PostClass post = postBO.findById(id);
         model.addAttribute("reply", new ReplyClass());
         model.addAttribute("post", post);
@@ -35,7 +36,7 @@ public class DiscoverPostController {
     }
 
     @GetMapping("{id}/replies/page/{pageId}")
-    public String discoverPostPage(@PathVariable("id") String id, @PathVariable("pageId") int page, Model model) {
+    public String discoverPostPage(@PathVariable("id") String id, @PathVariable("pageId") int page, Model model) throws BusinessException {
         PostClass post = postBO.findById(id);
         model.addAttribute("post", post);
         model.addAttribute("replyPage", replyBO.findByPostOrderByCreatedAtDescPaginated(post, page, 10));

@@ -41,7 +41,7 @@ public class ChannelController {
 
     @PostMapping("create")
     @PreAuthorize("hasAuthority('create_channel')")
-    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, Model model) {
+    public String save(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(bindingResult.hasErrors()){
@@ -60,7 +60,7 @@ public class ChannelController {
 
     @PostMapping("{channelId}")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'delete_channel')")
-    public String delete(@PathVariable("channelId") Long channelId) {
+    public String delete(@PathVariable("channelId") Long channelId) throws BusinessException {
         channelBO.deleteById(channelId);
 
         return "redirect:/";
@@ -68,7 +68,7 @@ public class ChannelController {
 
     @PostMapping("{channelId}/update")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
-    public String update(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, @PathVariable("channelId") Long channelId, Model model) {
+    public String update(@Valid @ModelAttribute("channel") ChannelClass channel, BindingResult bindingResult, @PathVariable("channelId") Long channelId, Model model) throws BusinessException {
 
         if(bindingResult.hasErrors()){
             ChannelClass channelData = channelBO.findById(channelId);
@@ -93,7 +93,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/join")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'join_channel')")
-    public String doJoin(@Valid @PathVariable("channelId") Long channelId) {
+    public String doJoin(@Valid @PathVariable("channelId") Long channelId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         channelBO.joinChannel(channelId, principal);
@@ -103,7 +103,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/leave")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'leave_channel')")
-    public String doLeave(@PathVariable("channelId") Long channelId) {
+    public String doLeave(@PathVariable("channelId") Long channelId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         channelBO.leaveChannel(channelId, principal);
@@ -161,7 +161,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/members/{userId}/upgrade_member")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_member_to_moderator_in_channel')")
-    public String upgradeMemberToModerator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    public String upgradeMemberToModerator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
         channelBO.upgradeMemberToModerator(channelId, userId);
 
         return "redirect:/discover/channel/" + channelId + "/members";
@@ -169,7 +169,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/members/{userId}/upgrade_moderator")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'upgrade_moderator_to_admin_in_channel')")
-    public String upgradeModeratorToAdmin(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    public String upgradeModeratorToAdmin(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
         channelBO.upgradeModeratorToAdmin(channelId, userId);
 
         return "redirect:/discover/channel/" + channelId + "/members";
@@ -177,7 +177,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/members/{userId}/downgrade_moderator")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_moderator_to_member_in_channel')")
-    public String downgradeModeratorToMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    public String downgradeModeratorToMember(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
         channelBO.downgradeModeratorToMember(channelId, userId);
 
         return "redirect:/discover/channel/" + channelId + "/members";
@@ -193,7 +193,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/members/{userId}/downgrade_admin")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_admin_to_moderator_in_channel')")
-    public String downgradeAdminToModerator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    public String downgradeAdminToModerator(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
         channelBO.downgradeAdminToModerator(channelId, userId);
 
         return "redirect:/discover/channel/" + channelId + "/members";
@@ -201,7 +201,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/members/{userId}/downgrade_creator")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'downgrade_creator_to_admin_in_channel')")
-    public String downgradeCreatorToAdmin(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    public String downgradeCreatorToAdmin(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) throws BusinessException {
         channelBO.downgradeCreatorToAdmin(channelId, userId);
 
         return "redirect:/discover/channel/" + channelId + "/members";
@@ -209,7 +209,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/change_image")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
-    public String changeImage(@PathVariable("channelId") Long channelId, Model model) {
+    public String changeImage(@PathVariable("channelId") Long channelId, Model model) throws BusinessException {
         model.addAttribute("channel", channelBO.findById(channelId));
 
         return "pages/dashboard/image_upload/channel_img_upl";
@@ -226,7 +226,7 @@ public class ChannelController {
 
     @GetMapping("{channelId}/remove_image")
     @PreAuthorize("hasPermission(#channelId, 'it.univaq.disim.mwt.j2etpapp.domain.ChannelClass', 'mod_channel_data')")
-    public String removeImage(@PathVariable("channelId") Long channelId) {
+    public String removeImage(@PathVariable("channelId") Long channelId) throws BusinessException {
         channelBO.removeImage(channelId);
 
         return "redirect:/discover/channel/" + channelId;

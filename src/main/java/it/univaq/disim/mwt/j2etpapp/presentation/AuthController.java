@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
 import it.univaq.disim.mwt.j2etpapp.business.AuthBO;
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String performRegistration(@Valid @ModelAttribute("user") UserClass user, BindingResult bindingResult, @RequestParam("matching-password") String matchingPassword, Model model, RedirectAttributes redirectAttributes) {
+    public String performRegistration(@Valid @ModelAttribute("user") UserClass user, BindingResult bindingResult, @RequestParam("matching-password") String matchingPassword, Model model, RedirectAttributes redirectAttributes) throws BusinessException {
         if(bindingResult.hasErrors()){
             model.addAttribute("user", user);
             return "pages/auth/register";

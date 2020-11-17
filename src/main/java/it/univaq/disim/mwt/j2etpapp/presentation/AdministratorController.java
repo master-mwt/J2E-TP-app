@@ -1,5 +1,6 @@
 package it.univaq.disim.mwt.j2etpapp.presentation;
 
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.UserBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
@@ -20,7 +21,7 @@ public class AdministratorController {
     private UtilsClass utilsClass;
 
     @GetMapping("welcome")
-    public String welcome(Model model) {
+    public String welcome(Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         model.addAttribute("user", userBO.findById(principal.getId()));

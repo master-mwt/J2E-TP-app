@@ -2,12 +2,14 @@ package it.univaq.disim.mwt.j2etpapp.helpers;
 
 import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Slf4j
 public class TemplateHelper {
 
     @Autowired
@@ -55,11 +57,23 @@ public class TemplateHelper {
     }
 
     public ChannelClass findChannelById(Long channelId) {
-        return channelBO.findById(channelId);
+        ChannelClass channel = null;
+        try {
+            channel = channelBO.findById(channelId);
+        } catch (BusinessException e) {
+            log.info("findChannelById: Error in finding channel with id " + channelId);
+        }
+        return channel;
     }
 
     public UserClass findUserById(Long userId) {
-        return userBO.findById(userId);
+        UserClass user = null;
+        try {
+            user = userBO.findById(userId);
+        } catch (BusinessException e) {
+            log.info("findUserById: Error in finding user with id " + userId);
+        }
+        return user;
     }
 
     public boolean isUserChannelMember(Long channelId, Long userId) {
@@ -91,7 +105,13 @@ public class TemplateHelper {
     }
 
     public List<ImageClass> findPostImages(String postId) {
-        return postBO.getPostImages(postId);
+        List<ImageClass> images = null;
+        try {
+            images = postBO.getPostImages(postId);
+        } catch (BusinessException e) {
+            log.info("findPostImages: Error in finding images of post " + postId);
+        }
+        return images;
     }
 
     public RoleClass findRoleById(Long roleId) {

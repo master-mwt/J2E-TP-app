@@ -1,6 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.presentation.rest;
 
 import it.univaq.disim.mwt.j2etpapp.business.AjaxResponse;
+import it.univaq.disim.mwt.j2etpapp.business.BusinessException;
 import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.utils.UtilsClass;
@@ -28,7 +29,7 @@ public class ReplyRestController {
     }
 
     @PostMapping("{replyId}/upvote")
-    public ResponseEntity doUpvote(@PathVariable("replyId") String replyId) {
+    public ResponseEntity doUpvote(@PathVariable("replyId") String replyId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
@@ -39,7 +40,7 @@ public class ReplyRestController {
     }
 
     @PostMapping("{replyId}/downvote")
-    public ResponseEntity doDownvote(@PathVariable("replyId") String replyId) {
+    public ResponseEntity doDownvote(@PathVariable("replyId") String replyId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){

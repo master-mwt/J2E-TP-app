@@ -1,14 +1,12 @@
 package it.univaq.disim.mwt.j2etpapp.security;
 
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
-import it.univaq.disim.mwt.j2etpapp.business.PostBO;
-import it.univaq.disim.mwt.j2etpapp.business.ReplyBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserBO;
+import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.ChannelClass;
 import it.univaq.disim.mwt.j2etpapp.domain.PostClass;
 import it.univaq.disim.mwt.j2etpapp.domain.ReplyClass;
 import it.univaq.disim.mwt.j2etpapp.domain.UserClass;
 import it.univaq.disim.mwt.j2etpapp.helpers.PermissionChecker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -18,6 +16,7 @@ import java.io.Serializable;
 
 // TODO: permission correct check
 @Component
+@Slf4j
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
     @Autowired
@@ -71,14 +70,18 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
         }*/
 
         // if-else for all permission-protected classes
-        if(ChannelClass.class.getName().equals(objectClassName)){
-            return hasPermissionOnChannel(principal.getUser(), channelBO.findById((Long) objectId), (String) permission);
-        } else if(PostClass.class.getName().equals(objectClassName)) {
-            return hasPermissionOnPost(principal.getUser(), postBO.findById((String) objectId), (String) permission);
-        } else if(ReplyClass.class.getName().equals(objectClassName)) {
-            return hasPermissionOnReply(principal.getUser(), replyBO.findById((String) objectId), (String) permission);
-        } else if(UserClass.class.getName().equals(objectClassName)) {
-            return hasPermissionOnUser(principal.getUser(), userBO.findById((Long) objectId), (String) permission);
+        try {
+            if(ChannelClass.class.getName().equals(objectClassName)){
+                return hasPermissionOnChannel(principal.getUser(), channelBO.findById((Long) objectId), (String) permission);
+            } else if(PostClass.class.getName().equals(objectClassName)) {
+                return hasPermissionOnPost(principal.getUser(), postBO.findById((String) objectId), (String) permission);
+            } else if(ReplyClass.class.getName().equals(objectClassName)) {
+                return hasPermissionOnReply(principal.getUser(), replyBO.findById((String) objectId), (String) permission);
+            } else if(UserClass.class.getName().equals(objectClassName)) {
+                return hasPermissionOnUser(principal.getUser(), userBO.findById((Long) objectId), (String) permission);
+            }
+        } catch (BusinessException e) {
+            log.info("hasPermission: Error in check permissions");
         }
 
         return false;

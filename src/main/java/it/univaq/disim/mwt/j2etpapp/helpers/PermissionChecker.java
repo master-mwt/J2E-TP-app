@@ -1,14 +1,13 @@
 package it.univaq.disim.mwt.j2etpapp.helpers;
 
-import it.univaq.disim.mwt.j2etpapp.business.ChannelBO;
-import it.univaq.disim.mwt.j2etpapp.business.RoleBO;
-import it.univaq.disim.mwt.j2etpapp.business.ServiceBO;
-import it.univaq.disim.mwt.j2etpapp.business.UserChannelRoleBO;
+import it.univaq.disim.mwt.j2etpapp.business.*;
 import it.univaq.disim.mwt.j2etpapp.domain.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class PermissionChecker {
 
     @Autowired
@@ -48,8 +47,12 @@ public class PermissionChecker {
                 }
             }
         } else {
-            if(joinChannel.getName().equals(permission) && !(channelBO.getSoftBannedUsers(channel.getId()).contains(currentUser))) {
-                return true;
+            try {
+                if(joinChannel.getName().equals(permission) && !(channelBO.getSoftBannedUsers(channel.getId()).contains(currentUser))) {
+                    return true;
+                }
+            } catch (BusinessException e) {
+                log.info("hasPermissionOnChannel: Error in checking permissions on channel with id " + channel.getId());
             }
         }
         return false;

@@ -159,8 +159,15 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public PostClass findById(String id) {
-        return postRepository.findById(id).orElse(null);
+    public PostClass findById(String id) throws BusinessException {
+        PostClass post = postRepository.findById(id).orElse(null);
+
+        if(post == null) {
+            log.info("findById: Error finding post with id " + id);
+            throw new BusinessException("Post with id " + id + " not found");
+        }
+
+        return post;
     }
 
     @Override
@@ -179,8 +186,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void deleteById(String id) {
-        PostClass post = postRepository.findById(id).orElse(null);
+    public void deleteById(String id) throws BusinessException {
+        PostClass post = postRepository.findById(id).orElseThrow(BusinessException::new);
 
         deletePostRepliesAndImages(post);
 
@@ -200,8 +207,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public AjaxResponse upvote(String postId, UserClass user) {
-        PostClass post = postRepository.findById(postId).orElse(null);
+    public AjaxResponse upvote(String postId, UserClass user) throws BusinessException {
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         boolean upvotedAlready = false;
         boolean downvotedAlready = false;
 
@@ -237,8 +244,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public AjaxResponse downvote(String postId, UserClass user) {
-        PostClass post = postRepository.findById(postId).orElse(null);
+    public AjaxResponse downvote(String postId, UserClass user) throws BusinessException {
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         boolean upvotedAlready = false;
         boolean downvotedAlready = false;
 
@@ -274,8 +281,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void hideToggle(String postId, UserClass user) {
-        PostClass post = postRepository.findById(postId).orElse(null);
+    public void hideToggle(String postId, UserClass user) throws BusinessException {
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         if(post.getUsersHidden() == null){
             post.setUsersHidden(new HashSet<>());
         }
@@ -290,8 +297,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void saveToggle(String postId, UserClass user) {
-        PostClass post = postRepository.findById(postId).orElse(null);
+    public void saveToggle(String postId, UserClass user) throws BusinessException {
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         if(post.getUsersSaved() == null){
             post.setUsersSaved(new HashSet<>());
         }
@@ -306,8 +313,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void reportToggle(String postId, UserClass user) {
-        PostClass post = postRepository.findById(postId).orElse(null);
+    public void reportToggle(String postId, UserClass user) throws BusinessException {
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         if(post.getUsersReported() == null){
             post.setUsersReported(new HashSet<>());
         }
@@ -328,7 +335,7 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public void createPostInChannel(PostClass post, String tagListString) {
+    public void createPostInChannel(PostClass post, String tagListString) throws BusinessException {
         createPostAux(post, tagListString);
     }
 
@@ -370,8 +377,8 @@ public class PostBOImpl implements PostBO {
     }
 
     @Override
-    public List<ImageClass> getPostImages(String postId) {
-        PostClass post = postRepository.findById(postId).orElse(null);
+    public List<ImageClass> getPostImages(String postId) throws BusinessException {
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         long i = 0;
 
         List<ImageClass> images = new ArrayList<>();
@@ -392,7 +399,7 @@ public class PostBOImpl implements PostBO {
     }
 
 
-    private void createPostAux(PostClass post, String tagListString) {
+    private void createPostAux(PostClass post, String tagListString) throws BusinessException {
         // tags: string -> array
         String[] tagNames = tagListString.split(" ");
         Set<TagClass> tagSet = new HashSet<>();
@@ -429,7 +436,7 @@ public class PostBOImpl implements PostBO {
         Long channelId = post.getChannelId();
         Long creatorId = post.getUserId();
 
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
 
         List<UserChannelRole> usersInChannel = userChannelRoleRepository.findByChannelId(channelId).orElse(null);
 

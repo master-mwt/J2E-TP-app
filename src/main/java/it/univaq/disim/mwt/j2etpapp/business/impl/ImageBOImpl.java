@@ -73,12 +73,18 @@ public class ImageBOImpl implements ImageBO {
     @Override
     public ImageClass findUserProfileImage(Long userId) {
         UserClass user = userRepository.findById(userId).orElse(null);
+        if(user == null) {
+            return null;
+        }
         return user.getImage();
     }
 
     @Override
     public ImageClass findChannelImage(Long channelId) {
         ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        if(channel == null) {
+            return null;
+        }
         return channel.getImage();
     }
 }

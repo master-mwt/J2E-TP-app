@@ -52,8 +52,15 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public ChannelClass findById(Long id) {
-        return channelRepository.findById(id).orElse(null);
+    public ChannelClass findById(Long id) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(id).orElse(null);
+
+        if(channel == null) {
+            log.info("findById: Error finding channel with id " + id);
+            throw new BusinessException("Channel with id " + id + " not found");
+        }
+
+        return channel;
     }
 
     @Override
@@ -87,8 +94,8 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void deleteById(Long id) {
-        ChannelClass channel = channelRepository.findById(id).orElse(null);
+    public void deleteById(Long id) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(id).orElseThrow(BusinessException::new);
 
         String imageLocation = getChannelImageLocation(channel);
 
@@ -126,26 +133,28 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public Set<UserClass> getSoftBannedUsers(Long channelId) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public Set<UserClass> getSoftBannedUsers(Long channelId) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         return channel.getSoftBannedUsers();
     }
 
     @Override
-    public void setSoftBannedUsers(Long channelId, Set<UserClass> softBannedUsers) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public void setSoftBannedUsers(Long channelId, Set<UserClass> softBannedUsers) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         channel.setSoftBannedUsers(softBannedUsers);
         channelRepository.save(channel);
 
         for(UserClass softBannedUser : softBannedUsers) {
-            UserChannelRole userToBeSoftbanned = userChannelRoleRepository.findByChannelIdAndUserId(channelId, softBannedUser.getId()).orElse(null);
-            userChannelRoleRepository.delete(userToBeSoftbanned);
+            UserChannelRole userToBeSoftBanned = userChannelRoleRepository.findByChannelIdAndUserId(channelId, softBannedUser.getId()).orElse(null);
+            if(userToBeSoftBanned != null) {
+                userChannelRoleRepository.delete(userToBeSoftBanned);
+            }
         }
     }
 
     @Override
-    public void appendSoftBannedUsers(Long channelId, Set<UserClass> softBannedUsers) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public void appendSoftBannedUsers(Long channelId, Set<UserClass> softBannedUsers) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         Set<UserClass> alreadySoftBanned = channel.getSoftBannedUsers();
         if (alreadySoftBanned == null) {
             alreadySoftBanned = new HashSet<>();
@@ -155,27 +164,29 @@ public class ChannelBOImpl implements ChannelBO {
         channelRepository.save(channel);
 
         for(UserClass softBannedUser : softBannedUsers) {
-            UserChannelRole userToBeSoftbanned = userChannelRoleRepository.findByChannelIdAndUserId(channelId, softBannedUser.getId()).orElse(null);
-            userChannelRoleRepository.delete(userToBeSoftbanned);
+            UserChannelRole userToBeSoftBanned = userChannelRoleRepository.findByChannelIdAndUserId(channelId, softBannedUser.getId()).orElse(null);
+            if(userToBeSoftBanned != null) {
+                userChannelRoleRepository.delete(userToBeSoftBanned);
+            }
         }
     }
 
     @Override
-    public Set<UserClass> getReportedUsers(Long channelId) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public Set<UserClass> getReportedUsers(Long channelId) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         return channel.getReportedUsers();
     }
 
     @Override
-    public void setReportedUsers(Long channelId, Set<UserClass> reportedUsers) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public void setReportedUsers(Long channelId, Set<UserClass> reportedUsers) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         channel.setReportedUsers(reportedUsers);
         channelRepository.save(channel);
     }
 
     @Override
-    public void appendReportedUsers(Long channelId, Set<UserClass> reportedUsers) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public void appendReportedUsers(Long channelId, Set<UserClass> reportedUsers) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         Set<UserClass> alreadyReported = channel.getReportedUsers();
         if (alreadyReported == null) {
             alreadyReported = new HashSet<>();
@@ -186,8 +197,8 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void joinChannel(Long channelId, UserClass user) {
-        RoleClass member = roleRepository.findByName("member").orElse(null);
+    public void joinChannel(Long channelId, UserClass user) throws BusinessException {
+        RoleClass member = roleRepository.findByName("member").orElseThrow(BusinessException::new);
 
         UserChannelRole joinedMember = new UserChannelRole();
         UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -201,16 +212,24 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void leaveChannel(Long channelId, UserClass user) {
-        UserChannelRole memberToDelete = userChannelRoleRepository.findByChannelIdAndUserId(channelId, user.getId()).orElse(null);
+    public void leaveChannel(Long channelId, UserClass user) throws BusinessException {
+        RoleClass creator = roleRepository.findByName("creator").orElseThrow(BusinessException::new);
+
+        UserChannelRole memberToDelete = userChannelRoleRepository.findByChannelIdAndUserId(channelId, user.getId()).orElseThrow(BusinessException::new);
+
+        if(creator.equals(memberToDelete.getRole())) {
+            log.info("leaveChannel: Error leaving channel user with id " + user.getId() + " in channel with id " + channelId);
+            throw new BusinessException("You cannot leave the channel, you are the creator");
+        }
+
         userChannelRoleRepository.delete(memberToDelete);
     }
 
     @Override
     public void globalUnreportPost(Long channelId, String postId) throws BusinessException {
-        PostClass post = postRepository.findById(postId).orElse(null);
+        PostClass post = postRepository.findById(postId).orElseThrow(BusinessException::new);
         if(!post.getChannelId().equals(channelId)){
-            log.info("globalUnreportPost: Error global unreport post with id " + postId + " in channel " + channelId);
+            log.info("globalUnreportPost: Error global unreport post with id " + postId + " in channel with id " + channelId);
             throw new BusinessException("Global unreport post error");
         }
         post.getUsersReported().clear();
@@ -221,68 +240,72 @@ public class ChannelBOImpl implements ChannelBO {
     @Override
     public void reportUser(Long channelId, Long userId, UserClass principal) throws BusinessException {
         if(userId.equals(principal.getId())) {
+            log.info("reportUser: Error in reporting user with id " + userId + " in channel with id " + channelId);
             throw new BusinessException("You cannot report yourself");
         }
 
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         if(channel.getReportedUsers() == null){
             channel.setReportedUsers(new HashSet<>());
         }
-        channel.getReportedUsers().add(userRepository.findById(userId).orElse(null));
+        channel.getReportedUsers().add(userRepository.findById(userId).orElseThrow(BusinessException::new));
         channelRepository.save(channel);
     }
 
     @Override
     public void unReportUser(Long channelId, Long userId, UserClass principal) throws BusinessException {
         if(userId.equals(principal.getId())) {
+            log.info("unReportUser: Error in unreporting user with id " + userId + " in channel with id " + channelId);
             throw new BusinessException("You cannot unreport yourself");
         }
 
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         if(channel.getReportedUsers() == null){
             channel.setReportedUsers(new HashSet<>());
         }
-        channel.getReportedUsers().remove(userRepository.findById(userId).orElse(null));
+        channel.getReportedUsers().remove(userRepository.findById(userId).orElseThrow(BusinessException::new));
         channelRepository.save(channel);
     }
 
     @Override
     public void softBan(Long channelId, Long userId, UserClass principal) throws BusinessException {
         if(userId.equals(principal.getId())) {
+            log.info("softBan: Error in softbanning user with id " + userId + " in channel with id " + channelId);
             throw new BusinessException("You cannot softban yourself");
         }
 
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         if(channel.getSoftBannedUsers() == null){
             channel.setSoftBannedUsers(new HashSet<>());
         }
-        channel.getSoftBannedUsers().add(userRepository.findById(userId).orElse(null));
+        channel.getSoftBannedUsers().add(userRepository.findById(userId).orElseThrow(BusinessException::new));
         channelRepository.save(channel);
 
-        UserChannelRole userToBeDeleted = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole userToBeDeleted = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         userChannelRoleRepository.delete(userToBeDeleted);
     }
 
     @Override
     public void unSoftBan(Long channelId, Long userId, UserClass principal) throws BusinessException {
         if(userId.equals(principal.getId())) {
+            log.info("unSoftBan: Error in unsoftbanning user with id " + userId + " in channel with id " + channelId);
             throw new BusinessException("You cannot unsoftban yourself");
         }
 
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         if(channel.getSoftBannedUsers() == null){
             channel.setSoftBannedUsers(new HashSet<>());
         }
-        channel.getSoftBannedUsers().remove(userRepository.findById(userId).orElse(null));
+        channel.getSoftBannedUsers().remove(userRepository.findById(userId).orElseThrow(BusinessException::new));
         channelRepository.save(channel);
     }
 
     @Override
-    public void upgradeMemberToModerator(Long channelId, Long userId) {
-        RoleClass member = roleRepository.findByName("member").orElse(null);
-        RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
+    public void upgradeMemberToModerator(Long channelId, Long userId) throws BusinessException {
+        RoleClass member = roleRepository.findByName("member").orElseThrow(BusinessException::new);
+        RoleClass moderator = roleRepository.findByName("moderator").orElseThrow(BusinessException::new);
 
-        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         if(member.equals(currentMember.getRole())){
             UserChannelRole newRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -297,11 +320,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void upgradeModeratorToAdmin(Long channelId, Long userId) {
-        RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
-        RoleClass admin = roleRepository.findByName("admin").orElse(null);
+    public void upgradeModeratorToAdmin(Long channelId, Long userId) throws BusinessException {
+        RoleClass moderator = roleRepository.findByName("moderator").orElseThrow(BusinessException::new);
+        RoleClass admin = roleRepository.findByName("admin").orElseThrow(BusinessException::new);
 
-        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         if(moderator.equals(currentMember.getRole())){
             UserChannelRole newRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -316,11 +339,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void downgradeModeratorToMember(Long channelId, Long userId) {
-        RoleClass member = roleRepository.findByName("member").orElse(null);
-        RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
+    public void downgradeModeratorToMember(Long channelId, Long userId) throws BusinessException {
+        RoleClass member = roleRepository.findByName("member").orElseThrow(BusinessException::new);
+        RoleClass moderator = roleRepository.findByName("moderator").orElseThrow(BusinessException::new);
 
-        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         if(moderator.equals(currentMember.getRole())){
             UserChannelRole newRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -336,18 +359,18 @@ public class ChannelBOImpl implements ChannelBO {
 
     @Override
     public void upgradeAdminToCreator(Long channelId, Long userId) throws BusinessException {
-        RoleClass admin = roleRepository.findByName("admin").orElse(null);
-        RoleClass creator = roleRepository.findByName("creator").orElse(null);
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        RoleClass admin = roleRepository.findByName("admin").orElseThrow(BusinessException::new);
+        RoleClass creator = roleRepository.findByName("creator").orElseThrow(BusinessException::new);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
 
-        for(UserChannelRole userChannelRole : userChannelRoleRepository.findByChannelId(channelId).orElse(null)) {
+        for(UserChannelRole userChannelRole : userChannelRoleRepository.findByChannelId(channelId).orElseThrow(BusinessException::new)) {
             if(creator.equals(userChannelRole.getRole())) {
                 log.info("upgradeAdminToCreator: Upgrade admin with id " + userId +  " to creator rejected, creator already present in channel with id " + channelId);
                 throw new BusinessException("A creator is already present");
             }
         }
 
-        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         if(admin.equals(currentMember.getRole())){
             UserChannelRole newRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -358,18 +381,18 @@ public class ChannelBOImpl implements ChannelBO {
             userChannelRoleRepository.delete(currentMember);
             userChannelRoleRepository.save(newRole);
 
-            channel.setCreator(userRepository.findById(userId).orElse(null));
+            channel.setCreator(userRepository.findById(userId).orElseThrow(BusinessException::new));
             channelRepository.save(channel);
             log.info("Upgraded admin to creator user with id " + userId + " in channel with id " + channelId);
         }
     }
 
     @Override
-    public void downgradeAdminToModerator(Long channelId, Long userId) {
-        RoleClass moderator = roleRepository.findByName("moderator").orElse(null);
-        RoleClass admin = roleRepository.findByName("admin").orElse(null);
+    public void downgradeAdminToModerator(Long channelId, Long userId) throws BusinessException {
+        RoleClass moderator = roleRepository.findByName("moderator").orElseThrow(BusinessException::new);
+        RoleClass admin = roleRepository.findByName("admin").orElseThrow(BusinessException::new);
 
-        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         if(admin.equals(currentMember.getRole())){
             UserChannelRole newRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -383,11 +406,11 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void downgradeCreatorToAdmin(Long channelId, Long userId) {
-        RoleClass admin = roleRepository.findByName("admin").orElse(null);
-        RoleClass creator = roleRepository.findByName("creator").orElse(null);
+    public void downgradeCreatorToAdmin(Long channelId, Long userId) throws BusinessException {
+        RoleClass admin = roleRepository.findByName("admin").orElseThrow(BusinessException::new);
+        RoleClass creator = roleRepository.findByName("creator").orElseThrow(BusinessException::new);
 
-        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElse(null);
+        UserChannelRole currentMember = userChannelRoleRepository.findByChannelIdAndUserId(channelId, userId).orElseThrow(BusinessException::new);
         if(creator.equals(currentMember.getRole())){
             UserChannelRole newRole = new UserChannelRole();
             UserChannelRoleFKs userChannelRoleFKs = new UserChannelRoleFKs();
@@ -402,8 +425,8 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void removeImage(Long channelId) {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+    public void removeImage(Long channelId) throws BusinessException {
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         if(channel.getImage() != null) {
             imageRepository.delete(channel.getImage());
             fileDealer.removeFile(channel.getImage().getLocation());
@@ -415,7 +438,7 @@ public class ChannelBOImpl implements ChannelBO {
 
     @Override
     public String saveImage(Long channelId, MultipartFile image) throws BusinessException {
-        ChannelClass channel = channelRepository.findById(channelId).orElse(null);
+        ChannelClass channel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         String path = null;
 
         try {
@@ -438,8 +461,8 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void createChannel(ChannelClass channel, UserClass creator) {
-        RoleClass creatorRole = roleRepository.findByName("creator").orElse(null);
+    public void createChannel(ChannelClass channel, UserClass creator) throws BusinessException {
+        RoleClass creatorRole = roleRepository.findByName("creator").orElseThrow(BusinessException::new);
 
         channel.setCreator(creator);
         channelRepository.save(channel);
@@ -457,8 +480,8 @@ public class ChannelBOImpl implements ChannelBO {
     }
 
     @Override
-    public void updateChannel(Long channelId, ChannelClass newData) {
-        ChannelClass savedChannel = channelRepository.findById(channelId).orElse(null);
+    public void updateChannel(Long channelId, ChannelClass newData) throws BusinessException {
+        ChannelClass savedChannel = channelRepository.findById(channelId).orElseThrow(BusinessException::new);
         savedChannel.setTitle(newData.getTitle());
         savedChannel.setDescription(newData.getDescription());
         savedChannel.setRules(newData.getRules());

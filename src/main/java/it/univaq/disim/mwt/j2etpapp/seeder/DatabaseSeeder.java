@@ -84,29 +84,37 @@ public class DatabaseSeeder {
 
     private void doSeed(){
         log.info("Seeding...");
-        // static tables
-        seedServices();
-        seedGroups();
-        seedRoles();
-        seedImages();
 
-        // dynamic tables
-        seedUsers(20L);
-        seedChannels(15L);
+        try {
+            // static tables
+            seedServices();
+            seedGroups();
+            seedRoles();
+            seedImages();
 
-        // relations
-        seedUserChannelRoleCreators();
-        seedUserChannelRoleNonCreators(8L);
-        seedReportedUsers(5L);
-        seedSoftBannedUsers(3L);
+            // dynamic tables
+            seedUsers(20L);
+            seedChannels(15L);
 
-        // mongodb collections
-        seedTags(20L);
-        seedPosts(40L);
-        seedReplies(20L);
+            // relations
+            seedUserChannelRoleCreators();
+            seedUserChannelRoleNonCreators(8L);
 
-        // generate admins
-        seedAdmins();
+            seedReportedUsers(5L);
+            seedSoftBannedUsers(3L);
+
+            // mongodb collections
+            seedTags(20L);
+            seedPosts(40L);
+            seedReplies(20L);
+
+            // generate admins
+            seedAdmins();
+
+        } catch (BusinessException e) {
+            log.info("doSeed: Error in seeding tables");
+        }
+
         log.info("End seeding.");
     }
 
@@ -227,7 +235,7 @@ public class DatabaseSeeder {
         logged.setName("logged");
 
         Set<ServiceClass> administratorServices = new HashSet<>(serviceBO.findAll());
-        administratorServices.remove(serviceBO.findByName("leave_channel"));
+        administratorServices.remove(serviceBO.findByName("join_channel"));
         administrator.setServices(administratorServices);
 
         Set<ServiceClass> loggedServices = new HashSet<>();
@@ -446,7 +454,7 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedReportedUsers(Long nUsers){
+    private void seedReportedUsers(Long nUsers) throws BusinessException {
         log.info("Seeding channels reported users");
 
         List<UserClass> users = shuffle(userBO.findAll());
@@ -473,7 +481,7 @@ public class DatabaseSeeder {
         }
     }
 
-    private void seedSoftBannedUsers(Long nUsers){
+    private void seedSoftBannedUsers(Long nUsers) throws BusinessException {
         log.info("Seeding channels softbanned users");
 
         List<UserClass> users = shuffle(userBO.findAll());
