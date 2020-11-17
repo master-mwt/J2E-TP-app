@@ -109,11 +109,12 @@ public class PermissionChecker {
         UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(reply.getChannelId(), currentUser.getId());
         RoleClass creator = roleBO.findByName("creator");
         RoleClass admin = roleBO.findByName("admin");
+        RoleClass moderator = roleBO.findByName("moderator");
 
         if(userChannelRole != null) {
             RoleClass role = userChannelRole.getRole();
             for (ServiceClass service : role.getServices()) {
-                if(service.getName().equals(permission) && (reply.getUserId().equals(currentUser.getId())) || creator.equals(role) || admin.equals(role)) {
+                if(service.getName().equals(permission) && (reply.getUserId().equals(currentUser.getId()) || creator.equals(role) || admin.equals(role) || moderator.equals(role))) {
                     return true;
                 }
             }

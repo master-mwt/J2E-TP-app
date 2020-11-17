@@ -455,7 +455,11 @@
               <a
                 th:href="@{/replies/{id}/delete(id=${reply.getId()})}"
                 sec:authorize="!isAnonymous()"
-                th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId()) || 'administrator'.equals(#authentication.getPrincipal().getUser().getGroup().getName())}"
+                th:if="${reply.getUserId().equals(#authentication.getPrincipal().getUser().getId()) ||
+                'administrator'.equals(#authentication.getPrincipal().getUser().getGroup().getName()) ||
+                'creator'.equals(templateHelper.findUserChannelRoleName(reply.getChannelId(), #authentication.getPrincipal().getUser().getId())) ||
+                'admin'.equals(templateHelper.findUserChannelRoleName(reply.getChannelId(), #authentication.getPrincipal().getUser().getId())) ||
+                'moderator'.equals(templateHelper.findUserChannelRoleName(reply.getChannelId(), #authentication.getPrincipal().getUser().getId()))}"
                 class="text-decoration-none mr-2 text-danger replydelete"
                 ><i class="fa fa-exclamation-triangle"></i
                 >[[#{content.discover.post.reply.button.delete_reply}]]</a

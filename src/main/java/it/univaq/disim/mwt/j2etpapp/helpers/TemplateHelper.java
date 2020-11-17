@@ -81,7 +81,11 @@ public class TemplateHelper {
     }
 
     public String findUserChannelRoleName(Long channelId, Long userId) {
-        return roleBO.findById(userChannelRoleBO.findByChannelIdAndUserId(channelId, userId).getRole().getId()).getName();
+        UserChannelRole userChannelRole = userChannelRoleBO.findByChannelIdAndUserId(channelId, userId);
+        if(userChannelRole == null) {
+            return null;
+        }
+        return roleBO.findById(userChannelRole.getRole().getId()).getName();
     }
 
     public UserChannelRole findMemberUserChannelRole(Long channelId, Long userId) {
