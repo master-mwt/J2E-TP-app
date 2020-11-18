@@ -127,9 +127,6 @@ public class DatabaseSeeder {
         ServiceClass mod_user_data = new ServiceClass();
         mod_user_data.setName("mod_user_data");
 
-        ServiceClass view_user_data = new ServiceClass();
-        view_user_data.setName("view_user_data");
-
         ServiceClass create_post = new ServiceClass();
         create_post.setName("create_post");
 
@@ -197,7 +194,6 @@ public class DatabaseSeeder {
         downgrade_user_to_logged.setName("downgrade_user_to_logged");
 
         list.add(mod_user_data);
-        list.add(view_user_data);
         list.add(create_post);
         list.add(delete_post);
         list.add(create_reply);
@@ -242,7 +238,6 @@ public class DatabaseSeeder {
         loggedServices.add(serviceBO.findByName("create_channel"));
         loggedServices.add(serviceBO.findByName("join_channel"));
         loggedServices.add(serviceBO.findByName("mod_user_data"));
-        loggedServices.add(serviceBO.findByName("view_user_data"));
 
         logged.setServices(loggedServices);
 

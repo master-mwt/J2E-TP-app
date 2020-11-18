@@ -25,33 +25,33 @@ public class NotificationRestController {
     private UtilsClass utilsClass;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getAllNotifications() throws BusinessException {
+    public ResponseEntity<Object> getAllNotifications() throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null) {
             List<NotificationClass> notifications = notificationBO.findByUserTargetId(principal.getId());
-            return new ResponseEntity(JSONDealer.ObjectToJSON(notifications), HttpStatus.OK);
+            return new ResponseEntity<>(JSONDealer.ObjectToJSON(notifications), HttpStatus.OK);
         }
 
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("delete_all")
-    public ResponseEntity deleteAllNotifications() {
+    public ResponseEntity<Object> deleteAllNotifications() {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null) {
             notificationBO.deleteAllByUserTargetId(principal.getId());
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("{notificationId}/delete")
-    public ResponseEntity deleteNotification(@PathVariable("notificationId") String notificationId) {
+    public ResponseEntity<Object> deleteNotification(@PathVariable("notificationId") String notificationId) {
         notificationBO.deleteById(notificationId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

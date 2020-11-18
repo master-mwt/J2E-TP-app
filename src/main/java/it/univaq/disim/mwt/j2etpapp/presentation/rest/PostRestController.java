@@ -23,63 +23,63 @@ public class PostRestController {
 
     @DeleteMapping("{postId}/delete")
     @PreAuthorize("hasPermission(#postId, 'it.univaq.disim.mwt.j2etpapp.domain.PostClass', 'delete_post')")
-    public ResponseEntity delete(@PathVariable("postId") String postId) throws BusinessException {
+    public ResponseEntity<Object> delete(@PathVariable("postId") String postId) throws BusinessException {
         postBO.deleteById(postId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("{postId}/upvote")
-    public ResponseEntity doUpvote(@PathVariable("postId") String postId) throws BusinessException {
+    public ResponseEntity<Object> doUpvote(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             AjaxResponse response = postBO.upvote(postId, principal);
-            return new ResponseEntity<AjaxResponse>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("{postId}/downvote")
-    public ResponseEntity doDownvote(@PathVariable("postId") String postId) throws BusinessException {
+    public ResponseEntity<Object> doDownvote(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             AjaxResponse response = postBO.downvote(postId, principal);
-            return new ResponseEntity<AjaxResponse>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("{postId}/hide")
-    public ResponseEntity doHide(@PathVariable("postId") String postId) throws BusinessException {
+    public ResponseEntity<Object> doHide(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             postBO.hideToggle(postId, principal);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("{postId}/report")
-    public ResponseEntity doReport(@PathVariable("postId") String postId) throws BusinessException {
+    public ResponseEntity<Object> doReport(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             postBO.reportToggle(postId, principal);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("{postId}/save")
-    public ResponseEntity doSave(@PathVariable("postId") String postId) throws BusinessException {
+    public ResponseEntity<Object> doSave(@PathVariable("postId") String postId) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null){
             postBO.saveToggle(postId, principal);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

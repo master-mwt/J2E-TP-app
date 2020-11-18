@@ -95,8 +95,6 @@ function notify(user, entry){
 
     $('#notification-area').append(notification);
 
-    // TODO: makeToast?
-
     //makeToast('Notification', 'You have new notifications', 4000);
 }
 

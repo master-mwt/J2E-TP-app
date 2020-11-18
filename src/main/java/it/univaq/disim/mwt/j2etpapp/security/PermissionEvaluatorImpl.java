@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-// TODO: permission correct check
 @Component
 @Slf4j
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
@@ -39,10 +38,6 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
             return false;
         }
 
-        /*if("administrator".equals(principal.getUser().getGroup().getName())) {
-            return true;
-        }*/
-
         // if-else for all permission-protected classes
         if(object instanceof ChannelClass){
             return hasPermissionOnChannel(principal.getUser(), (ChannelClass) object, (String) permission);
@@ -64,10 +59,6 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
         if(principal == null){
             return false;
         }
-
-        /*if("administrator".equals(principal.getUser().getGroup().getName())) {
-            return true;
-        }*/
 
         // if-else for all permission-protected classes
         try {
