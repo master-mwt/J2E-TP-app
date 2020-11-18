@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
@@ -35,20 +34,16 @@ public class ReplyClass implements Serializable {
     @Version
     private Long version;
 
-    @Column(name = "user_id")
     @NotNull
     private Long userId;
-    @Column(name = "channel_id")
     @NotNull
     private Long channelId;
 
     @DBRef
     private PostClass post;
 
-    @Column(name = "users_downvoted")
     private Set<Long> usersDownvoted;
 
-    @Column(name = "users_upvoted")
     private Set<Long> usersUpvoted;
 
 

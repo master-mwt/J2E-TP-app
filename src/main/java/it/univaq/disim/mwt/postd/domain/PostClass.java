@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
@@ -37,11 +36,9 @@ public class PostClass implements Serializable {
     @Version
     private Long version;
 
-    @Column(name = "user_id")
     @NotNull
     private Long userId;
 
-    @Column(name = "channel_id")
     @NotNull
     private Long channelId;
 
@@ -52,22 +49,16 @@ public class PostClass implements Serializable {
     @DBRef
     private Set<ReplyClass> replies;
 
-    @Column(name = "images")
     private Set<Long> images;
 
-    @Column(name = "users_downvoted")
     private Set<Long> usersDownvoted;
 
-    @Column(name = "users_upvoted")
     private Set<Long> usersUpvoted;
 
-    @Column(name = "users_hidden")
     private Set<Long> usersHidden;
 
-    @Column(name = "users_reported")
     private Set<Long> usersReported;
 
-    @Column(name = "users_saved")
     private Set<Long> usersSaved;
 
 
