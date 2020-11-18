@@ -239,7 +239,7 @@ public class ReplyBOImpl implements ReplyBO {
                     continue;
                 }
 
-                if(!replyCreator.equals(replyClass.getUserId()) && (!replyCreator.equals(postCreator)) && (!alreadyNotified.contains(replyClass.getUserId()))) {
+                if((!replyCreator.equals(replyClass.getUserId())) && (!alreadyNotified.contains(replyClass.getUserId()))) {
                     NotificationClass notification = new NotificationClass();
                     notification.setUserTargetId(replyClass.getUserId());
                     notification.setUserCreatedById(replyCreator);
