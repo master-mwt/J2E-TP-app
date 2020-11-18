@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = BusinessException.class)
 @Slf4j
 public class UserBOImpl implements UserBO {
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = BusinessException.class)
 public class AuthBOImpl implements AuthBO {
 
     @Autowired

@@ -1,7 +1,7 @@
 package it.univaq.disim.mwt.j2etpapp.domain;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Document(collection = "posts")
 public class PostClass implements Serializable {
 

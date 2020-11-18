@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = BusinessException.class)
 public class ReplyBOImpl implements ReplyBO {
 
     @Autowired

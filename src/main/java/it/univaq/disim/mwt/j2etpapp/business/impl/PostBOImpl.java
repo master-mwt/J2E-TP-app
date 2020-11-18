@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = BusinessException.class)
 @Slf4j
 public class PostBOImpl implements PostBO {
 
