@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /j2etpapp
+    context-path: /postd
   port: 8080
 
 spring:

@@ -33,8 +33,8 @@ function makeToast(title, body, delay){
  * Notifications handling
  */
 let notifications = [];
-let baseUrl = window.location.protocol + "//" + window.location.host + '/j2etpapp';
-let postpath = window.location.protocol + "//" + window.location.host + '/j2etpapp' + "/discover/post/";
+let baseUrl = window.location.protocol + "//" + window.location.host + '/postd';
+let postpath = window.location.protocol + "//" + window.location.host + '/postd' + "/discover/post/";
 
 $(document).ready(function() {
     if(window.userIsLogged){
