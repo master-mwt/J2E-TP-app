@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 // remember me: checkbox parameter remember
                 .rememberMeParameter("remember")
-                .key("j2etpapp-remember")
+                .key("postd-remember")
                 // remember me: 1 day
                 .tokenValiditySeconds(86400)
                 .and()

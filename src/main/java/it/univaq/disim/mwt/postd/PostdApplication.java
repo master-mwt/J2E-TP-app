@@ -10,10 +10,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableJpaRepositories(basePackages = "it.univaq.disim.mwt.postd.repository.jpa")
 @EnableMongoRepositories(basePackages = "it.univaq.disim.mwt.postd.repository.mongo")
 @EnableMongoAuditing
-public class J2etpAppApplication {
+public class PostdApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(J2etpAppApplication.class, args);
+        SpringApplication.run(PostdApplication.class, args);
     }
 
 }
