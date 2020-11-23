@@ -1,10 +1,8 @@
 package it.univaq.disim.mwt.postd.presentation.rest;
 
-import it.univaq.disim.mwt.postd.business.BusinessException;
 import it.univaq.disim.mwt.postd.business.NotificationBO;
 import it.univaq.disim.mwt.postd.domain.NotificationClass;
 import it.univaq.disim.mwt.postd.domain.UserClass;
-import it.univaq.disim.mwt.postd.utils.JSONDealer;
 import it.univaq.disim.mwt.postd.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +23,12 @@ public class NotificationRestController {
     private UtilsClass utilsClass;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAllNotifications() throws BusinessException {
+    public ResponseEntity<Object> getAllNotifications() {
         UserClass principal = utilsClass.getPrincipal();
 
         if(principal != null) {
             List<NotificationClass> notifications = notificationBO.findByUserTargetId(principal.getId());
-            return new ResponseEntity<>(JSONDealer.ObjectToJSON(notifications), HttpStatus.OK);
+            return new ResponseEntity<>(notifications, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
