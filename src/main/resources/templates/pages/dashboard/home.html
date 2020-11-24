@@ -20,7 +20,7 @@
             />
             <img
               th:unless="${templateHelper.findUserProfileImage(user.getId()) == null}"
-              th:src="${templateHelper.findUserProfileImage(user.getId()).getLocation()}"
+              th:src="@{/{image}/(image=${templateHelper.findUserProfileImage(user.getId()).getLocation()})}"
               alt="user-profile-image"
               class="rounded border"
               width="100"

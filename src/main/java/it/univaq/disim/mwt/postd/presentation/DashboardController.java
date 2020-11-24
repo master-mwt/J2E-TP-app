@@ -1,9 +1,6 @@
 package it.univaq.disim.mwt.postd.presentation;
 
-import it.univaq.disim.mwt.postd.business.PostBO;
-import it.univaq.disim.mwt.postd.business.ReplyBO;
-import it.univaq.disim.mwt.postd.business.RoleBO;
-import it.univaq.disim.mwt.postd.business.UserChannelRoleBO;
+import it.univaq.disim.mwt.postd.business.*;
 import it.univaq.disim.mwt.postd.configuration.ApplicationProperties;
 import it.univaq.disim.mwt.postd.domain.ChannelClass;
 import it.univaq.disim.mwt.postd.domain.RoleClass;
@@ -34,6 +31,8 @@ public class DashboardController {
     private UserChannelRoleBO userChannelRoleBO;
     @Autowired
     private RoleBO roleBO;
+    @Autowired
+    private UserBO userBO;
 
     @Autowired
     private ApplicationProperties properties;
@@ -45,10 +44,10 @@ public class DashboardController {
     private TemplateHelper templateHelper;
 
     @GetMapping("")
-    public String home(Model model) {
+    public String home(Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
-        model.addAttribute("user", principal);
+        model.addAttribute("user", userBO.findById(principal.getId()));
         model.addAttribute("templateHelper", templateHelper);
         model.addAttribute("dateFormat", properties.getDateFormat());
         model.addAttribute("channel", new ChannelClass());

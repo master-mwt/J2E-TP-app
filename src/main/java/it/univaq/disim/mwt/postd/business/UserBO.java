@@ -24,9 +24,9 @@ public interface UserBO {
     void hardBanToggle(Long userId) throws BusinessException;
     void upgradeToAdministrator(Long userId) throws BusinessException;
     void downgradeToLogged(Long userId) throws BusinessException;
-    boolean checkOldPassword(UserClass user, String oldPassword);
-    void changePassword(UserClass user, String newPassword) throws BusinessException;
+    boolean checkOldPassword(Long userId, String oldPassword) throws BusinessException;
+    void changePassword(Long userId, String newPassword) throws BusinessException;
     void removeImage(Long userId) throws BusinessException;
     String saveImage(Long userId, MultipartFile image) throws BusinessException;
-    void updateUserProfile(UserClass user, UserClass newData);
+    void updateUserProfile(Long userId, UserClass newData) throws BusinessException;
 }

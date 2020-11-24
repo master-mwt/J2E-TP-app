@@ -40,11 +40,11 @@ public class UserController {
 
     @PostMapping("{userId}/update")
     @PreAuthorize("hasPermission(#userId, 'it.univaq.disim.mwt.postd.domain.UserClass', 'mod_user_data')")
-    public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, BindingResult bindingResult, @PathVariable("userId") Long userId, Model model) {
+    public String performUpdate(@Valid @ModelAttribute("user") UserClass newData, BindingResult bindingResult, @PathVariable("userId") Long userId, Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
         if(bindingResult.hasErrors()) {
-            model.addAttribute("user", principal);
+            model.addAttribute("user", userBO.findById(principal.getId()));
             model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", new ChannelClass());
@@ -52,7 +52,7 @@ public class UserController {
             return "pages/dashboard/home";
         }
 
-        userBO.updateUserProfile(principal, newData);
+        userBO.updateUserProfile(userId, newData);
 
         return "redirect:/home";
     }
@@ -86,11 +86,11 @@ public class UserController {
     public String changePassword (@RequestParam("old-password") String oldPassword, @RequestParam("new-password") String newPassword, @PathVariable("userId") Long userId, Model model) throws BusinessException {
         UserClass principal = utilsClass.getPrincipal();
 
-        if(userBO.checkOldPassword(principal, oldPassword)) {
+        if(userBO.checkOldPassword(principal.getId(), oldPassword)) {
             // old password correct
-            userBO.changePassword(principal, newPassword);
+            userBO.changePassword(principal.getId(), newPassword);
         } else {
-            model.addAttribute("user", principal);
+            model.addAttribute("user", userBO.findById(principal.getId()));
             model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", new ChannelClass());

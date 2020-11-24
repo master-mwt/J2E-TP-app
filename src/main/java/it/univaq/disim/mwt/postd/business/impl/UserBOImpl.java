@@ -166,7 +166,8 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public boolean checkOldPassword(UserClass user, String oldPassword) {
+    public boolean checkOldPassword(Long userId, String oldPassword) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
         if(passwordEncoder.matches(oldPassword, user.getPassword())) {
             return true;
         }
@@ -174,7 +175,8 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void changePassword(UserClass user, String newPassword) throws BusinessException {
+    public void changePassword(Long userId, String newPassword) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
         if(newPassword.length() < properties.getMinPasswordLength()) {
             log.info("changePassword: Password is too short error for user with id " + user.getId());
             throw new BusinessException("Password is too short");
@@ -220,7 +222,9 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public void updateUserProfile(UserClass user, UserClass newData) {
+    public void updateUserProfile(Long userId, UserClass newData) throws BusinessException {
+        UserClass user = userRepository.findById(userId).orElseThrow(BusinessException::new);
+
         user.setName(newData.getName());
         user.setSurname(newData.getSurname());
         user.setEmail(newData.getEmail());

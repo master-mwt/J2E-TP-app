@@ -29,6 +29,8 @@ public class ChannelController {
     private PostBO postBO;
     @Autowired
     private TagBO tagBO;
+    @Autowired
+    private UserBO userBO;
 
     @Autowired
     private ApplicationProperties properties;
@@ -45,7 +47,7 @@ public class ChannelController {
         UserClass principal = utilsClass.getPrincipal();
 
         if(bindingResult.hasErrors()){
-            model.addAttribute("user", principal);
+            model.addAttribute("user", userBO.findById(principal.getId()));
             model.addAttribute("templateHelper", templateHelper);
             model.addAttribute("dateFormat", properties.getDateFormat());
             model.addAttribute("channel", channel);
